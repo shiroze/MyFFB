@@ -1,0 +1,26 @@
+﻿
+@{
+    Layout = "_CustomLayout";
+    ViewData["Title"] = "Authentication Status";
+}
+
+<div class="row">
+    <div class="col-lg-12 text-center">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Message</h3>
+            </div>
+            <div class="card-body">
+                @if (ViewBag.Message == "USER NOT FOUND")
+                {
+                    <div id="dvMessage" class="alert alert-info">
+                        @ViewBag.Message On FFB System DB
+                    </div>
+                }
+                <a href="@Url.Action("KeycloakLogout", "Home")" class="btn btn-success">
+                    <span class="hidden-xs">Click Here to redirect</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

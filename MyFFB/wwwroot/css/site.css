@@ -1,0 +1,82 @@
+﻿body {
+  padding-top: 5rem;
+}
+
+.title {
+    padding: 20px 0 20px 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.editors {
+    /*margin-right: 20px;
+    margin-left: 20px;*/
+}
+
+.editors .left, .editors .right {
+    display: inline-block;
+    width: 49%;
+    padding-right: 20px;
+    box-sizing: border-box;
+}
+
+.editors .left > div, .editors .right > div, .editors .center > div {
+    /*margin-bottom: 20px;*/
+    margin-bottom: 0px !important;
+}
+
+.editors .center {
+    display: inline-block;
+    padding-right: 20px;
+    /*padding: 20px 27px 0 0;*/
+}
+
+.validate {
+    float: right;
+}
+
+.options {
+    padding: 20px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 260px;
+    top: 0;
+    background-color: rgba(191, 191, 191, 0.15);
+}
+
+.caption {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.option {
+    margin-top: 20px;
+}
+
+.ColumnsAutomatic {
+    background-color: #738fd2;
+}
+
+.stylebold {
+    font-weight: bold;
+}
+
+.plaincolor {
+    background-color: #ffffff !important;
+    font-weight: normal;
+}
+
+#pivotgrid {
+    margin-top: 20px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.tooltipcenter {
+    text-align: center;
+}
+
+input.has-error {
+    border-color: red;
+}

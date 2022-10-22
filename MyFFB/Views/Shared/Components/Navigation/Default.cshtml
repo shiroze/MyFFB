@@ -1,0 +1,62 @@
+﻿@model IEnumerable<MyAttd.Models.T_RoleDet>
+
+<ul class="sidebar-menu" data-widget="tree">
+    <li>
+        <a asp-controller="Home"
+           asp-action="Dashboard">
+            <i class="fa fa-dashboard"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+    @{
+        var temp = "";
+        var list = Model.ToList();
+    }
+    @for (int i = 0; i < list.Count(); i++)
+    {
+        var item = list[i];
+        if (item.Menu.RootMenu.FCMenuDesc != temp)
+        {
+            if (item.Menu.RootMenu.FCMenuLink && item.Menu.RootMenu.FCMenuPID == 0)
+            {
+                var childItems = Model.Where(p => p.Menu.FCMenuPID == item.Menu.RootMenu.FCMenuID);
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa @item.Menu.RootMenu.FCIcon"></i> <span>@item.Menu.RootMenu.FCMenuDesc</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        @foreach (var ch in childItems)
+                        {
+                            if (!ch.Menu.FCHidden)
+                            {
+                                <li><a href="@Url.Action("Index",ch.Menu.FCMenuCode)">@ch.Menu.FCMenuDesc</a></li>
+                            }
+                        }
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li>@Html.ActionLink(item.Menu.RootMenu.FCMenuDesc, "Index", item.Menu.RootMenu.FCMenuCode)</li>
+            }
+            temp = item.Menu.RootMenu.FCMenuDesc;
+        }
+    }
+                <li>
+                    <a asp-controller="Home"
+                       asp-action="About">
+                        <i class="fa fa-info-circle"></i>
+                        <span>Tentang Kami</span>
+                    </a>
+                </li>
+    <li>
+        <a asp-controller="Home"
+           asp-action="Contact">
+            <i class="fa fa-support"></i>
+            <span>Kontak</span>
+        </a>
+    </li>
+</ul>

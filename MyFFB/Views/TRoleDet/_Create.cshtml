@@ -1,0 +1,87 @@
+﻿@model MyAttd.Models.T_RoleDet
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "TRoleDet", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+
+        //using (Html.DevExtreme().ValidationGroup())
+        //{
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="dx-fieldset col-md-12">
+                <div class="dx-fieldset-header" style="text-decoration:underline">Role : @ViewBag.RoleDesc</div>
+                <div class="dx-field center col-md-12">
+                    @Html.LabelFor(m => m.FCMenuID)
+                    @*@Html.DevExtreme().SelectBoxFor(m => m.FCMenuID).DataSource((IEnumerable<dynamic>)ViewBag.DListNotZeroParentID).DataSourceOptions(o => o.Group("Root")).ID("FCMenuID").DisplayExpr("FCMenuDesc").ValueExpr("FCMenuID").Grouped(true).ShowClearButton(true)*@
+                    <select id="FCMenuID" name="FCMenuID" class="form-control">
+                        @foreach (var item in (IEnumerable<dynamic>)ViewBag.DListNotZeroParentID)
+                        {
+                            <option value="@item.FCMenuID">@item.FCMenuDesc</option>
+                        }
+                    </select>
+                </div>
+                <div class="dx-field left col-md-3">
+                    @*@Html.DevExtreme().CheckBoxFor(m => m.FCAdd).Width(80).ID("FCAdd").Text("Tambah")*@
+                    @Html.CheckBoxFor(m => m.FCAdd, new { @id = "FCAdd", @width = "100" }) Tambah
+                </div>
+                <div class="dx-field left col-md-3">
+                    @*@Html.DevExtreme().CheckBoxFor(m => m.FCEdit).Width(80).ID("FCEdit").Text("Ubah")*@
+                    @Html.CheckBoxFor(m => m.FCEdit, new { @id = "FCEdit", @width = "100" }) Ubah
+                </div>
+                <div class="dx-field left col-md-3">
+                    @*@Html.DevExtreme().CheckBoxFor(m => m.FCDelete).Width(80).ID("FCDelete").Text("Hapus")*@
+                    @Html.CheckBoxFor(m => m.FCDelete, new { @id = "FCDelete", @width = "100" }) Hapus
+                </div>
+                <div class="dx-field left col-md-3">
+                    @*@Html.DevExtreme().CheckBoxFor(m => m.FCUndelete).Width(100).ID("FCUndelete").Text("Batal Hapus")*@
+                    @Html.CheckBoxFor(m => m.FCUndelete, new { @id = "FCUndelete", @width = "100" }) Batal Hapus
+                </div>
+                <div class="dx-field left col-md-3">
+                    @*@Html.DevExtreme().CheckBoxFor(m => m.FCApprove).Width(100).ID("FCApprove").Text("Approve")*@
+                    @Html.CheckBoxFor(m => m.FCApprove, new { @id = "FCApprove", @width = "100" }) Approve
+                </div>
+            </div>
+            @Html.Hidden("roleID", (object)ViewBag.RoleID)
+            <div class="dx-fieldset col-md-12">
+                <div class="dx-field right col-md-4">
+                    @*@Html.DevExtreme().Button().ID("button").Text("Simpan").Type(ButtonType.Success).OnClick("saveClick").UseSubmitBehavior(true)*@
+                    <button type="button" id="button" class="btn btn-success" onclick="saveClick()">Simpan</button>
+                </div>
+            </div>
+        </div>
+
+        //}
+    }
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+    <script>
+        DevExpress.config({
+            editorStylingMode: "outlined"
+        });
+
+        function saveClick(e) {
+            var result = e.validationGroup.validate();
+            if (!result.isValid) {
+                DevExpress.ui.notify("Proses tidak dapat dilanjutkan. Periksa kembali data inputan.", "error");
+                return false;
+            } else {
+                var button = $("#button").dxButton("instance");
+                button.option('disabled', true);
+                return true;
+            }
+        }
+
+
+    </script>
+
+
+}

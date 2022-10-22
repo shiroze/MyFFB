@@ -1,0 +1,248 @@
+﻿@model IEnumerable<MyAttd.Models.T_GroupSupp>
+
+@{
+    ViewData["Title"] = "Master Group Supplier";
+}
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+</section>
+
+@if (ViewData["Message"] != null)
+{
+    <section class="content" style="min-height:0px !important;padding-top:0px !important; padding-bottom:0px !important;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-warning box-solid" style="margin-top:15px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Perhatian!</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        @ViewData["Message"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<section class="content container-fluid">
+
+
+    <div class="box">
+        <div class="box-header with-border">
+            <button class="btn btn-primary" onclick="newItemMenuClick()"><h4><i class="fa fa-plus-circle"></i> New Item</h4></button>
+            @*<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">*@
+        </div>
+        <div class="box-body">
+            <div id="AreaMainTable">
+                <table class="table table-bordered table-responsive table-hover" style="white-space:nowrap"  id="cssTableUtama">
+                    <thead class="table-primary" style="position:sticky; top:0;">
+                        <tr>
+                            <th>Actions</th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.GroupSuppID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.GroupSuppName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Regional)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FCCreatedBy)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FCCreatedDT)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FCUpdatedBy)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FCUpdatedDT)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="myTable">
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                <button class="btn btn-success" title="Edit" onclick="editIconClick('@item.GroupSuppID')"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-primary" title="Add Detail" onclick="detailIconClick('@item.GroupSuppID','@item.GroupSuppName')"><i class="fa fa-plus"></i></button>
+                                <button class="btn btn-danger" title="Delete" onclick="deleteIconClick('@item.GroupSuppID')"><i class="fa fa-trash"></i></button>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GroupSuppID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GroupSuppName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Regional)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedBy.FCName)
+                            </td>
+                            <td>
+                                @if (item.FCCreatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                                {
+                                    @Html.DisplayFor(modelItem => item.FCCreatedDT)
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdatedBy.FCName)
+                            </td>
+                            <td>
+                                @if (item.FCUpdatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                                {
+                                    @Html.DisplayFor(modelItem => item.FCUpdatedDT)
+                                }
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<div id="popup">
+</div>
+
+<script>
+    $(function () {
+        $("#popup").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width:400,
+            height: 300,
+            resizeEnabled: false
+        });
+    });
+
+    function newItemMenuClick(e) {
+        $.ajax({
+                url: '@Url.Action("Create", "TGroupSupp")',
+                traditional: true,
+                data: {  }
+        }).done (function (response) {
+            $("#popup").dxPopup({
+                title: "ADD",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+                alert("Failed: " + data.response);
+        });
+    }
+
+    function editIconClick(e) {
+        $.ajax({
+            //url: '/TGroupSupp/Edit?p_GroupSuppID=' + e,
+            url: '@Url.Action("Edit", "TGroupSupp")',
+            traditional: true,
+            data: { p_GroupSuppID:e}
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "EDIT",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function detailIconClick(a,b) {
+        //window.location.href = '/TGroupSupp/Details?p_GroupSuppID=' + a + '&p_GroupSuppName=' + b;
+        window.location.href = "@Url.Action("Details", "TGroupSupp")" + "?p_GroupSuppID=" + a + "&p_GroupSuppName=" + b;
+    }
+
+    function deleteIconClick(e) {
+        $.ajax({
+            //url: '/TGroupSupp/Delete?p_GroupSuppID=' + e,
+            url: '@Url.Action("Delete", "TGroupSupp")',
+            traditional: true,
+            data: { p_GroupSuppID:e},
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "DELETE",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function undeleteIconClick(e) {
+        $.ajax({
+            //url: '/TGroupSupp/Undelete?p_GroupSuppID=' + e,
+            url: '@Url.Action("Undelete", "TGroupSupp")',
+            traditional: true,
+            data: { p_GroupSuppID:e}
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "UnDelete",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+    //function myFunction() {
+    //    var input, filter, table, tr, td, i;
+    //    input = document.getElementById("myInput");
+    //    filter = input.value.toUpperCase();
+    //    table = document.getElementById("myTable");
+    //    var rows = table.getElementsByTagName("tr");
+    //    for (i = 0; i < rows.length; i++) {
+    //        var cells = rows[i].getElementsByTagName("td");
+    //        var j;
+    //        var rowContainsFilter = false;
+    //        for (j = 0; j < cells.length; j++) {
+    //            if (cells[j]) {
+    //                if (cells[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+    //                    rowContainsFilter = true;
+    //                    continue;
+    //                }
+    //            }
+    //        }
+
+    //        if (!rowContainsFilter) {
+    //            rows[i].style.display = "none";
+    //        } else {
+    //            rows[i].style.display = "";
+    //        }
+    //    }
+    //}
+    $(document).ready(function () {
+        $('#cssTableUtama').DataTable({
+            columnDefs: [{
+                targets: [0],
+                orderData: [0, 1]
+            }, {
+                targets: [1],
+                orderData: [1, 0]
+            }, {
+                targets: [4],
+                orderData: [4, 0]
+            }]
+        });
+    });
+</script>

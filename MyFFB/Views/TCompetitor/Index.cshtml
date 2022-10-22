@@ -1,0 +1,255 @@
+﻿@model IEnumerable<MyAttd.Models.T_Competitor>
+
+@{
+    ViewData["Title"] = "Master Competitor";
+}
+
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+</section>
+<style>
+    th {
+        position: sticky;
+        top: 0;
+    }
+</style>
+
+@if (ViewData["Message"] != null)
+{
+    <section class="content" style="min-height:0px !important;padding-top:0px !important; padding-bottom:0px !important;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-warning box-solid" style="margin-top:15px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Perhatian!</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        @ViewData["Message"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header with-border">
+            <button class="btn btn-primary" onclick="newItemMenuClick()"><h4><i class="fa fa-plus-circle"></i> New Item</h4></button>
+            @*<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">*@
+        </div>
+        <div class="box-body">
+            <div id="AreaMainTable">
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="popup">
+</div>
+<div id="popupChild">
+</div>
+<script>
+
+    //date_input.addEventListener("keydown", function (event) {
+    //    if (event.key === "Enter") {
+    //        $.ajax
+    //            ({
+    //                url: '/TPrice/GridMainTable/?p_datepick=' + this.value,
+    //                traditional: true,
+    //                success: function (data) {
+    //                    if (data) {
+    //                        $("#AreaMainTable").html(data);
+    //                    }
+
+    //                }
+    //            });
+    //    }
+    //});
+
+    $(function () {
+        $.ajax
+        ({
+            //url: '/TCompetitor/GridMainTable/',
+            url: '@Url.Action("GridMainTable", "TCompetitor")',
+            traditional: true,
+            data: {},
+            success: function (data)
+            {
+                if (data)
+                {
+                    $("#AreaMainTable").html(data);
+                }
+
+            }
+        });
+        $("#popup").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width: 400,
+            height: 450,
+            resizeEnabled: false
+        });
+        $("#popupChild").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width: 550,
+            height: 400,
+            resizeEnabled: false
+        });
+    });
+    function newItemMenuClick(e) {
+        $.ajax({
+                url: '@Url.Action("Create", "TCompetitor")',
+                traditional: true,
+                data: {  },
+        }).done (function (response) {
+            $("#popup").dxPopup({
+                title: "ADD",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+                alert("Failed: " + data.response);
+        });
+    }
+
+    function viewIconClick(a) {
+        $.ajax({
+            //url: '/TCompetitor/View1?p_CompetitorID=' + a,
+            url: '@Url.Action("View1", "TCompetitor")',
+            traditional: true,
+            data: { p_CompetitorID:a},
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "VIEW",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function editIconClick(a) {
+        $.ajax({
+            //url: '/TCompetitor/Edit?p_CompetitorID=' + a,
+            url: '@Url.Action("Edit", "TCompetitor")',
+            traditional: true,
+            data: { p_CompetitorID:a}
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "EDIT",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function deleteIconClick(a) {
+        $.ajax({
+            //url: '/TCompetitor/Delete?p_CompetitorID=' + a,
+            url: '@Url.Action("Delete", "TCompetitor")',
+            traditional: true,
+            data: { p_CompetitorID:a}
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "Delete",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function GridPMKS() {
+        $.ajax({
+            //url: '/TPMKS/GridPMKS',
+            url: '@Url.Action("GridPMKS", "TPMKS")',
+            traditional: true,
+            data: {}
+        }).done(function (response) {
+            $("#popupChild").dxPopup({
+                title: "List PMKS",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+    function selectItem(a, b) {
+        let text =
+            "Data" +
+            "\nPMKS ID : " + a +
+            "\nPMKS Name : " + b;
+
+        if (true) {
+            $("#grdPMKSID").val(a);
+            $("#popupChild").dxPopup('instance').hide();
+        }
+    }
+
+    //function myFunction() {
+    //    var input, filter, table, tr, td, i;
+    //    input = document.getElementById("myInput");
+    //    filter = input.value.toUpperCase();
+    //    table = document.getElementById("myTable");
+    //    var rows = table.getElementsByTagName("tr");
+    //    for (i = 0; i < rows.length; i++) {
+    //        var cells = rows[i].getElementsByTagName("td");
+    //        var j;
+    //        var rowContainsFilter = false;
+    //        for (j = 0; j < cells.length; j++) {
+    //            if (cells[j]) {
+    //                if (cells[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+    //                    rowContainsFilter = true;
+    //                    continue;
+    //                }
+    //            }
+    //        }
+
+    //        if (!rowContainsFilter) {
+    //            rows[i].style.display = "none";
+    //        } else {
+    //            rows[i].style.display = "";
+    //        }
+    //    }
+    //}
+
+    $(document).ready(function () {
+        $('#cssTableUtama').DataTable({
+            columnDefs: [{
+                targets: [0],
+                orderData: [0, 1]
+            }, {
+                targets: [1],
+                orderData: [1, 0]
+            }, {
+                targets: [4],
+                orderData: [4, 0]
+            }]
+        });
+    });
+</script>

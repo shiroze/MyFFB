@@ -1,0 +1,58 @@
+﻿@model MyAttd.Models.T_SetGeneral
+@*<div class="title">
+        VIEW Incentive
+        <hr />
+    </div>*@
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "TSetGeneral", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="editors">
+    @*Row 1------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.SetId)
+        @Html.TextBoxFor(m => m.SetId, new { @readonly = "readonly", @class = "form-control", @id = "SetId" })
+        @Html.ValidationMessageFor(m => m.SetId)
+    </div>
+    <div class="col-md-9">
+        @Html.LabelFor(m => m.SetName)
+        @Html.TextBoxFor(m => m.SetName, new { @required = "required",@class = "form-control", @id = "SetName" })
+        @Html.ValidationMessageFor(m => m.SetName)
+    </div>
+    <div class="col-md-12">
+
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.value)
+        @Html.TextBoxFor(m => m.value, new { @type="number",@skip=1,@class = "form-control", @id = "value" })
+        @Html.ValidationMessageFor(m => m.value)
+    </div>
+
+    <div class="card-footer col-md-12">
+        <button id="button"
+                text="ADD"
+                class="btn btn-primary">
+            <h4>ADD</h4>
+        </button>
+
+    </div>
+</div>
+
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+
+        <script>
+        </script>
+
+    }
+}

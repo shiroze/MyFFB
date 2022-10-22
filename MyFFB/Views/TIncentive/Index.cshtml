@@ -1,0 +1,356 @@
+﻿@model IEnumerable<MyAttd.Models.T_Incentive>
+
+@{
+    ViewData["Title"] = "Transaction Incentive";
+}
+
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+
+</section>
+<style>
+    th {
+        position: sticky;
+        top: 0;
+    }
+</style>
+
+@if (ViewData["Message"] != null)
+{
+    <section class="content" style="min-height:0px !important;padding-top:0px !important; padding-bottom:0px !important;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-warning box-solid" style="margin-top:15px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Perhatian!</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        @ViewData["Message"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<div align=center id="formLoading">
+    <img src="~/loadinggif1.gif" style="width:100px;height:70px" />
+    <p><h1>Loading Data.....</h1></p>
+</div>
+<section class="content container-fluid" id="formUtama">
+    <div class="box">
+        <div class="box-header with-border">
+            <button class="btn btn-primary" onclick="newItemMenuClick()"><h4><i class="fa fa-plus-circle"></i> New Item</h4></button>
+            @*<button class="btn btn-primary" onclick="newItemMenuClick()"><h4><i class="fa fa-plus-circle"></i> New Item</h4></button>*@
+            <button class="btn-outline-dark" style="border: none" onclick="nextbackTanggal('BACK')">
+                <i class="fa fa-angle-double-left"></i>
+            </button>
+            <input type="month" id="currentDate" name="Date Price">
+            <button class="btn-outline-dark" style="border: none" onclick="nextbackTanggal('NEXT')">
+                <i class="fa fa-angle-double-right"></i>
+            </button>
+            <button class="btn btn-primary" style="border: none" onclick="LoadMainTable()">
+                <h4>Filter</h4>
+            </button>
+
+            @*<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">*@
+
+        </div>
+        <div class="box-body">
+            <div id="AreaMainTable">
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="id01" class="w3-modal">
+        <div class="w3-modal-content" id="myAreaDrag">
+            <div class="w3-container">
+                <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <div id="mainPop1">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="id02" class="w3-modal">
+        <div class="w3-modal-content" id="myAreaDrag">
+            <div class="w3-container">
+                <span onclick="document.getElementById('id02').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <div id="mainPop2">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="popup">
+    </div>
+    <div id="popupChild">
+    </div>
+
+
+</section>
+
+<script>
+    function LoadProcess() {
+        $('#formLoading').show();
+        $('#formUtama').hide();
+    }
+    function LoadFinish() {
+        $('#formLoading').hide();
+        $('#formUtama').show();
+    }
+
+    if (localStorage.getItem("PeriodeIncentive") == null) {
+        document.getElementById('currentDate').value = moment().format("YYYY-MM");
+    }
+    else {
+        document.getElementById("currentDate").value = localStorage.getItem("PeriodeIncentive");
+    }
+
+    var date_input = document.getElementById('currentDate');
+
+    function LoadMainTable() {
+        LoadProcess();
+        date_input = document.getElementById('currentDate');
+        localStorage.setItem("PeriodeIncentive", date_input.value);
+        $.ajax
+            ({
+                //url: '/TIncentive/GridMainTable/?Periode=' + date_input.value,
+                url: '@Url.Action("GridMainTable", "TIncentive")',
+                traditional: true,
+                data: { Periode: date_input.value},
+                success: function (data) {
+                    if (data) {
+                        $("#AreaMainTable").html(data);
+                        LoadFinish();
+                    }
+                }
+            });
+
+    }
+    LoadMainTable();
+
+    date_input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            //LoadProcess();
+            LoadMainTable();
+            //localStorage.setItem("PeriodeIncentive", date_input.value);
+        }
+    });
+
+
+    function nextbackTanggal(a) {
+        //LoadProcess();
+        var tglNow = document.getElementById('currentDate').value;
+        var tglmoment;
+        if (a == "NEXT") {
+            tglmoment = moment(tglNow).add(1, 'months').format("YYYY-MM");
+        }
+        else {
+            tglmoment = moment(tglNow).subtract(1, 'months').format("YYYY-MM");
+        }
+        document.getElementById('currentDate').value = tglmoment;
+        LoadMainTable();
+        //localStorage.setItem("PeriodeIncentive", tglmoment);
+    }
+
+
+
+
+    $(function () {
+        $("#popup").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width: 750,
+            height: 400,
+            resizeEnabled: false
+        });
+        $("#popupChild").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width: 750,
+            height: 400,
+            resizeEnabled: false
+        });
+    });
+
+    function viewIconClick(a) {
+
+        $.ajax({
+            //url: '/TIncentive/ViewDet?IncentiveID=' + a,
+            url: '@Url.Action("ViewDet", "TIncentive")',
+            traditional: true,
+            data: { IncentiveID:a},
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "VIEW",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function approveIconClick(a) {
+        $.ajax({
+            //url: '/TIncentive/Approve?IncentiveID=' + a,
+            url: '@Url.Action("Approve", "TIncentive")',
+            traditional: true,
+            data: { IncentiveID: a },
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "Approve",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response);
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function deleteIconClick(a) {
+        $.ajax({
+            //url: '/TIncentive/Delete?IncentiveID=' + a,
+            url: '@Url.Action("Delete", "TIncentive")',
+            traditional: true,
+            data: { IncentiveID:a},
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "DELETE",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function newItemMenuClick() {
+        $.ajax({
+            //url: '/TIncentive/Create',
+            url: '@Url.Action("Create", "TIncentive")',
+            traditional: true,
+            data: {},
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "CREATE",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function printIconClick(a) {
+        LoadProcess();
+        $.ajax({
+            async: false, // <<<----------- add this
+            //url: '/TIncentive/Print?IncentiveID=' + a,
+            url: '@Url.Action("Print", "TIncentive")',
+            type: "get",
+            dataType: "html",
+            data: { IncentiveID:a},
+            success: function (data) {
+                debugger;
+                console.log(data)
+                if (data = true) {
+                    //var url = '/TIncentive/Print?IncentiveID=' + a
+                    //window.open(url, "_blank");
+                    //window.location.href = "@Url.Action("Print", "TIncentive")" + "/?IncentiveID=" + a;
+                    window.open("@Url.Action("Print", "TIncentive")" + "/?IncentiveID=" + a, "_blank");
+                    LoadFinish();
+                }
+                else {
+                    showNotification("Error", "warning");
+                }
+            }
+        });
+
+    }
+
+    function GridIncentive() {
+        $.ajax({
+            //url: '/TSAPVendor/GridIncentive',
+            url: '@Url.Action("GridIncentive", "TSAPVendor")',
+            traditional: true,
+            data: {},
+        }).done(function (response) {
+            $("#popupChild").dxPopup({
+                title: "List Incentive",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    var response_new = response.replace("<hr />", "").replace("<hr />", "");
+                    contentElement.append(response_new)
+
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+        //$.ajax({
+        //    url: '/TSAPVendor/GridIncentive',
+        //    traditional: true,
+        //    success: function (data) {
+        //        if (data) {
+        //            document.getElementById('id02').style.display = 'block';
+        //            $("#mainPop2").html(data);
+
+        //        }
+
+        //    }
+        //});
+    }
+
+    function selectIncentive(a, b, c, d,e,f,g,h) {
+        let text =
+            "Data" +
+            "\nGroupSuppName : " + b +
+            "\nRegional : " + c +
+            "\nPMKS ID : " + d +
+            "\nCompany Code : " + e +
+            "\nSupplier ID : " + f +
+            "\nSupplier Name : " + g +
+            "\nVendor Code : " + h ;
+
+        if (true) {
+            $("#GroupSuppID").val(a);
+            $("#GroupSuppName").val(b);
+            $("#Regional").val(c);
+            $("#PMKSID").val(d);
+            $("#CompanyCode").val(e);
+            $("#SupplierID").val(f);
+            $("#SupplierName").val(g);
+            $("#VendorCode").val(h);
+            $("#popupChild").dxPopup('instance').hide();
+            //document.getElementById('id02').style.display = 'none';
+        }
+
+    }
+    function ValidateFormat() {
+    var periodemoment = document.getElementById('Periode').value;
+    document.getElementById('Periode').value = moment(periodemoment).format('YYYY-MM');
+    }
+
+
+</script>

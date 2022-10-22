@@ -1,0 +1,168 @@
+﻿@model MyAttd.Models.T_Incentive
+
+@*<div class="title">
+    DELETE
+    <hr />
+</div>*@
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+
+    @using (Html.BeginForm("Approve", "TIncentive", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="editors">
+    @*Row 1------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-3" hidden>
+        @Html.LabelFor(m => m.IncentiveID)
+        @Html.TextBoxFor(m => m.IncentiveID, new { @readonly = "readonly", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.IncentiveID)
+    </div>
+    <div class="col-md-3" hidden>
+        @Html.LabelFor(m => m.GroupSuppID)
+        @Html.TextBoxFor(m => m.GroupSuppID, new { @readonly = "readonly", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.GroupSuppID)
+    </div>
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.GroupSuppName)
+        @Html.TextBoxFor(m => m.GroupSuppName, new { @readonly = "readonly", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.GroupSuppName)
+    </div>
+
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.Periode)
+        @Html.EditorFor(m => m.Periode, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control", @id="Periode" } })
+        @Html.ValidationMessageFor(m => m.Periode)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.Netto)
+        @Html.TextBoxFor(m => m.Netto, new { @readonly = "readonly", @class = "form-control", @id= "Netto" })
+        @Html.ValidationMessageFor(m => m.Netto)
+    </div>
+    @*Row 2------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.PMKSID)
+        @Html.TextBoxFor(m => m.PMKSID, new { @readonly = "readonly", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PMKSID)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.CompanyCode)
+        @Html.TextBoxFor(m => m.CompanyCode, new { @readonly = "readonly", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CompanyCode)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.Regional)
+        @Html.TextBoxFor(m => m.Regional, new { @readonly = "readonly", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Regional)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.Incentive)
+        @Html.TextBoxFor(m => m.Incentive, new { @readonly = "readonly", @class = "form-control", @id= "Incentive" })
+        @Html.ValidationMessageFor(m => m.Incentive)
+    </div>
+    @*Row 3------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.SupplierID)
+        @Html.TextBoxFor(m => m.SupplierID, new { @readonly = "readonly", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.SupplierID)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.VendorCode)
+        @Html.TextBoxFor(m => m.VendorCode, new { @readonly = "readonly", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.VendorCode)
+    </div>
+    <div class="col-md-3">
+        <br />
+        <br />
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.pph22)
+        @Html.TextBoxFor(m => m.pph22, new { @readonly = "readonly", @class = "form-control", @id= "pph22" })
+        @Html.ValidationMessageFor(m => m.pph22)
+    </div>
+    @*Row 4------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.SupplierName)
+        @Html.TextBoxFor(m => m.SupplierName, new { @readonly = "readonly", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.SupplierName)
+    </div>
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.Remarks)
+        @Html.TextBoxFor(m => m.Remarks, new { @readonly = "readonly", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Remarks)
+    </div>
+    @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-4">
+        <br />
+        <p id="msgBuat" style="background-color:dodgerblue; color:white;"></p>
+        <br />
+    </div>
+    <div class="col-md-4">
+        <br />
+        <p id="msgUpdate" style="background-color: darkseagreen; color: white;"></p>
+        <br />
+    </div>
+    <div class="col-md-4">
+        <br />
+        <p id="msgApprove" style="background-color: lightseagreen; color: white;"></p>
+        <br />
+    </div>
+    <div class="col-md-12 card-footer">
+        <button id="button"
+                text="Approve"
+                class="btn btn-success"
+                onclick="ValidateFormat()">
+            <h4>Approve</h4>
+        </button>
+    </div>
+</div>
+
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+
+<script>
+            var DTbuat = moment('@Model.FCCreatedDT').format("YYYY-MM-DD");
+            var msg = "Create : @Model.CreatedBy.FCName " + DTbuat;
+            document.getElementById('msgBuat').innerHTML = msg;
+
+            var NameUbah = "N/A";
+            var DTubah = "";
+            if ('@Model.UpdateBy.FCName' !== "") {
+                NameUbah = '@Model.UpdateBy.FCName';
+                DTubah = moment('@Model.FCUpdatedDT').format("YYYY-MM-DD");
+            }
+            msg = "Update : "+NameUbah+" " + DTubah;
+            document.getElementById('msgUpdate').innerHTML = msg;
+
+            var NameApprove = "N/A";
+            var DTApprove = "";
+            if ('@Model.ApproveBy.FCName' !== "") {
+                NameApprove = '@Model.ApproveBy.FCName';
+                DTApprove = moment('@Model.FCApproveDT').format("YYYY-MM-DD");
+            }
+            msg = "Approve : " + NameApprove + " " + DTApprove;
+            document.getElementById('msgApprove').innerHTML = msg;
+
+            var Netto = numeral(document.getElementById('Netto').value);
+            $("#Netto").val(Netto.format('0,0.00'));
+
+            var Incentive = numeral(document.getElementById('Incentive').value);
+            $("#Incentive").val(Incentive.format('0,0'));
+
+            var pph22 = numeral(document.getElementById('pph22').value);
+            $("#pph22").val(pph22.format('0,0.00'));
+
+            var getperiode = '@Model.Periode'.substring(0, 4) + '-' + '@Model.Periode'.substring(4, 6);
+            var periodemoment = moment(getperiode).format("MMMM YYYY");
+            document.getElementById('Periode').value = periodemoment;
+</script>
+    }
+}

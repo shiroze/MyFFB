@@ -1,0 +1,481 @@
+﻿@model IEnumerable<MyAttd.Models.T_PPN>
+
+@{
+    ViewData["Title"] = "Transaction PPN";
+}
+
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+
+</section>
+<style>
+    th {
+        position: sticky;
+        top: 0;
+    }
+</style>
+
+@if (ViewData["Message"] != null)
+{
+    <section class="content" style="min-height:0px !important;padding-top:0px !important; padding-bottom:0px !important;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-warning box-solid" style="margin-top:15px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Perhatian!</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        @ViewData["Message"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<div align=center id="formLoading">
+    <img src="~/loadinggif1.gif" style="width:100px;height:70px" />
+    <p><h1>Loading Data.....</h1></p>
+</div>
+<section class="content container-fluid" id="formUtama">
+    <div class="box">
+        <div class="box-header with-border">
+            <button class="btn btn-primary" onclick="newItemMenuClick('NORMAL')"><h4><i class="fa fa-plus-circle"></i> Add VAT Normal</h4></button>
+            @*<button class="btn btn-primary" onclick="newItemMenuClick('ADVANCE')"><h4><i class="fa fa-plus-circle"></i> Add VAT Advance</h4></button>*@
+
+            <button class="btn-outline-dark" style="border: none" onclick="nextbackTanggal('BACK')">
+                <i class="fa fa-angle-double-left"></i>
+            </button>
+            <input type="month" id="currentDate" name="Date Price">
+            <button class="btn-outline-dark" style="border: none" onclick="nextbackTanggal('NEXT')">
+                <i class="fa fa-angle-double-right"></i>
+            </button>
+            <button class="btn btn-primary" style="border: none" onclick="LoadMainTable()">
+                <h4>Filter</h4>
+            </button>
+
+            @*<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">*@
+
+        </div>
+        <div class="box-body">
+            <div id="AreaMainTable">
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="id01" class="w3-modal">
+        <div class="w3-modal-content" id="myAreaDrag">
+            <div class="w3-container">
+                <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <div id="mainPop1">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="id02" class="w3-modal">
+        <div class="w3-modal-content" id="myAreaDrag">
+            <div class="w3-container">
+                <span onclick="document.getElementById('id02').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <div id="mainPop2">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="popup">
+    </div>
+    <div id="popupChild">
+    </div>
+
+
+</section>
+
+<script>
+    function LoadProcess() {
+        $('#formLoading').show();
+        $('#formUtama').hide();
+    }
+    function LoadFinish() {
+        $('#formLoading').hide();
+        $('#formUtama').show();
+    }
+
+    if (localStorage.getItem("t_periodePPN") == null) {
+        document.getElementById('currentDate').value = moment().format("YYYY-MM");
+    }
+    else {
+        document.getElementById("currentDate").value = localStorage.getItem("t_periodePPN");
+    }
+
+    var date_input = document.getElementById('currentDate');
+    var datenow = new Date(date_input.value);
+    var year = datenow.getFullYear().toString();
+    var month = (datenow.getMonth() + 1).toString().padStart(2, 0);
+
+    function LoadMainTable() {
+        LoadProcess();
+        date_input = document.getElementById('currentDate');
+        localStorage.setItem("t_periodePPN", date_input.value);
+        year = moment(date_input.value).format("YYYY").toString();
+        month = moment(date_input.value).format("MM").toString().padStart(2, 0);
+        $.ajax
+            ({
+                //url: '/TPPN/GridMainTable/?p_periode=' + year + month,
+                url: '@Url.Action("GridMainTable", "TPPN")',
+                traditional: true,
+                data: { p_periode: year + month},
+                success: function (data) {
+                    if (data) {
+                        $("#AreaMainTable").html(data);
+                        LoadFinish();
+                    }
+
+                }
+            });
+
+    }
+    LoadMainTable();
+
+    date_input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+
+            LoadMainTable();
+            //localStorage.setItem("t_periodePPN", date_input.value);
+        }
+    });
+
+
+    function nextbackTanggal(a) {
+        //LoadProcess();
+        var tglNow = document.getElementById('currentDate').value;
+        var tglmoment;
+        if (a == "NEXT") {
+            tglmoment = moment(tglNow).add(1, 'months').format("YYYY-MM");
+        }
+        else {
+            tglmoment = moment(tglNow).subtract(1, 'months').format("YYYY-MM");
+        }
+        document.getElementById('currentDate').value = moment(tglmoment).format("YYYY-MM");
+        //year = moment(tglmoment).format("YYYY").toString();
+        //month = moment(tglmoment).format("MM").toString().padStart(2, 0);
+        LoadMainTable();
+        //localStorage.setItem("t_periodePPN", tglmoment);
+    }
+
+
+
+
+    $(function () {
+        $("#popup").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width: 750,
+            height: 600,
+            resizeEnabled: false
+        });
+        $("#popupChild").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width: 750,
+            height: 400,
+            resizeEnabled: false
+        });
+    });
+
+    function viewIconClick(a, b) {
+        if (b == "A") {
+            $.ajax
+                ({
+                    //url: '/TPPN/ViewDetAdvance?p_faktur=' + a,
+                    url: '@Url.Action("ViewDetAdvance", "TPPN")',
+                    traditional: true,
+                    data: { p_faktur:a},
+                    success: function (data) {
+                        if (data) {
+                            document.getElementById('id01').style.display = 'block';
+                            $("#mainPop1").html(data);
+
+                        }
+
+                    }
+                });
+        }
+        else {
+            $.ajax
+                ({
+                    //url: '/TPPN/ViewDet?p_faktur=' + a,
+                    url: '@Url.Action("ViewDet", "TPPN")',
+                    traditional: true,
+                    data: { p_faktur:a},
+                    success: function (data) {
+                        if (data) {
+                            document.getElementById('id01').style.display = 'block';
+                            $("#mainPop1").html(data);
+
+                        }
+
+                    }
+                });
+        }
+
+
+    }
+
+    function newItemMenuClick(a) {
+        if (a == "NORMAL") {
+            $.ajax
+                ({
+                    //url: '/TPPN/Create',
+                    url: '@Url.Action("Create", "TPPN")',
+                    traditional: true,
+                    success: function (data) {
+                        if (data) {
+                            document.getElementById('id01').style.display = 'block';
+                            $("#mainPop1").html(data);
+
+                        }
+
+                    }
+                });
+        }
+        else if (a == "ADVANCE") {
+            $.ajax
+                ({
+                    //url: '/TPPN/CreateAdvance',
+                    url: '@Url.Action("CreateAdvance", "TPPN")',
+                    traditional: true,
+                    success: function (data) {
+                        if (data) {
+                            document.getElementById('id01').style.display = 'block';
+                            $("#mainPop1").html(data);
+
+                        }
+
+                    }
+                });
+        }
+        else {
+            alert("Sorry Function not recognized");
+        }
+
+
+    }
+    function deleteIconClick(a, b) {
+        if (b == "A") {
+            $.ajax
+                ({
+                    //url: '/TPPN/DeleteAdvance?p_faktur=' + a,
+                    url: '@Url.Action("DeleteAdvance", "TPPN")',
+                    traditional: true,
+                    data: { p_faktur:a},
+                    success: function (data) {
+                        if (data) {
+                            document.getElementById('id01').style.display = 'block';
+                            $("#mainPop1").html(data);
+
+                        }
+
+                    }
+                });
+        }
+        else {
+            $.ajax
+                ({
+                    //url: '/TPPN/Delete?p_faktur=' + a,
+                    url: '@Url.Action("Delete", "TPPN")',
+                    traditional: true,
+                    data: { p_faktur:a},
+                    success: function (data) {
+                        if (data) {
+                            document.getElementById('id01').style.display = 'block';
+                            $("#mainPop1").html(data);
+                        }
+                    }
+                });
+        }
+
+
+
+    }
+    function printIconClick(a) {
+        LoadProcess();
+        //var url = '/TPPN/Print?noFaktur=' + a;
+        var url = "@Url.Action("Print", "TPPN")" + "/?noFaktur=" + a;
+        window.open(url, "_blank");
+        LoadFinish();
+    }
+
+    function GridPMKS() {
+        $.ajax({
+            //url: '/TSAPVendor/GridPMKS?setPMKSIDUser=',
+            url: '@Url.Action("GridPMKS", "TSAPVendor")',
+            traditional: true,
+            data: { setPMKSIDUser:null},
+            success: function (data) {
+                if (data) {
+                    document.getElementById('id02').style.display = 'block';
+                    $("#mainPop2").html(data);
+                }
+            }
+        });
+    }
+
+    function selectPMKS(a, b, c, d) {
+        let text =
+            "Data" +
+            "\nCompany Code : " + a +
+            "\nCompany Name : " + b +
+            "\nPMKS ID : " + c +
+            "\nPMKS Name : " + d;
+
+        if (true) {
+            $("#grdCompanyCode").val(a);
+            $("#grdCompanyName").val(b);
+            document.getElementById('id02').style.display = 'none';
+        }
+    }
+
+    function GridSAPVENDOR() {
+        $.ajax({
+            //url: '/TSAPVendor/GridSupplier',
+            url: '@Url.Action("GridSupplier", "TSAPVendor")',
+            traditional: true,
+            success: function (data) {
+                if (data) {
+                    document.getElementById('id02').style.display = 'block';
+                    $("#mainPop2").html(data);
+                }
+            }
+        });
+    }
+
+
+    function selectSAPVendor(a, b) {
+        let text =
+            "Data" +
+            "\Vendor Code : " + a +
+            "\nVendor Name : " + b;
+
+        if (true) {
+            $("#grdVendorCode").val(a);
+            $("#grdVendorName").val(b);
+            document.getElementById('id02').style.display = 'none';
+        }
+
+    }
+    function GridPajakAdvance() {
+        var checked = document.getElementById('ppn_penyelesaian').checked;
+        if (checked) {
+            var CompanyCode = document.getElementById('grdCompanyCode').value;
+            var VendorCode = document.getElementById('grdVendorCode').value;
+            var Periode_Akhir = document.getElementById('periode_akhir').value;
+            if (CompanyCode == "") {
+                alert("Please Input Company Code First.")
+                return;
+            }
+            if (VendorCode == "") {
+                alert("Please Input Vendor Code First.")
+                return;
+            }
+            $.ajax({
+                //url: '/TSAPVendor/GridPajakAdvance?CC=' + CompanyCode + '&VC=' + VendorCode + '&Periode_Akhir=' + Periode_Akhir,
+                url: '@Url.Action("GridPajakAdvance", "TSAPVendor")',
+                traditional: true,
+                data: { CC: CompanyCode, VC: VendorCode, Periode_Akhir: Periode_Akhir},
+                success: function (data) {
+                    if (data) {
+                        document.getElementById('id02').style.display = 'block';
+                        $("#mainPop2").html(data);
+                    }
+                }
+            });
+        }
+        else {
+            alert("Please Checked PPN Penyelesaian First.")
+        }
+    }
+
+    function GridCashNo() {
+        var CompanyCode = document.getElementById('grdCompanyCode').value;
+        var VendorCode = document.getElementById('grdVendorCode').value;
+        var Periode = document.getElementById('periode').value.replace("-", "");
+        if (CompanyCode == "") {
+            alert("Please Input Company Code First.")
+            return;
+        }
+        if (VendorCode == "") {
+            alert("Please Input Vendor Code First.")
+            return;
+        }
+        $.ajax({
+            //url: '/TSAPVendor/GridCashNo?CC=' + CompanyCode + '&VC=' + VendorCode + '&Periode=' + Periode,
+            url: '@Url.Action("GridCashNo", "TSAPVendor")',
+            traditional: true,
+            data: { CC: CompanyCode, VC: VendorCode, Periode: Periode},
+            success: function (data) {
+                if (data) {
+                    document.getElementById('id02').style.display = 'block';
+                    $("#mainPop2").html(data);
+                }
+            }
+        });
+    }
+
+    function selectPajakAdvance(a, b, c, d) {
+        let text =
+            "Data" +
+            "\nNo Faktur Pajak : " + a +
+            "\nCash No : " + b +
+            "\nAmount Cash Advance : " + c +
+            "\nPPN : " + d;
+
+        if (true) {
+            $("#no_faktur_pajak_advance").val(a);
+            $("#amount_cash_advance").val(numeral(c).format('0,0'));
+            $("#ppn1").val(numeral(d).format('0,0'));
+            document.getElementById('id02').style.display = 'none';
+        }
+
+    }
+
+    function selectCashNo(a, b, c) {
+        let text =
+            "Data" +
+            "\nCash NO : " + a +
+            "\nTotal Amount : " + numeral(b).format('0,0.00') +
+            "\nTotal PPN : " + numeral(c).format('0,0.00');
+
+        if (true) {
+
+            $("#CashNo").val(a);
+            $("#amount_cash_advance").val(numeral(b).format('0,0.00'));
+            $("#ppn").val(numeral(c).format('0,0.00'));
+            document.getElementById('id02').style.display = 'none';
+        }
+
+    }
+
+
+    function validatenumber() {
+        $("#total_amount").val(numeral(document.getElementById('total_amount').value).value());
+        $("#incentive").val(numeral(document.getElementById('incentive').value).value());
+        $("#ppn").val(numeral(document.getElementById('ppn').value).value());
+        $("#amount_cash_advance").val(numeral(document.getElementById('amount_cash_advance').value).value());
+        $("#ppn1").val(numeral(document.getElementById('ppn1').value).value());
+    }
+    function validatenumberAdvance() {
+        $("#amount_cash_advance").val(numeral(document.getElementById('amount_cash_advance').value).value());
+        $("#ppn").val(numeral(document.getElementById('ppn').value).value());
+    }
+</script>

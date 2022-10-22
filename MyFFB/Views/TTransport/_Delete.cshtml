@@ -1,0 +1,103 @@
+﻿@model MyAttd.Models.T_Transport
+@*<div class="title">
+        VIEW Incentive
+        <hr />
+    </div>*@
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using(Html.BeginForm("Delete", "TTransport", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="editors">
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.TransportDate)
+        @Html.TextBoxFor(m => m.TransportDate, new { @readonly = "readonly", @class = "form-control", @id = "TransportDate" })
+        @Html.ValidationMessageFor(m => m.TransportDate)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.ProductID)
+        @Html.TextBoxFor(m => m.ProductID, new { @required = "required", @readonly = "readonly", @class = "form-control", @id = "ProductID" })
+        @Html.ValidationMessageFor(m => m.ProductID)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.PMKSID)
+        @Html.TextBoxFor(m => m.PMKSID, new { @readonly = "readonly", @class = "form-control", @id = "PMKSID" })
+        @Html.ValidationMessageFor(m => m.PMKSID)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.Price)
+        @Html.TextBoxFor(m => m.Price, new { @readonly = "readonly", @class = "form-control", @id = "Price" })
+        @Html.ValidationMessageFor(m => m.Price)
+    </div>
+    @*Row 2------------------------------------------------------------------------------------------------------------------------*@
+
+    <div class="col-md-12">
+        @Html.LabelFor(m => m.Destination)
+        @Html.TextBoxFor(m => m.Destination, new { @readonly = "readonly", @class = "form-control", @id = "Destination" })
+        @Html.ValidationMessageFor(m => m.Destination)
+    </div>
+    @*Row ------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-6">
+        <br />
+        <p id="msgBuat" style="background-color:dodgerblue; color:white;"></p>
+    </div>
+    <div class="col-md-6">
+        <br />
+        <p id="msgUpdate" style="background-color: darkseagreen; color: white;"></p>
+    </div>
+    <div class="col-md-12">
+        <br />
+    </div>
+
+    <div class="card-footer col-md-12">
+        <button id="button"
+                text="DELETE"
+                class="btn btn-danger"
+                onclick="validatenumber()">
+            <h4>Delete</h4>
+        </button>
+
+    </div>
+</div>
+
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+    <script>
+    var NamaBuat = '@Model.CreatedBy.FCName';
+    var DTbuat = moment('@Model.FCCreatedDT').format("YYYY-MM-DD");
+        if ('@Model.FCCreatedDT' == '1/1/0001 12:00:00 AM') {
+            DTbuat = '';
+    }
+    if (NamaBuat == '') {
+        NamaBuat = 'N/A';
+    }
+
+    var msg = "Dibuat Oleh: " + NamaBuat+" " + DTbuat;
+    document.getElementById('msgBuat').innerHTML = msg;
+
+    var NameUbah = "N/A";
+    var DTubah = "";
+    if ('@Model.UpdateBy.FCName' !== "") {
+        NameUbah = '@Model.UpdateBy.FCName';
+        DTubah = moment('@Model.FCUpdatedDT').format("YYYY-MM-DD");
+    }
+    msg = "Diubah Oleh: "+NameUbah+" " + DTubah;
+    document.getElementById('msgUpdate').innerHTML = msg;
+
+    var Price = numeral(document.getElementById('Price').value);
+    $("#Price").val(Price.format('0,0'));
+        document.getElementById('TransportDate').value = moment('@Model.TransportDate').format('YYYY-MM-DD');
+    </script>
+
+    }
+    }

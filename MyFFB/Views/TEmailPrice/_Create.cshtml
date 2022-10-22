@@ -1,0 +1,58 @@
+﻿@model MyAttd.Models.T_EmailPrice
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "TEmailPrice", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="editors">
+    <div class="dx-fieldset col-md-2 center">
+        @Html.LabelFor(m => m.EmailID)
+        @Html.TextBoxFor(m => m.EmailID, new { @readonly = "readonly", @class = "form-control", @id = "EmailID" })
+        @Html.ValidationMessageFor(m => m.EmailID)
+    </div>
+    <div class="dx-fieldset col-md-8 center">
+        @Html.LabelFor(m => m.AddressEmail)
+        @Html.TextBoxFor(m => m.AddressEmail, new { @required = "true", @class = "form-control", @id = "AddressEmail" })
+        @Html.ValidationMessageFor(m => m.AddressEmail)
+    </div>
+    <div class="dx-fieldset col-md-4">
+        @Html.LabelFor(m => m.ListSend)
+        @Html.DropDownListFor(m => m.ListSend, new SelectList(Enum.GetValues(typeof(ListSendEmail)), "Select ProductID"), new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ListSend)
+    </div>
+    <div class="dx-field center col-md-12">
+        <button id="button"
+                text="Save"
+                class="btn btn-success"
+                usesubmitbehavior="true">
+            <h4>Save</h4>
+        </button>
+    </div>
+
+</div>
+        <div id="popupChild">
+        </div>
+
+        @section Scripts {
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }
+<script>
+    updateKomidel();
+    function updateKomidel() {
+        document.getElementById('KomidelMinCopy').value = document.getElementById('KomidelMin').value
+        document.getElementById('KomidelMin2Copy').value = document.getElementById('KomidelMin2').value
+        document.getElementById('KomidelMin1Copy').value = document.getElementById('KomidelMin1').value
+
+    }
+    function FuncKomidel() {
+        updateKomidel();
+    }
+</script>
+    }
+}

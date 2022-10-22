@@ -1,0 +1,123 @@
+DECLARE @column1name varchar(50)
+DECLARE @count INT;
+DECLARE @subject VARCHAR(100);
+-- Create the column name with the instrucation in a variable
+SET @Column1Name = '[sep=|' + CHAR(13) + CHAR(10) + 'SupplierID]'
+
+SELECT @count = count(*) FROM tblPrice_LOG WHERE email_time IS NULL AND need_email = 1
+
+IF (@count > 0)
+BEGIN
+
+	DECLARE @i INT = 0
+	DECLARE @getid CURSOR
+	DECLARE @dt INT
+
+	DECLARE @body varchar(max) = '<style>
+		table {
+		  font-family: verdana, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+
+		td, th {
+		  border: 1px solid #dddddd;
+		  text-align: left;
+		  padding: 5px;
+		  font-weight: normal;
+		}
+		</style><table>
+		<tr>
+			<th><b>No</b></th>
+			<th><b>PMKS</b></th>
+			<th><b>Nama DO</b></th>
+			<th><b>Tgl Harga</b></th>
+			<th><b>Tgl Edit</b></th>
+			<th><b>Edit Oleh</b></th>
+			<th><b>Harga Lama</b></th>
+			<th><b>Harga Baru</b></th>
+		</tr>'
+
+	DECLARE @sup VARCHAR(MAX),
+		    @date VARCHAR(20),
+		    @pmks VARCHAR(MAX),
+			@time VARCHAR(20),
+		    @user VARCHAR(MAX),
+		    @old VARCHAR(20),
+		    @new VARCHAR(20)
+
+	SET @getid = CURSOR FOR
+	SELECT IDKEY FROM [dbo].TblPrice_LOG WHERE Email_time IS NULL AND need_email = 1 ORDER BY PMKSID, SupplierName, DatePrice
+
+
+	OPEN @getid 
+	FETCH NEXT FROM @getid INTO @dt
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		SET @i = @i + 1
+		--
+		SELECT @pmks = [PMKSID]
+		  ,@sup = [SupplierName]
+		  ,@date = [DatePrice]		  
+		  ,@time = CONVERT(VARCHAR(20),[Edit_time], 120) 
+		  ,@user = RTRIM([UserID])
+		  ,@old  = [Price_OLD]
+		  ,@new  = [Price_NEW] FROM tblPrice_LOG 
+		  WHERE IDKEY= @dt
+		--
+		SET @body = @body + 
+			'<tr>' + 
+				'<th>' + CONVERT(VARCHAR(MAX),@i) + '</th>' +
+				'<th>' + @pmks + '</th>' +
+				'<th>' + @sup + '</th>' +
+				'<th>' + @date + '</th>' +
+				'<th>' + @time + '</th>' +
+				'<th>' + @user + '</th>' +
+				'<th>' + @old + '</th>' +
+				'<th>' + @new + '</th>' +
+			'</tr>'
+		--
+		FETCH NEXT
+		FROM @getid INTO @dt
+	END
+
+	SET @body = @body + '</table>'
+
+
+
+
+
+	SET @subject = CONCAT('Price Edit Log (', @count,' edit)' );
+ 	
+	Declare @email_R varchar(max),@email_CR varchar(max),@email_BCR varchar(max);
+	Select @email_R=SUBSTRING( 
+		( 
+			 SELECT ';' + AddressEmail AS 'data()'
+				 FROM t_email WHERE listsend='recipients' FOR XML PATH('') --WHERE listsend='recipients'
+		), 2 , 9999)
+	Select @email_CR=SUBSTRING( 
+		( 
+			 SELECT ';' + AddressEmail AS 'data()'
+				 FROM t_email WHERE listsend='copy_recipients' FOR XML PATH('') --WHERE listsend='recipients'
+		), 2 , 9999)
+	Select @email_BCR=SUBSTRING( 
+		( 
+			 SELECT ';' + AddressEmail AS 'data()'
+				 FROM t_email WHERE listsend='blind_copy_recipients' FOR XML PATH('') --WHERE listsend='recipients'
+		), 2 , 9999)
+	
+	-- Send the e-mail with the query results in attach
+	exec msdb.dbo.sp_send_dbmail 
+	
+	@recipients=@email_R,
+	@copy_recipients =@email_CR,
+	@blind_copy_recipients =@email_BCR,
+	-- @recipients='Tony_Susanto@asianagri.com;Andrian@asianagri.com;sulaiman_halim@asianagri.com;Sumith_Fernando@asianagri.com',
+	-- @copy_recipients ='hanna_ang@asianagri.com;winika_kwok@asianagri.com;faustina@globalnet.lcl;titin@asianagri.com',
+	-- @blind_copy_recipients ='arta_pratama@asianagri.com;nico@asianagri.com',
+	@subject=@subject,
+	@body_format = 'HTML',
+	@body = @body
+
+	UPDATE TblPrice_Log SET email_time = getdate() where email_time is NULL AND need_email = 1
+END

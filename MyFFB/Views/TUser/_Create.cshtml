@@ -1,0 +1,123 @@
+﻿@model MyAttd.Models.T_User
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "TUser", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+
+
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="dx-fieldset col-md-12">
+
+                <div class="dx-field center col-md-12">
+                    @Html.LabelFor(m => m.FCUserName)
+                    @*@Html.DevExtreme().TextBoxFor(m => m.FCUserName).ID("FCUserName").ShowClearButton(true)*@
+                    @Html.TextBoxFor(m => m.FCUserName, new { @id = "FCUserName", @class = "form-control" })
+                </div>
+                <div class="dx-field center col-md-12">
+                    @Html.LabelFor(m => m.FCName)
+                    @*@Html.DevExtreme().TextBoxFor(m => m.FCName).ID("FCName").ShowClearButton(true)*@
+                    @Html.TextBoxFor(m => m.FCName, new { @id = "FCName", @class = "form-control" })
+                </div>
+                <div class="dx-field center col-md-12">
+                    @Html.LabelFor(m => m.Password)
+                    @*@Html.DevExtreme().TextBoxFor(m => m.Password).ID("FCUserPass").Mode(TextBoxMode.Password).ShowClearButton(true)*@
+                    @Html.TextBoxFor(m => m.Password, new { @type = "password", @id = "FCUserPass", @class = "form-control" })
+                </div>
+                <div class="dx-field center col-md-4">
+                    @Html.LabelFor(m => m.FCRoleID)
+                    @*@Html.DevExtreme().SelectBoxFor(m => m.FCRoleID).ID("FCRoleID").DataSource(ViewBag.DListRole).DisplayExpr("FCRoleDesc").ValueExpr("FCRoleID").ShowClearButton(true)*@
+                    <select id="FCRoleID" name="FCRoleID" class="form-control">
+                        @foreach (var item in ViewBag.DListRole)
+                        {
+                            <option value="@item.FCRoleID">@item.FCRoleDesc</option>
+                        }
+                    </select>
+                </div>
+                <div class="dx-field center col-md-12">
+                    @*@Html.LabelFor(m => m.UserLoc)
+        @Html.DevExtreme().DropDownBoxFor(m => m.UserLoc).ID("UserLoc").DataSource(d => d.Mvc().Controller("TUser").LoadAction("GetLocation").Key("FCLocID")).DeferRendering(false).DisplayExpr("FCLocID").ValueExpr("FCLocID").Placeholder("Silakan Pilih...").OnValueChanged("gridBox_valueChanged").ContentTemplate(new TemplateName("EmbeddedDataGridMultiple")).ShowClearButton(true)*@
+                    @Html.LabelFor(m => m.SetPMKSID)
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.SetPMKSID, new { @class = "form-control", @id = "SetPMKSID" })
+                        <span class="btn btn-primary center" onclick="GridPMKS()" />
+                        @Html.ValidationMessageFor(m => m.SetPMKSID)
+                    </div>
+                </div>
+            </div>
+
+            <div class="dx-fieldset col-md-12">
+                <div class="dx-field right col-md-4">
+                    @*@Html.DevExtreme().Button().ID("button").Text("Simpan").Type(ButtonType.Success).OnClick("saveClick").UseSubmitBehavior(true)*@
+                    <button type="button" class="btn btn-success" onclick="saveClick()">Simpan</button>
+                </div>
+            </div>
+        </div>
+
+    }
+
+    @*using (Html.DevExtreme().NamedTemplate("EmbeddedDataGridMultiple"))
+    {
+        @(Html.DevExtreme().DataGrid()
+                            .ID("embedded-datagrid")
+                            .DataSource(new JS(@"component.option(""dataSource"")"))
+                            .Columns(columns =>
+                            {
+                                columns.Add().DataField("FCLocID").Caption("Lokasi");
+                                columns.Add().DataField("FCRegion").Caption("Region").SortIndex(1).SortOrder(SortOrder.Asc);
+                            })
+                            .HoverStateEnabled(true)
+                            .Paging(p => p.PageSize(10))
+                            .FilterRow(f => f.Visible(true))
+                            .Scrolling(s => s.Mode(GridScrollingMode.Infinite))
+                            .Height(350)
+                            .Selection(s => s.Mode(SelectionMode.Multiple))
+                            .SelectedRowKeys(new JS(@"component.option(""value"")"))
+                            .OnSelectionChanged(@<text>
+                                function(selectedItems) {
+                                var keys = selectedItems.selectedRowKeys;
+                                component.option("value", keys);
+                                }
+                            </text>)
+        )
+    }*@
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+    <script>
+        DevExpress.config({
+            editorStylingMode: "outlined"
+        });
+
+        function saveClick(e) {
+            var result = e.validationGroup.validate();
+            if (!result.isValid) {
+                DevExpress.ui.notify("Proses tidak dapat dilanjutkan. Periksa kembali data inputan.", "error");
+                return false;
+            } else {
+                var button = $("#button").dxButton("instance");
+                button.option('disabled', true);
+                return true;
+            }
+        }
+
+        function gridBox_valueChanged(e) {
+            var $dataGrid = $("#embedded-datagrid");
+
+            if ($dataGrid.length) {
+                var dataGrid = $dataGrid.dxDataGrid("instance");
+                dataGrid.selectRows(e.value, false);
+            }
+        }
+    </script>
+
+
+}

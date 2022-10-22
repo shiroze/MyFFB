@@ -1,0 +1,70 @@
+﻿@model MyAttd.Models.T_AreaRegional
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Edit", "TAreaRegional", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <table class="table table-responsive">
+                <tr>
+                    <td>@Html.LabelFor(m => m.AreaID)</td>
+                    <td>@Html.TextBoxFor(m => m.AreaID, new { @readonly = "readonly" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.AreaOperational)</td>
+                    <td>@Html.TextBoxFor(m => m.AreaOperational)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Regional)</td>
+                    <td>@Html.TextBoxFor(m => m.Regional)</td>
+                </tr>
+                @*<tr>
+                        <td>@Html.LabelFor(m => m.FCDefunctInd)</td>
+                        <td>@Html.CheckBoxFor(m => m.FCDefunctInd)</td>
+                    </tr>*@
+            </table>
+
+            <button id="button"
+                    text="EDIT"
+                    class="btn btn-success"
+                    usesubmitbehavior="true">
+                <h4>Edit</h4>
+            </button>
+        </div>
+
+        //}
+    }
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+    <script>
+            //DevExpress.config({
+            //    editorStylingMode: "outlined"
+            //});
+
+            //function saveClick() {
+            //    alert("masukubah")
+            //    alert(e)
+            //    var result = e.validationGroup.validate();
+            //    if (!result.isValid) {
+            //        alert("Proses tidak dapat dilanjutkan. Periksa kembali data inputan.", "error");
+            //        //DevExpress.ui.notify("Proses tidak dapat dilanjutkan. Periksa kembali data inputan.", "error");
+            //        return false;
+            //    } else {
+            //        return true;
+            //    }
+            //}
+
+
+    </script>
+
+
+}

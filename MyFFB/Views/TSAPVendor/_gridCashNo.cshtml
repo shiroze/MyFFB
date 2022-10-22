@@ -1,0 +1,121 @@
+﻿@model IEnumerable<MyAttd.Models.T_CashAdvance>
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <hr />
+        <input type="text" id="myInputPop" onkeyup="myFunctionPop()" placeholder="Search for names.." title="Type in a name">
+        <hr />
+        <table class="table table-bordered table-responsive table-hover" style="white-space:nowrap" id="cssTableGrid">
+            <thead class="table-primary" style="position:sticky; top:0;">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CashNo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Period)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PMKSID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SupplierID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SupplierName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DeductAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalPPN)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="myTablePop">
+                @foreach (var item in Model)
+                {
+                <tr ondblclick="selectCashNo('@item.CashNo','@item.TotalAmount','@item.TotalPPN')">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CashNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Period)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PMKSID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SupplierID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SupplierName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeductAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPPN)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <div></div>
+    </div>
+
+
+    <script>
+        function myFunctionPop() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInputPop");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTablePop");
+            var rows = table.getElementsByTagName("tr");
+            for (i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var j;
+                var rowContainsFilter = false;
+                for (j = 0; j < cells.length; j++) {
+                    if (cells[j]) {
+                        if (cells[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                            rowContainsFilter = true;
+                            continue;
+                        }
+                    }
+                }
+
+                if (!rowContainsFilter) {
+                    rows[i].style.display = "none";
+                } else {
+                    rows[i].style.display = "";
+                }
+            }
+        }
+    </script>
+}
+

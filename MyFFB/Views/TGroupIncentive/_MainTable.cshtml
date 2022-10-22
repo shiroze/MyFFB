@@ -1,0 +1,190 @@
+﻿@model IEnumerable<MyAttd.Models.T_GroupIncentive>
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    <table class="table table-bordered table-responsive table-hover" style="white-space:nowrap"  id="cssTableUtama">
+        <thead class="table-primary" style="position:sticky; top:0;">
+            <tr>
+                <th>Actions</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GroupSuppName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Regional)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Approval)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Incentive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentivePrice1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentiveQty1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentivePrice2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentiveQty2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentivePrice3)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentiveQty3)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentivePrice4)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentiveQty4)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentivePrice5)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentiveQty5)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentivePrice6)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IncentiveQty6)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCCreatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCCreatedDT)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCUpdatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCUpdatedDT)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCApproveBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCApproveDT)
+                </th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    <button class="btn btn-info" title="View" onclick="viewIconClick('@item.NoId')"><i class="fa fa-file-text"></i></button>
+                    <button class="btn btn-success" title="Edit" onclick="editIconClick('@item.NoId')"><i class="fa fa-edit"></i></button>
+                    <button class="btn btn-danger" title="Delete" onclick="deleteIconClick('@item.NoId')" )><i class="fa fa-trash"></i></button>
+                    @if (item.Approval == false)
+                    {
+                        <button class="btn btn-success" title="Approve" onclick="approveIconClick('@item.NoId')" )><i class="fa fa-check"></i></button>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GroupSuppName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Regional)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Approval)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Incentive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentivePrice1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentiveQty1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentivePrice2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentiveQty2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentivePrice3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentiveQty3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentivePrice4)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentiveQty4)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentivePrice5)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentiveQty5)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentivePrice6)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncentiveQty6)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy.FCName)
+                </td>
+                <td>
+                    @if (item.FCCreatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                    {
+                        @Html.DisplayFor(modelItem => item.FCCreatedDT)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedBy.FCName)
+                </td>
+                <td>
+                    @if (item.FCUpdatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                    {
+                        @Html.DisplayFor(modelItem => item.FCUpdatedDT)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApprovedBy.FCName)
+                </td>
+                <td>
+                    @if (item.FCApproveDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                    {
+                        @Html.DisplayFor(modelItem => item.FCApproveDT)
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+<script>
+    $(document).ready(function () {
+        $('#cssTableUtama').DataTable({
+            columnDefs: [{
+                targets: [0],
+                orderData: [0, 1]
+            }, {
+                targets: [1],
+                orderData: [1, 0]
+            }, {
+                targets: [4],
+                orderData: [4, 0]
+            }]
+        });
+    });
+</script>

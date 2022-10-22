@@ -1,0 +1,67 @@
+﻿@model MyAttd.Models.T_Price
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Edit", "TPrice", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+    <div class="editors">
+        <div class="dx-field center col-md-12 center">
+            @Html.LabelFor(m => m.PMKSID)
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.PMKSID, new { @required = "true", @readonly = "readonly", @id = "grdPMKSID", @class = "form-control" })
+                @*<span class="btn btn-primary center" onclick="panggilgrid()" />*@
+                @Html.ValidationMessageFor(m => m.PMKSID)
+            </div>
+           
+            @Html.LabelFor(m => m.SupplierID)
+            @Html.TextBoxFor(m => m.SupplierID, new { @required = "true", @readonly = "readonly", @class = "form-control", @id = "grdSupplierID" })
+            @Html.ValidationMessageFor(m => m.SupplierID)
+
+            @Html.LabelFor(m => m.SupplierName)
+            @Html.TextBoxFor(m => m.SupplierName, new { @required = "true", @readonly = "readonly", @class = "form-control", @id = "grdSupplierName" })
+            @Html.ValidationMessageFor(m => m.SupplierName)
+
+            @Html.LabelFor(m => m.Price)
+            @Html.TextBoxFor(m => m.Price, new { @required = "true", @type = "number", @step = "1", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Price)
+
+            @Html.LabelFor(m => m.VAT)
+            @Html.TextBoxFor(m => m.VAT, new { @readonly = "readonly", @type = "number", @step = "0.01", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.VAT)
+
+            @Html.LabelFor(m => m.PPH22)
+            @Html.TextBoxFor(m => m.PPH22, new { @readonly = "readonly", @type = "number", @step = "0.01", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PPH22)
+
+            @Html.LabelFor(m => m.DatePrice)
+            @Html.EditorFor(m => m.DatePrice, new { htmlAttributes = new { @required = "true", @readonly = "readonly", @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Price)
+        </div>
+
+        <div class="dx-field center col-md-12">
+            <button id="button"
+                    text="EDIT"
+                    class="btn btn-success"
+                    @*onclick="UpdateEdit()"*@>
+                <h4>Edit</h4>
+            </button>
+        </div>
+
+    </div>
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+        <script>
+
+        </script>
+
+    }
+}

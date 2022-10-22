@@ -1,0 +1,74 @@
+﻿@model MyAttd.Models.T_Tender
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "TTender", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="editors">
+    @*Row 1------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-5">
+        @Html.LabelFor(m => m.DateTender)
+        @Html.TextBoxFor(m => m.DateTender, new { @type = "date", @class = "form-control", @id = "DateTender" })
+        @Html.ValidationMessageFor(m => m.DateTender)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.ProductID)
+        @Html.DropDownListFor(m => m.ProductID, new SelectList(Enum.GetValues(typeof(product)), "Select ProductID"), new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ProductID)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.Region)
+        @Html.DropDownListFor(m => m.Region, new SelectList(ViewBag.DListRegional, "Regional", "Regional"), new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Region)
+    </div>
+    @*Row 2------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.Price)
+        @Html.TextBoxFor(m => m.Price, new { @class = "form-control", @id = "Price" })
+        @Html.ValidationMessageFor(m => m.Price)
+    </div>
+    <div class="col-md-9">
+        @Html.LabelFor(m => m.Remarks)
+        @Html.TextBoxFor(m => m.Remarks, new { @class = "form-control", @id = "Remarks" })
+        @Html.ValidationMessageFor(m => m.Remarks)
+    </div>
+    <div class="col-md-12">
+        <br />
+    </div>
+
+    <div class="card-footer col-md-12">
+        <button id="button"
+                text="ADD"
+                class="btn btn-primary"
+                onclick="validatenumber()">
+            <h4>ADD</h4>
+        </button>
+    </div>
+</div>
+
+        
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+<script>
+    document.getElementById('DateTender').value = moment().format('YYYY-MM-DD');
+    //untuk price--------------------------------------------------------------------------------------------------
+    var Price = numeral(document.getElementById('Price').value);
+    $("#Price").val(Price.format('0,0'));
+
+    $("#Price").on('blur', function () {
+        Price = numeral(document.getElementById('Price').value);
+        $(this).val(Price.format('0,0'));
+    })
+</script>
+
+    }
+}

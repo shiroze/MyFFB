@@ -1,0 +1,106 @@
+﻿@model IEnumerable<MyAttd.Models.T_Transport>
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+
+    <table class="table table-bordered table-responsive table-hover" style="white-space:nowrap" id="cssTableUtama">
+        <thead class="table-primary" style="position:sticky; top:0;">
+            <tr>
+                <th>Actions</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransportDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PMKSID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Destination)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCCreatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCCreatedDT)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCUpdatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCUpdatedDT)
+                </th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    <button class="btn btn-info" title="View" onclick="viewIconClick('@item.TransportDate','@item.ProductID','@item.PMKSID')"><i class="fa fa-file-text"></i></button>
+                    <button class="btn btn-success" title="Edit" onclick="editIconClick('@item.TransportDate','@item.ProductID','@item.PMKSID')"><i class="fa fa-edit"></i></button>
+                    <button class="btn btn-danger" title="Delete" onclick="deleteIconClick('@item.TransportDate','@item.ProductID','@item.PMKSID')"><i class="fa fa-trash"></i></button>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TransportDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PMKSID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Destination)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy.FCName)
+                </td>
+                <td>
+                    @if (item.FCCreatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                    {
+                        @Html.DisplayFor(modelItem => item.FCCreatedDT)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdateBy.FCName)
+                </td>
+                <td>
+                    @if (item.FCUpdatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                    {
+                        @Html.DisplayFor(modelItem => item.FCUpdatedDT)
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+<script>
+    $(document).ready(function () {
+        $('#cssTableUtama').DataTable({
+            columnDefs: [{
+                targets: [0],
+                orderData: [0, 1]
+            }, {
+                targets: [1],
+                orderData: [1, 0]
+            }, {
+                targets: [4],
+                orderData: [4, 0]
+            }]
+        });
+    });
+</script>

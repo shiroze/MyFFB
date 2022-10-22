@@ -1,0 +1,73 @@
+﻿@model MyAttd.Models.T_PriceDefault
+@*<div class="title">
+        VIEW Incentive
+        <hr />
+    </div>*@
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "TPriceDefault", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="editors">
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.PMKSID)
+        <div class="input-group">
+            @Html.TextBoxFor(m => m.PMKSID, new { @required = "required", @readonly = "readonly", @class = "form-control", @id = "PMKSID" })
+            @*<span class="btn btn-primary center" onclick="GridPMKS()" />*@
+            @Html.ValidationMessageFor(m => m.PMKSID)
+        </div>
+    </div>
+    <div class="col-md-5">
+        @Html.LabelFor(m => m.Efective_Date)
+        @Html.TextBoxFor(m => m.Efective_Date, new { type = "date", @class = "form-control", @id = "Efective_Date" })
+        @Html.ValidationMessageFor(m => m.Efective_Date)
+    </div>
+    <div class="col-md-12">
+
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.SupplierID)
+        <div class="input-group">
+            @Html.TextBoxFor(m => m.SupplierID, new { @readonly = "readonly", @class = "form-control", @id = "SupplierID" })
+            <span class="btn btn-primary center" onclick="GridSupplier(true)" />
+            @Html.ValidationMessageFor(m => m.SupplierID)
+        </div>
+    </div>
+    <div class="col-md-9">
+        @Html.LabelFor(m => m.SupplierName)
+        @Html.TextBoxFor(m => m.SupplierName, new { @readonly = "readonly", @class = "form-control", @id = "SupplierName" })
+        @Html.ValidationMessageFor(m => m.SupplierName)
+    </div>
+    <div class="col-md-12">
+        <br />
+    </div>
+
+    <div class="card-footer col-md-12">
+        <button id="button"
+                text="ADD"
+                class="btn btn-primary"
+                @*onclick="validatenumber()"*@>
+            <h4>ADD</h4>
+        </button>
+
+    </div>
+</div>
+
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+
+        <script>
+            document.getElementById('Efective_Date').value = moment().format('YYYY-MM-DD');
+        </script>
+
+    }
+}

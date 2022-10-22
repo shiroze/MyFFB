@@ -1,0 +1,81 @@
+﻿@model MyAttd.Models.T_Menu
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "TMenu", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+
+        //using (Html.DevExtreme().ValidationGroup())
+        //{
+        @Html.AntiForgeryToken()
+            <div class="editors">
+                <div class="dx-fieldset col-md-12">
+                    <div class="dx-fieldset-header" style="text-decoration:underline">Root Menu</div>
+                    <div class="dx-field center col-md-12">
+                        @Html.LabelFor(m => m.FCMenuCode)
+                        @*@Html.DevExtreme().TextBoxFor(m => m.FCMenuCode).ID("FCMenuCode").ShowClearButton(true)*@
+                        @Html.TextBoxFor(m => m.FCMenuCode, new { @id = "FCMenuCode", @class = "form-control" })
+                    </div>
+                    <div class="dx-field center col-md-12">
+                        @Html.LabelFor(m => m.FCMenuDesc)
+                        @*@Html.DevExtreme().TextBoxFor(m => m.FCMenuDesc).ID("FCMenuDesc").ShowClearButton(true)*@
+                        @Html.TextBoxFor(m => m.FCMenuDesc, new { @id = "FCMenuDesc", @class = "form-control" })
+                    </div>
+                    <div class="dx-field left col-md-6">
+                        @Html.LabelFor(m => m.FCIcon)
+                        @*@Html.DevExtreme().TextBoxFor(m => m.FCIcon).ID("FCIcon").ShowClearButton(true)*@
+                        @Html.TextBoxFor(m => m.FCIcon, new { @id = "FCIcon", @class = "form-control" })
+                    </div>
+                    <div class="dx-field left col-md-6">
+                        @Html.LabelFor(m => m.FCOrderNo)
+                        @*@Html.DevExtreme().NumberBoxFor(m => m.FCOrderNo).ID("FCOrderNo").ShowSpinButtons(true).ShowClearButton(true)*@
+                        @Html.TextBoxFor(m => m.FCOrderNo, new { @type = "number", @id = "FCOrderNo", @class = "form-control" })
+                    </div>
+                </div>
+                @*@Html.DevExtreme().CheckBoxFor(m => m.FCMenuLink).Value(true).Visible(false)
+                    @Html.DevExtreme().NumberBoxFor(m => m.FCMenuPID).Value(0).Visible(false)*@
+                @Html.CheckBoxFor(m => m.FCMenuLink, new { @value="true" })
+                @Html.TextBoxFor(m => m.FCMenuPID, new { @type = "number", @value = 0, @class = "form-control" })
+
+                <div class="dx-fieldset col-md-12">
+                    <div class="dx-field right col-md-4">
+                        @*@Html.DevExtreme().Button().ID("button").Text("Simpan").Type(ButtonType.Success).OnClick("saveClick").UseSubmitBehavior(true)*@
+                        <button type="button" id="button" class="btn btn-success" onclick="saveClick()">Simpan</button>
+                    </div>
+                </div>
+            </div>
+
+        //}
+    }
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+    <script>
+        DevExpress.config({
+            editorStylingMode: "outlined"
+        });
+
+        function saveClick(e) {
+            var result = e.validationGroup.validate();
+            if (!result.isValid) {
+                DevExpress.ui.notify("Proses tidak dapat dilanjutkan. Periksa kembali data inputan.", "error");
+                return false;
+            } else {
+                var button = $("#button").dxButton("instance");
+                button.option('disabled', true);
+                return true;
+            }
+        }
+
+
+    </script>
+
+
+}

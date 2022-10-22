@@ -1,0 +1,33 @@
+﻿@model MyAttd.Models.T_Role
+@{
+    ViewData["Title"] = "Role";
+}
+<section class="content-header">
+    <h1>@ViewData["Title"] : @Model.FCRoleDesc</h1>
+</section>
+
+@if (ViewData["Message"] != null)
+{
+    <section class="content" style="min-height:0px !important;padding-top:0px !important; padding-bottom:0px !important;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-warning box-solid" style="margin-top:15px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Perhatian!</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        @ViewData["Message"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@if (Model.FCRoleID != 0)
+{
+    @await Component.InvokeAsync("RoleDet", new { id = Model.FCRoleID })
+}

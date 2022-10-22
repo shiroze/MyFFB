@@ -1,0 +1,104 @@
+﻿@model MyAttd.Models.T_CashAdvance
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Edit", "TCashAdvance", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="editors">
+    <!--Row 1-->
+    <div class="col-md-4 center">
+        @Html.LabelFor(m => m.CashNo)
+        @Html.TextBoxFor(m => m.CashNo, new { @readonly = "readonly", @class = "form-control", @id = "CashNo" })
+        @Html.ValidationMessageFor(m => m.CashNo)
+    </div>
+    <div class="col-md-4 center">
+        @Html.LabelFor(m => m.PMKSID)
+        @Html.TextBoxFor(m => m.PMKSID, new { @readonly = "readonly", @class = "form-control", @id = "PMKSID" })
+        @Html.ValidationMessageFor(m => m.PMKSID)
+    </div>
+    <div class="col-md-4 center">
+        @Html.LabelFor(m => m.Period)
+        @Html.EditorFor(m => m.Period, new { htmlAttributes = new { @required = "required", @type = "month", @class = "form-control", @id = "period" } })
+        @Html.ValidationMessageFor(m => m.Period)
+    </div>
+    <!--Row 2-->
+    <div class="col-md-4 center">
+        @Html.LabelFor(m => m.SupplierID)
+        <div class="input-group">
+            @Html.TextBoxFor(m => m.SupplierID, new { @readonly = "readonly", @class = "form-control", @id = "SupplierID" })
+            @*<span class="btn btn-primary center" onclick="GridSupplier(true)" />*@
+            @Html.ValidationMessageFor(m => m.SupplierID)
+        </div>
+    </div>
+    <div class="col-md-2 center">
+        @Html.LabelFor(m => m.Code)
+        @Html.TextBoxFor(m => m.Code, new { @readonly = "readonly", @class = "form-control", @id = "Code" })
+        @Html.ValidationMessageFor(m => m.Code)
+    </div>
+    <div class="col-md-2 center">
+        @Html.LabelFor(m => m.Week)
+        @Html.TextBoxFor(m => m.Week, new { @readonly = "readonly", @class = "form-control", @id = "Week" })
+        @*@Html.DropDownListFor(m => m.Week, new SelectList(ViewBag.DListWeek, "Week", "Week"), new { @class = "form-control" })*@
+        @Html.ValidationMessageFor(m => m.Week)
+    </div>
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.Tanggal)
+        @Html.EditorFor(m => m.Tanggal, new { htmlAttributes = new { @class = "form-control", @id = "Tanggal" } })
+        @Html.ValidationMessageFor(m => m.Tanggal)
+    </div>
+    <!--Row 3-->
+    <div class="col-md-8 center">
+        @Html.LabelFor(m => m.SupplierName)
+        @Html.TextBoxFor(m => m.SupplierName, new { @readonly = "readonly", @class = "form-control", @id = "SupplierName" })
+        @Html.ValidationMessageFor(m => m.SupplierName)
+    </div>
+    <div class="col-md-4 center">
+        @Html.LabelFor(m => m.Amount)
+        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @id = "Amount" })
+        @Html.ValidationMessageFor(m => m.Amount)
+    </div>
+
+    <!--Row 4-->
+    <div class="col-md-8 center">
+        @Html.LabelFor(m => m.Description)
+        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @id = "Description" })
+        @Html.ValidationMessageFor(m => m.Description)
+    </div>
+    <div class="col-md-4 center">
+        @Html.LabelFor(m => m.DeductAmount)
+        @Html.TextBoxFor(m => m.DeductAmount, new { @readonly = "readonly", @class = "form-control", @id = "DeductAmount" })
+        @Html.ValidationMessageFor(m => m.DeductAmount)
+    </div>
+    <div class="col-md-12 center">
+        <br />
+    </div>
+    <div class="col-md-12 card-footer">
+        <button id="button"
+                text="EDIT"
+                class="btn btn-success"
+                onclick="validatenumber()">
+            <h4>EDIT</h4>
+        </button>
+    </div>
+</div>
+
+
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+        <script>
+        var periode = '@Model.Period';
+        document.getElementById('period').value = periode.substring(0, 4) + '-' + periode.substring(4, 7);
+        setSparator();
+        </script>
+
+    }
+}

@@ -1,0 +1,67 @@
+﻿@model MyAttd.Models.T_User
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Delete", "TUser", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+
+
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="dx-fieldset col-md-12">
+
+                <div class="dx-field center col-md-12">
+                    @Html.LabelFor(m => m.FCUserName)
+                    @*@Html.DevExtreme().TextBoxFor(m => m.FCUserName).ID("FCUserName").ShowClearButton(true)*@
+                    @Html.TextBoxFor(m => m.FCUserName, new { @id = "FCUserName", @class = "form-control", @readonly = "true" })
+                </div>
+                <div class="dx-field center col-md-12">
+                    @Html.LabelFor(m => m.FCName)
+                    @*@Html.DevExtreme().TextBoxFor(m => m.FCName).ID("FCName").ShowClearButton(true)*@
+                    @Html.TextBoxFor(m => m.FCName, new { @id = "FCName", @class = "form-control", @readonly = "true" })
+                </div>
+                <div class="dx-field left col-md-4">
+                    @Html.LabelFor(m => m.FCRoleID)
+                    @*@Html.DevExtreme().SelectBoxFor(m => m.FCRoleID).ID("FCRoleID").DataSource(ViewBag.DListRole).DisplayExpr("FCRoleDesc").ValueExpr("FCRoleID").ReadOnly(true)*@
+                    @Html.TextBoxFor(m => m.FCRoleID, new { @id = "FCRoleID", @class = "form-control", @readonly="true" })
+                </div>
+            </div>
+            @Html.HiddenFor(m => m.FCUserID)
+            <div class="dx-fieldset col-md-12">
+                <div class="dx-field right col-md-4">
+                    @*@Html.DevExtreme().Button().ID("button").Text("Hapus").Type(ButtonType.Danger).OnClick("saveClick").UseSubmitBehavior(true)*@
+                    <button type="button" class="btn btn-danger" onclick="saveClick()">Hapus</button>
+                </div>
+            </div>
+        </div>
+
+    }
+    
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+    <script>
+        DevExpress.config({
+            editorStylingMode: "outlined"
+        });
+
+        function saveClick(e) {
+            var result = e.validationGroup.validate();
+            if (!result.isValid) {
+                DevExpress.ui.notify("Proses tidak dapat dilanjutkan. Periksa kembali data inputan.", "error");
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+
+
+}

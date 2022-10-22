@@ -1,0 +1,100 @@
+﻿@model MyAttd.Models.T_PriceCompetitor
+@*<div class="title">
+        VIEW Incentive
+        <hr />
+    </div>*@
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "TPriceCompetitor", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="editors">
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.Date)
+        @Html.TextBoxFor(m => m.Date, new { @type = "date", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Date)
+    </div>
+    <div class="col-md-12">
+        <hr color=red>
+    </div>
+
+    @*Row 1------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.PMKSID)
+        <div class="input-group">
+            @Html.TextBoxFor(m => m.PMKSID, new { @required = "required", @readonly = "readonly", @class = "form-control", @id = "PMKSID" })
+            <span class="btn btn-primary center" onclick="GridPMKS()" />
+            @Html.ValidationMessageFor(m => m.PMKSID)
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <hr color=red>
+    </div>
+    @*Row 2------------------------------------------------------------------------------------------------------------------------*@
+
+    <div class="col-md-12">
+        @Html.LabelFor(m => m.CompetitorName)
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.CompetitorName, new { @required = "required", @readonly = "readonly", @class = "form-control", @id = "CompetitorName" })
+                <span class="btn btn-primary center" onclick="GridCompetitor()" />
+                @Html.ValidationMessageFor(m => m.CompetitorName)
+            </div>
+    </div>
+    <div class="col-md-12">
+        <hr color=red>
+    </div>
+    @*Row 3------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.Price)
+        @Html.TextBoxFor(m => m.Price, new { @class = "form-control", @id = "Price" })
+        @Html.ValidationMessageFor(m => m.Price)
+    </div>
+
+    @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-12">
+        <hr color=red>
+    </div>
+
+    <div class="col-md-12 card-footer">
+        <button id="button"
+                text="Save"
+                class="btn btn-primary"
+                onclick="validatenumber()">
+            <h4>Save</h4>
+        </button>
+    </div>
+</div>
+
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+
+        <script>
+            if (localStorage.getItem("tgl_PriceCompetitor") == null) {
+                document.getElementById('Date').value = moment().format('YYYY-MM-DD');
+            }
+            else {
+                document.getElementById('Date').value = localStorage.getItem("tgl_PriceCompetitor");
+            }
+
+            //var Price = numeral(document.getElementById('Price').value);
+            //$("#Price").val(Price.format('0,0'));
+
+            $("#Price").on('blur', function () {
+                $(this).val(numeral(this.value).format('0,00'));
+            })
+
+
+        </script>
+
+    }
+}

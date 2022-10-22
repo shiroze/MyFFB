@@ -1,0 +1,97 @@
+﻿@model IEnumerable<MyAttd.Models.T_PPN>
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <hr />
+        <input type="text" id="myInputPop" onkeyup="myFunctionPop()" placeholder="Search for names.." title="Type in a name">
+        <hr />
+        <table class="table table-bordered table-responsive table-hover" style="white-space:nowrap" id="cssTableGrid">
+            <thead class="table-primary" style="position:sticky; top:0;">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.tgl_faktur_pajak)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.no_faktur_pajak)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CashNo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.amount_cash_advance)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ppn)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.disetorke)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="myTablePop">
+                @foreach (var item in Model)
+                {
+                <tr ondblclick="selectPajakAdvance('@item.no_faktur_pajak','@item.CashNo','@item.amount_cash_advance','@item.ppn')">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tgl_faktur_pajak)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.no_faktur_pajak)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CashNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.amount_cash_advance)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ppn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.disetorke)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <div></div>
+    </div>
+
+
+    <script>
+        function myFunctionPop() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInputPop");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTablePop");
+            var rows = table.getElementsByTagName("tr");
+            for (i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var j;
+                var rowContainsFilter = false;
+                for (j = 0; j < cells.length; j++) {
+                    if (cells[j]) {
+                        if (cells[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                            rowContainsFilter = true;
+                            continue;
+                        }
+                    }
+                }
+
+                if (!rowContainsFilter) {
+                    rows[i].style.display = "none";
+                } else {
+                    rows[i].style.display = "";
+                }
+            }
+        }
+    </script>
+}
+

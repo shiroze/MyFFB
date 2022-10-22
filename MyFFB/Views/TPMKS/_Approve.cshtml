@@ -1,0 +1,172 @@
+﻿@model MyAttd.Models.T_PMKS
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Approve", "TPMKS", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="dx-fieldset col-md-12">
+                <div class="dx-field center col-md-6 center">
+                    @Html.LabelFor(m => m.AreaOperational)
+                    @Html.TextBoxFor(m => m.AreaOperational, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AreaOperational)
+
+                    @Html.LabelFor(m => m.Regional)
+                    @Html.TextBoxFor(m => m.Regional, new { @readonly = "readonly", @class = "form-control", @id = "regional" })
+                    @Html.ValidationMessageFor(m => m.Regional)
+
+                    @Html.LabelFor(m => m.PMKSID)
+                    @Html.TextBoxFor(m => m.PMKSID, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PMKSID)
+
+                    @Html.LabelFor(m => m.PMKSName)
+                    @Html.TextBoxFor(m => m.PMKSName, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PMKSName)
+
+                    @Html.LabelFor(m => m.CompanyCode)
+                    @Html.TextBoxFor(m => m.CompanyCode, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.CompanyCode)
+                </div>
+                <div class="dx-field center col-md-6">
+                    @Html.LabelFor(m => m.BusinessArea)
+                    @Html.TextBoxFor(m => m.BusinessArea, new { @required = "true", @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.BusinessArea)
+
+                    @Html.LabelFor(m => m.BusinessAreaCoP)
+                    @Html.TextBoxFor(m => m.BusinessAreaCoP, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.BusinessAreaCoP)
+
+                    @Html.LabelFor(m => m.PMKSGroup)
+                    @Html.TextBoxFor(m => m.PMKSGroup, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PMKSGroup)
+
+                    @Html.LabelFor(m => m.HouseBank)
+                    @Html.TextBoxFor(m => m.HouseBank, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.HouseBank)
+
+                    @Html.LabelFor(m => m.Company)
+                    @Html.TextBoxFor(m => m.Company, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Company)
+                </div>
+            </div>
+            <div class="dx-field center col-md-8">
+                <table id="tbl01" border="1">
+                    <thead>
+                        <tr bgcolor=#52BE80><td colspan="5"><b><i>Category Agent Local, Own Estate dan Agent Ramp</i></b></td></tr>
+                        <tr align="center" bgcolor=#5DADE2>
+                            <td colspan="2">Buah Kecil</td>
+                            <td colspan="3">Buah Sedang</td>
+                        </tr>
+                        <tr align="center" bgcolor=#5DADE2>
+                            <td>Komidel &lt;</td>
+                            <td style="color:red">Harga -</td>
+                            <td>Komidel &lt;</td>
+                            <td>Komidel &gt;</td>
+                            <td style="color:red">Harga -</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Html.TextBoxFor(m => m.KomidelMin, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control", @id = "KomidelMin" })</td>
+                            <td>@Html.TextBoxFor(m => m.HargaMin, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td><input type="number" step="1" class="form-control" id="KomidelMinCopy" readonly></td>
+                            <td>@Html.TextBoxFor(m => m.KomidelPlus, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.HargaPlus, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control" })</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table id="tbl01" border="1">
+                    <thead>
+                        <tr bgcolor=#52BE80><td colspan="5"><b>Bibit Topaz</b></td></tr>
+                        <tr align="center" bgcolor=#5DADE2>
+                            <td colspan="2">Buah Kecil</td>
+                            <td colspan="3">Buah Sedang</td>
+                        </tr>
+                        <tr align="center" bgcolor=#5DADE2>
+                            <td>Komidel &lt;</td>
+                            <td style="color:red">Harga -</td>
+                            <td>Komidel &lt;</td>
+                            <td>Komidel &gt;</td>
+                            <td style="color:red">Harga -</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Html.TextBoxFor(m => m.KomidelMin2, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control", @id = "KomidelMin2" })</td>
+                            <td>@Html.TextBoxFor(m => m.HargaMin2, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td><input type="number" step="1" class="form-control" id="KomidelMin2Copy" readonly></td>
+                            <td>@Html.TextBoxFor(m => m.KomidelPlus2, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.HargaPlus2, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control" })</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="dx-field center col-md-4">
+                @Html.CheckBoxFor(m => m.Approval, new { @onclick = "return false" })
+                @Html.LabelFor(m => m.Approval)
+            </div>
+            <div class="dx-field center col-md-4">
+                @Html.CheckBoxFor(m => m.PaySaturday, new { @onclick = "return false" })
+                @Html.LabelFor(m => m.PaySaturday)
+            </div>
+
+            @*<div class="dx-field center col-md-8">
+
+                </div>*@
+
+            <div class="dx-field center col-md-8">
+                <table id="tbl01" border="1">
+                    <thead>
+                        <tr bgcolor=#52BE80><td colspan="5"><b>Category CVS</b></td></tr>
+                        <tr align="center" bgcolor=#5DADE2>
+                            <td colspan="2">Buah Kecil</td>
+                            <td colspan="3">Buah Sedang</td>
+                        </tr>
+                        <tr align="center" bgcolor=#5DADE2>
+                            <td>Komidel &lt;</td>
+                            <td style="color:red">Harga -</td>
+                            <td>Komidel &lt;</td>
+                            <td>Komidel &gt;</td>
+                            <td style="color:red">Harga -</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Html.TextBoxFor(m => m.KomidelMin1, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control", @id = "KomidelMin1" })</td>
+                            <td>@Html.TextBoxFor(m => m.HargaMin1, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td><input type="number" step="1" class="form-control" id="KomidelMin1Copy" readonly></td>
+                            <td>@Html.TextBoxFor(m => m.KomidelPlus1, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.HargaPlus1, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control" })</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="dx-field center col-md-12">
+                <button id="button"
+                        text="APPROVE"
+                        class="btn btn-success"
+                        usesubmitbehavior="true">
+                    <h4>Approve</h4>
+                </button>
+            </div>
+
+        </div>
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+        <script>
+                        document.getElementById('KomidelMinCopy').value = document.getElementById('KomidelMin').value
+                        document.getElementById('KomidelMin2Copy').value = document.getElementById('KomidelMin2').value
+                        document.getElementById('KomidelMin1Copy').value = document.getElementById('KomidelMin1').value
+        </script>
+    }
+}

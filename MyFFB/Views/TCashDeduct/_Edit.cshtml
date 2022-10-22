@@ -1,0 +1,192 @@
+﻿@model MyAttd.Models.T_FFB
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Edit", "TCashDeduct", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="col-md-12">
+                <div class="col-md-5">
+                    @Html.LabelFor(m => m.PMKSID)
+                    @Html.TextBoxFor(m => m.PMKSID, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PMKSID)
+
+                    @Html.LabelFor(m => m.Supplier)
+                    @Html.TextBoxFor(m => m.Supplier, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Supplier)
+
+                    @Html.LabelFor(m => m.SupplierName)
+                    @Html.TextBoxFor(m => m.SupplierName, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SupplierName)
+                </div>
+
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Kendaraan)
+                    @Html.TextBoxFor(m => m.Kendaraan, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Kendaraan)
+
+                    @Html.LabelFor(m => m.Number)
+                    @Html.TextBoxFor(m => m.Number, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Number)
+
+                    @Html.LabelFor(m => m.Ticket)
+                    @Html.TextBoxFor(m => m.Ticket, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Ticket)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.Post2Payment)
+                    @*@Html.TextBoxFor(m => m.Post2Payment, new { @readonly = "readonly", @class = "form-control" })*@
+                    @Html.EditorFor(m => m.Post2Payment, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Post2Payment)
+
+                    @Html.LabelFor(m => m.TanggalTimbang)
+                    @*@Html.TextBoxFor(m => m.TanggalTimbang, new { @readonly = "readonly", @class = "form-control" })*@
+                    @Html.EditorFor(m => m.TanggalTimbang, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.TanggalTimbang)
+
+                    @Html.LabelFor(m => m.GroupPayment)
+                    @Html.TextBoxFor(m => m.GroupPayment, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.GroupPayment)
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.BeratNetto)
+                    @Html.TextBoxFor(m => m.BeratNetto, new { @readonly = "readonly", @type = "number", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.BeratNetto)
+
+                    @Html.LabelFor(m => m.Potongan)
+                    @Html.TextBoxFor(m => m.Potongan, new { @readonly = "readonly", @type = "number", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Potongan)
+
+                    @Html.LabelFor(m => m.Netto)
+                    @Html.TextBoxFor(m => m.Netto, new { @readonly = "readonly", @type = "number", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Netto)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.NettoTransfeer)
+                    @Html.TextBoxFor(m => m.BeratNetto, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.BeratNetto)
+
+                    @Html.LabelFor(m => m.Janjang)
+                    @Html.TextBoxFor(m => m.Potongan, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Potongan)
+
+                    @Html.LabelFor(m => m.Komidel)
+                    @Html.TextBoxFor(m => m.Netto, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Netto)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.HargaBeli)
+                    @Html.TextBoxFor(m => m.HargaBeli, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.HargaBeli)
+
+                    @Html.LabelFor(m => m.Harga)
+                    @Html.TextBoxFor(m => m.Harga, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Harga)
+
+                    @Html.LabelFor(m => m.PPH22)
+                    @Html.TextBoxFor(m => m.PPH22, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PPH22)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.VAT)
+                    @Html.TextBoxFor(m => m.VAT, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.VAT)
+
+                    @Html.LabelFor(m => m.TotalPembayaran)
+                    @Html.TextBoxFor(m => m.TotalPembayaran, new { @readonly = "readonly", @class = "form-control", @id = "TotalPembayaran" })
+                    @Html.ValidationMessageFor(m => m.TotalPembayaran)
+
+                    @Html.LabelFor(m => m.RealisasiPanjarAmount)
+                    @Html.TextBoxFor(m => m.RealisasiPanjarAmount, new { @class = "form-control", @id = "RealisasiPanjarAmount" })
+                    @Html.ValidationMessageFor(m => m.RealisasiPanjarAmount)
+                </div>
+
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.PMKSTransfeer)
+                    @Html.TextBoxFor(m => m.PMKSTransfeer, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PMKSTransfeer)
+                </div>
+
+                <div class="col-md-6 center">
+                    @Html.LabelFor(m => m.Remarks)
+                    @Html.TextBoxFor(m => m.PMKSTransfeer, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PMKSTransfeer)
+                </div>
+                <div class="col-md-12">
+                    <br />
+                </div>
+
+                <div class="col-md-5">
+                </div>
+                <div class="col-md-2">
+                    <h5><label id="StatusPanjar"></label></h5>
+                </div>
+                <div class="col-md-3">
+                    <h5><label id="ValuePanjar"></label></h5>
+                </div>
+                <div class="col-md-1" style="margin:auto;">
+                    <input type="checkbox" id="chkboxMax" /> Max
+                </div>
+                <div class="col-md-1 right">
+                    <button id="button"
+                            text="Edit"
+                            class="btn btn-success"
+                            onclick="setNumber()">
+                        <h4>EDIT</h4>
+                    </button>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+<script>
+    setSeparator();
+
+    //$("#RealisasiPanjarAmount").change(function () {
+    //    var realisasi = numeral(document.getElementById("RealisasiPanjarAmount").value)
+    //    console.log(realisasi)
+    //    alert(realisasi.value())
+    //});
+
+
+    GetTotalMain();
+    $("#chkboxMax").change(
+        function () {
+            var total = numeral(document.getElementById("TotalPembayaran").value)
+            var sisa = numeral(document.getElementById('chkboxMax').value)
+            var checked = document.getElementById('chkboxMax').checked;
+            if (checked) {
+                if (sisa.value() <= total.value()) {
+                    document.getElementById("RealisasiPanjarAmount").value = sisa.format('0,0.00');
+                }
+                else {
+                    document.getElementById("RealisasiPanjarAmount").value = total.format('0,0.00');
+                }
+                
+            }
+            else {
+                document.getElementById("RealisasiPanjarAmount").value = 0;
+            }
+            setSeparator();
+        }
+    );
+</script>
+
+    }
+}

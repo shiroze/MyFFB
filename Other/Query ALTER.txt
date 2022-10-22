@@ -1,0 +1,76 @@
+ALTER TABLE dbo.tblTender
+ADD
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL
+
+ALTER TABLE dbo.tblTransport
+ADD
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL
+
+ALTER TABLE dbo.tblPriceDefault
+ADD
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL
+
+ALTER TABLE dbo.tblSupplier
+ADD
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCApproveBy] [int] NULL,
+	[FCApproveDT] [datetime] NULL,
+	[FCUnApproveBy] [int] NULL,
+	[FCUnApproveDT] [datetime] NULL
+
+ALTER TABLE dbo.tblPMKS
+ADD
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL
+
+ALTER TABLE dbo.tblPrice
+ADD
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL
+
+ALTER TABLE .dbo.tblCashAdvance
+ADD 	[Tanggal] [date] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL
+
+ALTER TABLE .dbo.tblBudget
+ADD
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL
+
+ALTER TABLE dbo.tblPPN
+ADD
+[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL
+
+ALTER TABLE dbo.TblPriceCompetitor
+ADD
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL
+
+ALTER TABLE tblFFB
+ALTER COLUMN VAT float;

@@ -1,0 +1,157 @@
+﻿@model MyAttd.Models.T_Supplier
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("UnApprove", "TSupplier", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="dx-fieldset col-md-12">
+                @*Baris 1-------------------------------------------*@
+                <div class="dx-field center col-md-3">
+                    @Html.LabelFor(m => m.SupplierID)
+                    @Html.TextBoxFor(m => m.SupplierID, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SupplierID)
+                </div>
+                <div class="dx-field center col-md-2">
+                    @Html.LabelFor(m => m.Code)
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.Code, new { @readonly = "readonly", @class = "form-control", @id = "grdCode" })
+                        @*<span class="btn btn-primary center" onclick="GridSAPVENDOR()" />*@
+                        @Html.ValidationMessageFor(m => m.Code)
+                    </div>
+                </div>
+                <div class="dx-field center col-md-5">
+                    @Html.Label("Code Name")
+                    @Html.TextBoxFor(m => m.CodeName, new { @readonly = "readonly", @class = "form-control", @id = "CodeName" })
+
+                </div>
+                <div class="dx-field center col-md-2">
+                    @Html.LabelFor(m => m.PaymentTerm)
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.PaymentTerm, new { @readonly = "readonly", @class = "form-control", @id = "PaymentTerm" })
+                        <span class="btn btn-primary center" onclick="GridGroupPayment()" />
+                        @Html.ValidationMessageFor(m => m.PaymentTerm)
+                    </div>
+                </div>
+                @*Baris 2-------------------------------------------*@
+
+                <div class="dx-field center col-md-5 center">
+                    @Html.LabelFor(m => m.SupplierName)
+                    @Html.TextBoxFor(m => m.SupplierName, new { @readonly = "readonly", @required = "true", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SupplierName)
+                </div>
+                <div class="dx-field center col-md-2 center">
+                    @Html.LabelFor(m => m.PMKSID)
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.PMKSID, new { @readonly = "readonly", @class = "form-control", @id = "grdPMKSID" })
+                        @*<span class="btn btn-primary center" onclick="GridPMKS()" />*@
+                        @Html.ValidationMessageFor(m => m.PMKSID)
+                    </div>
+                </div>
+                <div class="dx-field center col-md-5 center">
+                    @Html.LabelFor(m => m.PMKSName)
+                    @Html.TextBoxFor(m => m.PMKSName, new { @required = "true", @readonly = "true", @class = "form-control", @id = "grdPMKSName" })
+                    @Html.ValidationMessageFor(m => m.PMKSName)
+                </div>
+                @*Baris 3-------------------------------------------*@
+
+                <div class="dx-field center col-md-2">
+                    @Html.LabelFor(m => m.Initial)
+                    @Html.TextBoxFor(m => m.Initial, new { @readonly = "readonly", @required = "true", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Initial)
+                </div>
+                <div class="dx-field center col-md-4">
+                    @Html.LabelFor(m => m.NPWP)
+                    @Html.TextBoxFor(m => m.NPWP, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.NPWP)
+                </div>
+                <div class="dx-field center col-md-3">
+                    @Html.LabelFor(m => m.GroupSupplier)
+                    @Html.TextBoxFor(m => m.GroupSupplier, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.GroupSupplier)
+                </div>
+                <div class="dx-field center col-md-3">
+                    @Html.LabelFor(m => m.Category)
+                    @Html.TextBoxFor(m => m.Category, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Category)
+                </div>
+
+                <div class="dx-field center col-md-12">
+                    <div class="dx-field center col-md-2">
+                        @Html.LabelFor(m => m.Approval)
+                        @Html.CheckBoxFor(m => m.Approval, new { @onclick = "return false" })
+                    </div>
+
+                    <div class="dx-field center col-md-2">
+                        @Html.LabelFor(m => m.CashAdvance)
+                        @Html.CheckBoxFor(m => m.CashAdvance, new { @onclick = "return false" })
+                    </div>
+
+                    <div class="dx-field center col-md-3">
+                        @Html.LabelFor(m => m.KomidelCalculate)
+                        @Html.CheckBoxFor(m => m.KomidelCalculate, new { @onclick = "return false" })
+                    </div>
+                    <div class="dx-field center col-md-2">
+                        @Html.LabelFor(m => m.BibitTopaz)
+                        @Html.CheckBoxFor(m => m.BibitTopaz, new { @onclick = "return false" })
+                    </div>
+                    <div class="dx-field center col-md-2">
+                        @Html.LabelFor(m => m.StatusActive)
+                        @Html.CheckBoxFor(m => m.StatusActive, new { @onclick = "return false" })
+                    </div>
+                </div>
+
+
+                <div class="dx-field center col-md-8">
+                    @Html.LabelFor(m => m.Remarks)
+                    @Html.TextBoxFor(m => m.Remarks, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Remarks)
+
+                    @Html.LabelFor(m => m.Remarks1)
+                    @Html.TextBoxFor(m => m.Remarks1, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Remarks1)
+
+                    @Html.LabelFor(m => m.Remarks2)
+                    @Html.TextBoxFor(m => m.Remarks2, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Remarks2)
+                </div>
+                <div class="dx-field center col-md-3">
+                    @Html.LabelFor(m => m.VAT)
+                    @Html.TextBoxFor(m => m.VAT, new { @readonly = "readonly", @class = "form-control", @id = "VAT" })
+                    @Html.ValidationMessageFor(m => m.VAT)
+
+                    @Html.LabelFor(m => m.VATCondition)
+                    @Html.CheckBoxFor(m => m.VATCondition, new { @onclick = "return false", @id = "chkVATCondition" })
+                </div>
+
+                <div class="dx-field center col-md-3">
+                    @Html.LabelFor(m => m.PPH22)
+                    @Html.TextBoxFor(m => m.PPH22, new { @readonly = "readonly", @type = "number", @class = "form-control", @step = "0.01", @id = "PPH22" })
+                    @Html.ValidationMessageFor(m => m.PPH22)
+
+                    @Html.LabelFor(m => m.PPH22Condition)
+                    @Html.CheckBoxFor(m => m.PPH22Condition, new { @onclick = "return false", @id = "chkPPH22Condition" })
+                </div>
+                <div class="dx-field center col-md-12">
+                    <button id="button"
+                            text="UNAPPROVE"
+                            class="btn btn-danger"
+                            usesubmitbehavior="true">
+                        <h4>UnAppove</h4>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+    }
+}

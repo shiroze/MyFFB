@@ -1,0 +1,236 @@
+﻿@model IEnumerable<MyAttd.Models.T_Supplier>
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    <table class="table table-bordered table-responsive table-hover" style="white-space:nowrap" id="cssTableUtama">
+        <thead class="table-primary" style="position:sticky; top:0;">
+            <tr>
+                <th>Actions</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Approval)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SupplierID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SupplierName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PMKSID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PMKSName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Initial)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CashAdvance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NPWP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GroupSupplier)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VAT)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VATCondition)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PPH22)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PPH22Condition)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remarks)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remarks1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remarks2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StatusActive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PaymentTerm)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.KomidelCalculate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BibitTopaz)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCCreatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCCreatedDT)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCUpdatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCUpdatedDT)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCApproveBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCApproveDT)
+                </th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    <button class="btn btn-info" title="View" onclick="viewIconClick('@item.SupplierID','@item.SupplierName','@item.PMKSID')"><i class="fa fa-file-text"></i></button>
+                    <button class="btn btn-success" title="Edit" onclick="editIconClick('@item.SupplierID','@item.SupplierName','@item.PMKSID')"><i class="fa fa-edit"></i></button>
+                    <button class="btn btn-danger" title="Delete" onclick="deleteIconClick('@item.SupplierID','@item.SupplierName','@item.PMKSID')"><i class="fa fa-trash"></i></button>
+                    @*@if (item.Approval)
+            {
+                <button class="btn btn-danger" onclick="unapproveIconClick('@item.SupplierID','@item.SupplierName','@item.PMKSID')"><i class="fa fa-times"></i></button>
+            }
+            else
+            {
+                <button class="btn btn-success" onclick="approveIconClick('@item.SupplierID','@item.SupplierName','@item.PMKSID')"><i class="fa fa-check"></i></button>
+            }*@
+                    @if (item.Approval == false)
+                    {
+                        <button class="btn btn-success" onclick="approveIconClick('@item.SupplierID','@item.SupplierName','@item.PMKSID')"><i class="fa fa-check"></i></button>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Approval)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PMKSID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PMKSName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Initial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CashAdvance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NPWP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GroupSupplier)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VAT)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VATCondition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PPH22)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PPH22Condition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remarks)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remarks1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remarks2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentTerm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KomidelCalculate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BibitTopaz)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy.FCName)
+                </td>
+                <td>
+                    @if (item.FCCreatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                    {
+                        @Html.DisplayFor(modelItem => item.FCCreatedDT)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedBy.FCName)
+                </td>
+                <td>
+                    @if (item.FCUpdatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                    {
+                        @Html.DisplayFor(modelItem => item.FCUpdatedDT)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApprovedBy.FCName)
+                </td>
+                <td>
+                    @if (item.FCApproveDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                    {
+                        @Html.DisplayFor(modelItem => item.FCApproveDT)
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+<script>
+    $(document).ready(function () {
+        $('#cssTableUtama').DataTable({
+            columnDefs: [{
+                targets: [0],
+                orderData: [0, 1]
+            }, {
+                targets: [1],
+                orderData: [1, 0]
+            }, {
+                targets: [4],
+                orderData: [4, 0]
+                }],
+            //"lengthMenu": [[25, 50, -1], [25, 50, "All"]]
+        });
+    });
+</script>

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<MyAttd.Models.T_Competitor>
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <hr />
+        <input type="text" id="myInputPop" onkeyup="myFunctionPop()" placeholder="Search for names.." title="Type in a name">
+        <hr />
+        <table class="table table-bordered table-responsive table-hover" style="white-space:nowrap" id="cssTableGrid">
+            <thead class="table-primary" style="position:sticky; top:0;">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CompetitorID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CompetitorName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CompetitorLocation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PMKSID)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="myTablePop">
+                @foreach (var item in Model)
+                {
+                    <tr ondblclick="selectCompetitor('@item.CompetitorID','@item.CompetitorName','@item.CompetitorLocation','@item.PMKSID')">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompetitorID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompetitorName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompetitorLocation)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PMKSID)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div></div>
+    </div>
+    <script>
+        function myFunctionPop() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInputPop");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTablePop");
+            var rows = table.getElementsByTagName("tr");
+            for (i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var j;
+                var rowContainsFilter = false;
+                for (j = 0; j < cells.length; j++) {
+                    if (cells[j]) {
+                        if (cells[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                            rowContainsFilter = true;
+                            continue;
+                        }
+                    }
+                }
+
+                if (!rowContainsFilter) {
+                    rows[i].style.display = "none";
+                } else {
+                    rows[i].style.display = "";
+                }
+            }
+        }
+    </script>
+}
+

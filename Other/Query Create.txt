@@ -1,0 +1,668 @@
+--backup tblcompetitor menjadi tblcompetitor1, create yang baru
+CREATE TABLE [dbo].[tblCompetitor](
+	[CompetitorID] [int] IDENTITY(1,1) NOT NULL,
+	[CompetitorName] [varchar](50) NOT NULL,
+	[CompetitorLocation] [varchar](50) NULL,
+	[Capacity] [int] NULL,
+	[CompetitorGroup] [varchar](50) NULL,
+	[PMKSID] [varchar](50) NOT NULL,
+	[UserID] [varchar](15) NULL,
+	[LastAccess] [datetime] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL
+)
+
+CREATE TABLE [dbo].[tblTender_Audit](
+	[ProductID] [varchar](10) NULL,
+	[Region] [varchar](10) NULL,
+	[DateTender] [datetime] NULL,
+	[Remarks] [varchar](50) NULL,
+	[Price] [money] NULL,
+	[UserID] [varchar](15) NULL,
+	[LastAccess] [datetime] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[tblTransport_Audit](
+	[ProductID] [varchar](10) NOT NULL,
+	[PMKSID] [varchar](10) NOT NULL,
+	[TransportDate] [datetime] NOT NULL,
+	[Price] [money] NULL,
+	[Destination] [varchar](50) NULL,
+	[UserID] [varchar](15) NULL,
+	[LastAccess] [datetime] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[TblHolidayBank_Audit](
+	[Date] [date] NOT NULL,
+	[Remarks] [nvarchar](50) NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[tblPriceDefault_Audit](
+	[SupplierID] [nvarchar](50) NOT NULL,
+	[SupplierName] [nvarchar](50) NOT NULL,
+	[Efective_Date] [date] NOT NULL,
+	[PMKSID] [nvarchar](50) NOT NULL,
+	[LastAccess] [date] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[t_Menu](
+	[FCMenuID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[FCMenuCode] [varchar](50) NULL,
+	[FCMenuDesc] [varchar](50) NULL,
+	[FCMenuPID] [int] NULL,
+	[FCMenuLink] [bit] NULL,
+	[FCOrderNo] [int] NULL,
+	[FCIcon] [varchar](50) NULL,
+	[FCHidden] [bit] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL
+)
+
+
+CREATE TABLE [dbo].[t_Menu_Audit](
+	[FCMenuID] [int] NOT NULL,
+	[FCMenuCode] [varchar](50) NULL,
+	[FCMenuDesc] [varchar](50) NULL,
+	[FCMenuPID] [int] NULL,
+	[FCMenuLink] [bit] NULL,
+	[FCOrderNo] [int] NULL,
+	[FCIcon] [varchar](50) NULL,
+	[FCHidden] [bit] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[ActionAudit] [varchar](50) NULL,
+	[TimeAudit] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[t_Role](
+	[FCRoleID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[FCRoleDesc] [varchar](50) NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[Age] [int] NOT NULL
+)
+
+CREATE TABLE [dbo].[t_Role_Audit](
+	[FCRoleID] [int] NOT NULL,
+	[FCRoleDesc] [varchar](50) NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[ActionAudit] [varchar](50) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[t_RoleDet](
+	[FCRoleID] [int] NOT NULL,
+	[FCMenuID] [int] NOT NULL,
+	[FCAdd] [bit] NULL,
+	[FCEdit] [bit] NULL,
+	[FCDelete] [bit] NULL,
+	[FCUndelete] [bit] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[FCApprove] [bit] NULL
+)
+
+CREATE TABLE [dbo].[t_RoleDet_Audit](
+	[FCRoleID] [int] NOT NULL,
+	[FCMenuID] [int] NOT NULL,
+	[FCAdd] [bit] NULL,
+	[FCEdit] [bit] NULL,
+	[FCDelete] [bit] NULL,
+	[FCUndelete] [bit] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[FCApprove] [bit] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[t_User](
+	[FCUserID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[FCUserName] [varchar](15) NULL,
+	[FCUserPass] [varbinary](max) NULL,
+	[FCName] [varchar](50) NULL,
+	[FCRoleID] [int] NULL,
+	[FCPassExpDT] [datetime] NULL,
+	[FCLoginAttempt] [int] NULL,
+	[FCBlocked] [bit] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[SetPMKSID] [varchar](max) NULL,
+	[LastTimeAccess] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[t_User_Audit](
+	[FCUserID] [int] NOT NULL,
+	[FCUserName] [varchar](15) NULL,
+	[FCUserPass] [varbinary](max) NULL,
+	[FCName] [varchar](50) NULL,
+	[FCRoleID] [int] NULL,
+	[FCPassExpDT] [datetime] NULL,
+	[FCLoginAttempt] [int] NULL,
+	[FCBlocked] [bit] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[LastTimeAccess] [datetime] NULL,
+	[ActionAudit] [varchar](50) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[set_RptName](
+	[ReportID] [varchar](100) NOT NULL,
+	[FCUserID] [int] NOT NULL,
+	[Name1] [varchar](100) NULL,
+	[Name2] [varchar](100) NULL,
+	[Name3] [varchar](100) NULL,
+	[Name4] [varchar](100) NULL,
+	[Name5] [varchar](100) NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	PRIMARY KEY ([ReportID],[FCUserID])
+)
+
+CREATE TABLE [dbo].[set_RptName_Audit](
+	[ReportID] [varchar](100) NOT NULL,
+	[FCUserID] [int] NOT NULL,
+	[Name1] [varchar](100) NULL,
+	[Name2] [varchar](100) NULL,
+	[Name3] [varchar](100) NULL,
+	[Name4] [varchar](100) NULL,
+	[Name5] [varchar](100) NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[t_AreaRegional](
+	[AreaID] [int] IDENTITY(1,1) NOT NULL,
+	[AreaOperational] [varchar](100) NOT NULL,
+	[Regional] [varchar](50) NOT NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[t_AreaRegional_Audit](
+	[AreaID] [int],
+	[AreaOperational] [varchar](100) NOT NULL,
+	[Regional] [varchar](50) NOT NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[tblPMKS_Audit](
+	[Approval] [bit] NULL,
+	[AreaOperational] [nvarchar](30) NULL,
+	[Regional] [nvarchar](25) NOT NULL,
+	[Urut] [int] NULL,
+	[PMKSID] [nvarchar](3) NOT NULL,
+	[PMKSName] [nvarchar](50) NULL,
+	[Company] [nvarchar](50) NULL,
+	[KomidelMin] [float] NULL,
+	[HargaMin] [int] NULL,
+	[KomidelPlus] [float] NULL,
+	[HargaPlus] [int] NULL,
+	[CompanyCode] [nvarchar](6) NULL,
+	[BusinessArea] [nvarchar](6) NULL,
+	[BusinessAreaCoP] [varchar](6) NULL,
+	[PMKSGroup] [nvarchar](50) NULL,
+	[HouseBank] [varchar](5) NULL,
+	[UserID] [nvarchar](15) NULL,
+	[LastAccess] [datetime] NULL,
+	[PaySaturday] [bit] NULL,
+	[KomidelMin1] [float] NULL,
+	[HargaMin1] [int] NULL,
+	[KomidelPlus1] [float] NULL,
+	[HargaPlus1] [int] NULL,
+	[KomidelMin2] [float] NULL,
+	[HargaMin2] [int] NULL,
+	[KomidelPlus2] [float] NULL,
+	[HargaPlus2] [int] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[tblSupplier_Audit](
+	[Approval] [bit] NULL,
+	[SupplierID] varchar(15) NOT NULL,
+	[SupplierName] varchar(50) NOT NULL,
+	[PMKSID] varchar(50) NOT NULL,
+	[PMKSName] varchar(50) NULL,
+	[Initial] varchar(15) NULL,
+	[CashAdvance] varchar(1) NULL,
+	[Code] varchar(8) NULL,
+	[NPWP] varchar(25) NULL,
+	[GroupSupplier] [nchar](50) NULL,
+	[Category] [nchar](50) NULL,
+	[VAT] [int] NULL,
+	[VATCondition] varchar(1) NULL,
+	[PPH22] [float] NULL,
+	[PPH22Condition] varchar(1) NULL,
+	[Remarks] varchar(60) NULL,
+	[Remarks1] varchar(60) NULL,
+	[Remarks2] varchar(60) NULL,
+	[StatusActive] varchar(1) NULL,
+	[UserID] varchar(15) NULL,
+	[LastAccess] [datetime] NULL,
+	[PaymentTerm] [varchar](8) NULL,
+	[KomidelCalculate] varchar(1) NULL,
+	[ApprovalBy] [varchar](15) NULL,
+	[ApprovalDT] [datetime] NULL,
+	[BibitTopaz] varchar(1) NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCApproveBy] [int] NULL,
+	[FCApproveDT] [datetime] NULL,
+	[FCUnApproveBy] [int] NULL,
+	[FCUnApproveDT] [datetime] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[t_GroupSupp](
+	[GroupSuppID] [int] IDENTITY(1,1) NOT NULL,
+	[GroupSuppName] [varchar](max) NOT NULL,
+	[Regional] [varchar](20) NOT NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+)
+
+CREATE TABLE [dbo].[t_GroupSupp_Audit](
+	[GroupSuppID] [int] NOT NULL,
+	[GroupSuppName] [varchar](max) NOT NULL,
+	[Regional] [varchar](20) NOT NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[t_GroupSuppDet](
+	[NoId] [int] IDENTITY(1,1) NOT NULL,
+	[GroupSuppID] [int] NULL,
+	[PMKSID] [varchar](50) NOT NULL,
+	[SupplierID] [varchar](50) NOT NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+)
+
+CREATE TABLE [dbo].[t_GroupSuppDet_Audit](
+	[NoId] [int] NOT NULL,
+	[GroupSuppID] [int] NULL,
+	[PMKSID] [varchar](50) NOT NULL,
+	[SupplierID] [varchar](50) NOT NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[t_GroupIncentive](
+	[NoId] [int] IDENTITY(1,1) NOT NULL,
+	[GroupSuppID] [int] NOT NULL,
+	[Approval] [bit] NOT NULL,
+	[Incentive] [bit] NOT NULL,
+	[IncentiveQty1] [float] NOT NULL,
+	[IncentivePrice1] [int] NOT NULL,
+	[IncentiveQty2] [float] NOT NULL,
+	[IncentivePrice2] [int] NOT NULL,
+	[IncentiveQty3] [float] NOT NULL,
+	[IncentivePrice3] [int] NOT NULL,
+	[IncentiveQty4] [float] NOT NULL,
+	[IncentivePrice4] [int] NOT NULL,
+	[IncentiveQty5] [float] NOT NULL,
+	[IncentivePrice5] [int] NOT NULL,
+	[IncentiveQty6] [float] NOT NULL,
+	[IncentivePrice6] [int] NOT NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[FCApproveBy] [int] NULL,
+	[FCApproveDT] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[t_GroupIncentive_Audit](
+	[NoId] [int] NOT NULL,
+	[GroupSuppID] [int] NOT NULL,
+	[Approval] [bit] NOT NULL,
+	[Incentive] [bit] NOT NULL,
+	[IncentiveQty1] [float] NOT NULL,
+	[IncentivePrice1] [int] NOT NULL,
+	[IncentiveQty2] [float] NOT NULL,
+	[IncentivePrice2] [int] NOT NULL,
+	[IncentiveQty3] [float] NOT NULL,
+	[IncentivePrice3] [int] NOT NULL,
+	[IncentiveQty4] [float] NOT NULL,
+	[IncentivePrice4] [int] NOT NULL,
+	[IncentiveQty5] [float] NOT NULL,
+	[IncentivePrice5] [int] NOT NULL,
+	[IncentiveQty6] [float] NOT NULL,
+	[IncentivePrice6] [int] NOT NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[FCApproveBy] [int] NULL,
+	[FCApproveDT] [datetime] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[tblCompetitor_Audit](
+	[CompetitorID] [int]NOT NULL,
+	[CompetitorName] [varchar](50) NOT NULL,
+	[CompetitorLocation] [varchar](50) NULL,
+	[Capacity] [int] NULL,
+	[CompetitorGroup] [varchar](50) NULL,
+	[PMKSID] [varchar](50) NOT NULL,
+	[UserID] [varchar](15) NULL,
+	[LastAccess] [datetime] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[tblPrice_Audit](
+	[SupplierID] [nvarchar](50) NOT NULL,
+	[SupplierName] [nvarchar](50) NOT NULL,
+	[DatePrice] [date] NOT NULL,
+	[PMKSID] [nvarchar](50) NOT NULL,
+	[Price] [int] NULL,
+	[PPH22] [float] NULL,
+	[VAT] [float] NULL,
+	[KomidelCalculate] [nvarchar](1) NULL,
+	[UserID] [nvarchar](15) NULL,
+	[LastAccess] [datetime] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+ )
+
+Create Table incentivetemp(
+	Namapt varchar(200),
+	pmksid varchar(50),
+	idpt int
+)
+
+CREATE TABLE [dbo].[t_ListWeek](
+	[Week] [varchar](20) NOT NULL 
+	PRIMARY KEY ([week])
+)
+
+CREATE TABLE [dbo].[tblPPN_Audit](
+	[periode] [varchar](6) NULL,
+	[no_faktur_pajak] [varchar](25) NOT NULL,
+	[ppn_type] [varchar](1) NULL,
+	[tgl_faktur_pajak] [date] NULL,
+	[tgl_posting] [date] NULL,
+	[sap_company_code] [varchar](4) NULL,
+	[sap_vendor_code] [varchar](6) NULL,
+	[periode_awal] [date] NULL,
+	[periode_akhir] [date] NULL,
+	[disetorKe] [varchar](1) NULL,
+	[ppn_penyelesaian] [bit] NULL,
+	[no_faktur_pajak_advance] [varchar](25) NULL,
+	[CashNo] [nvarchar](25) NULL,
+	[amount_cash_advance] [bigint] NULL,
+	[total_amount] [bigint] NULL,
+	[incentive] [bigint] NULL,
+	[ppn] [bigint] NULL,
+	[userID] [varchar](50) NULL,
+	[LastAccess] [datetime] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+ )
+
+CREATE TABLE [dbo].[tblCashAdvance_Audit](
+	[CashNo] [varchar](25) NOT NULL,
+	[Period] [varchar](6) NULL,
+	[PMKSID] [varchar](50) NULL,
+	[SupplierID] [varchar](10) NULL,
+	[SupplierName] [varchar](50) NULL,
+	[Code] [varchar](8) NULL,
+	[Description] [varchar](100) NULL,
+	[Amount] [float] NULL,
+	[DeductAmount] [float] NULL,
+	[StatusApproval] [varchar](1) NULL,
+	[Week] [varchar](10) NULL,
+	[UserID] [varchar](15) NULL,
+	[LastAccess] [datetime] NULL,
+	[TransferDate] [datetime] NULL,
+	[UserApproval] [varchar](15) NULL,
+	[LastAccessApproval] [datetime] NULL,
+	[Tanggal] [date] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[t_Incentive](
+	[IncentiveID] [int] IDENTITY(1,1) NOT NULL,
+	[Periode] [varchar](7) NOT NULL,
+	[GroupSuppID] [int] NOT NULL,
+	[PMKSID] [varchar](50) NOT NULL,
+	[SupplierID] [varchar](15) NOT NULL,
+	[Netto] [float] NOT NULL,
+	[Incentive] [int] NOT NULL,
+	[PPH22] [numeric](18, 2) NULL,
+	[Remarks] [varchar](255) NULL,
+	[UploadToSAP] [bit] NULL,
+	[FCApproveBy] [int] NULL,
+	[FCApproveDT] [datetime] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[Approval] [bit] NULL
+)
+
+CREATE TABLE [dbo].[t_Incentive_Audit](
+	[IncentiveID] [int] NOT NULL,
+	[Periode] [varchar](7) NOT NULL,
+	[GroupSuppID] [int] NOT NULL,
+	[PMKSID] [varchar](50) NOT NULL,
+	[SupplierID] [varchar](15) NOT NULL,
+	[Netto] [float] NOT NULL,
+	[Incentive] [int] NOT NULL,
+	[PPH22] [numeric](18, 2) NULL,
+	[Remarks] [varchar](255) NULL,
+	[UploadToSAP] [bit] NULL,
+	[FCApproveBy] [int] NULL,
+	[FCApproveDT] [datetime] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[FCDefunctInd] [bit] NULL,
+	[Approval] [bit] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+
+CREATE TABLE [dbo].[tblBudget_Audit](
+	[PMKSID] [varchar](50) NOT NULL,
+	[Periode] [varchar](6) NOT NULL,
+	[VolumeFFB_KG] [decimal](18, 6) NULL,
+	[VolumeCPO_KG] [decimal](18, 6) NULL,
+	[VolumePK_KG] [decimal](18, 6) NULL,
+	[OER] [numeric](18, 2) NULL,
+	[KER] [numeric](18, 2) NULL,
+	[NetMargin_USD_MT_CPO] [numeric](18, 2) NULL,
+	[HK] [int] NULL,
+	[ExchangeRate] [decimal](18, 2) NULL,
+	[Capacity] [decimal](18, 2) NULL,
+	[ProduksiCangkang_KG] [decimal](18, 6) NULL,
+	[BakarCangkang_KG] [decimal](18, 6) NULL,
+	[EBITDA_Cangkang] [decimal](18, 6) NULL,
+	[ProduksiBA_KG] [decimal](18, 6) NULL,
+	[Price_BunchAsh] [numeric](18, 2) NULL,
+	[UserID] [varchar](15) NULL,
+	[LastAccess] [datetime] NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](10) NULL,
+	[TimeAudit] [datetime] NULL
+)
+CREATE TABLE [dbo].[t_ListVAT](
+	[VAT] [float] PRIMARY KEY NOT NULL
+)
+
+CREATE TABLE [dbo].[t_Email](
+	[AddressEmail] [varchar](200) NOT NULL PRIMARY KEY,
+	[ListSend] [varchar](50) NOT NULL,
+	[FCCreatedBy] [int] NULL,
+	[FCCreatedDT] [datetime] NULL,
+	[FCUpdatedBy] [int] NULL,
+	[FCUpdatedDT] [datetime] NULL,
+)
+
+CREATE TABLE [dbo].[tblFFB_Audit](
+	[Post2Payment] [datetime] NULL,
+	[Number] [nchar](50) NULL,
+	[PMKSID] [nvarchar](50) NOT NULL,
+	[Supplier] [nvarchar](50) NOT NULL,
+	[SupplierName] [nvarchar](50) NULL,
+	[GroupPayment] [nvarchar](5) NULL,
+	[Kendaraan] [nvarchar](10) NOT NULL,
+	[TanggalTimbang] [datetime] NOT NULL,
+	[Ticket] [nvarchar](15) NOT NULL,
+	[BeratNetto] [int] NULL,
+	[Potongan] [int] NULL,
+	[Netto] [int] NULL,
+	[NettoTransfeer] [int] NULL,
+	[Janjang] [int] NULL,
+	[Komidel] [real] NULL,
+	[HargaBeli] [int] NULL,
+	[Harga] [int] NULL,
+	[PPH22] [float] NULL,
+	[VAT] [float] NULL,
+	[TotalPembayaran] [float] NULL,
+	[RealisasiPanjarAmount] [float] NULL,
+	[PMKSTransfeer] [nvarchar](50) NULL,
+	[Remarks] [nvarchar](100) NULL,
+	[CalculateBy] [nvarchar](15) NULL,
+	[CalculateDate] [datetime] NULL,
+	[UserID] [nvarchar](15) NULL,
+	[LastAccess] [datetime] NULL,
+	[sap_process] [nvarchar](1) NULL,
+	[UserAudit] [int] NULL,
+	[ActionAudit] [varchar](20) NULL,
+	[TimeAudit] [datetime] NULL
+)

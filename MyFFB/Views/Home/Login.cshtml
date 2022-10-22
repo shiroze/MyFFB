@@ -1,0 +1,99 @@
+﻿@model MyAttd.Models.T_User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login - FFB SYSTEM</title>
+    <link rel="shortcut icon" href="~/FFBicon.ico" type="image/x-icon" />
+    <link rel="icon" href="~/FFBicon.ico" type="image/ico" />
+    <link rel="stylesheet" href="~/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="~/dist/css/skins/skin-blue.min.css">
+
+  </head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            @*<b>RND</b> Web-Centre*@
+
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <img class="img-responsive" src="~/Logo-FFB.png">
+            <hr />
+            @*<p class="login-box-msg">Sign in to start your session</p>*@
+            <form asp-action="Login">
+                <div class="form-horizontal">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group has-feedback">
+                        <div class="col-md-12">
+                            <input asp-for="FCUserName" class="form-control" placeholder="Nama Pengguna" id="Username" required />
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            <span asp-validation-for="FCUserName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <div class="col-md-12">
+                            <input asp-for="Password" class="form-control" placeholder="Kata Sandi" id="Password" type="password" required />
+                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    @if (ViewBag.Message != null)
+                    {
+                        <div id="dvMessage" class="alert alert-danger">
+                            <strong>Error!</strong>
+                            @ViewBag.Message
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-6">
+                            <input type="submit" value="Login" class="btn btn-default btn-block btn-flat" />
+                        </div>
+                        <div class="col-md-offset-3 col-md-6">
+                            <a href="@Url.Action("KCIndex", "Home")" class="btn btn-default btn-block btn-flat">SSO Login</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <hr />
+            @*Copyright &copy; 2022 Asian Agri Made with <i class="fa fa-heart text-danger"></i> by IT<br />*@
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <!-- REQUIRED JS SCRIPTS -->
+    <!-- jQuery 3 -->
+    <script src="~/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.min.js"></script>
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+    <script>
+        //localStorage.removeItem("Tanggal");
+        localStorage.clear();
+    </script>
+</body>
+</html>
+
+

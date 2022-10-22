@@ -1,0 +1,103 @@
+﻿@model MyAttd.Models.T_PriceDefault
+@*<div class="title">
+        VIEW Incentive
+        <hr />
+    </div>*@
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Delete", "TPriceDefault", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.PMKSID)
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.PMKSID, new { @required = "required", @readonly = "readonly", @class = "form-control", @id = "PMKSID" })
+                    @*<span class="btn btn-primary center" onclick="GridPMKS()" />*@
+                    @Html.ValidationMessageFor(m => m.PMKSID)
+                </div>
+            </div>
+            <div class="col-md-5">
+                @Html.LabelFor(m => m.Efective_Date)
+                @Html.TextBoxFor(m => m.Efective_Date, new { @required = "required", @readonly = "readonly", @class = "form-control", @id = "Efective_Date" })
+                @Html.ValidationMessageFor(m => m.Efective_Date)
+            </div>
+            <div class="col-md-12">
+
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.SupplierID)
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.SupplierID, new { @readonly = "readonly", @class = "form-control", @id = "SupplierID" })
+                    @*<span class="btn btn-primary center" onclick="GridSupplier(true)" />*@
+                    @Html.ValidationMessageFor(m => m.SupplierID)
+                </div>
+            </div>
+            <div class="col-md-9">
+                @Html.LabelFor(m => m.SupplierName)
+                @Html.TextBoxFor(m => m.SupplierName, new { @readonly = "readonly", @class = "form-control", @id = "SupplierName" })
+                @Html.ValidationMessageFor(m => m.SupplierName)
+            </div>
+            @*Row ------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-6">
+                <br />
+                <p id="msgBuat" style="background-color:dodgerblue; color:white;"></p>
+            </div>
+            <div class="col-md-6">
+                <br />
+                <p id="msgUpdate" style="background-color: darkseagreen; color: white;"></p>
+            </div>
+            <div class="col-md-12">
+                <br />
+            </div>
+
+            <div class="card-footer col-md-12">
+                <button id="button"
+                        text="DELETE"
+                        class="btn btn-danger"
+                        onclick="validatenumber()">
+                    <h4>Delete</h4>
+                </button>
+
+            </div>
+        </div>
+
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+
+        <script>
+    var NamaBuat = '@Model.CreatedBy.FCName';
+    var DTbuat = moment('@Model.FCCreatedDT').format("YYYY-MM-DD");
+        if ('@Model.FCCreatedDT' == '1/1/0001 12:00:00 AM') {
+            DTbuat = '';
+    }
+    if (NamaBuat == '') {
+        NamaBuat = 'N/A';
+    }
+
+    var msg = "Dibuat Oleh: " + NamaBuat+" " + DTbuat;
+    document.getElementById('msgBuat').innerHTML = msg;
+
+    var NameUbah = "N/A";
+    var DTubah = "";
+    if ('@Model.UpdateBy.FCName' !== "") {
+        NameUbah = '@Model.UpdateBy.FCName';
+        DTubah = moment('@Model.FCUpdatedDT').format("YYYY-MM-DD");
+    }
+    msg = "Diubah Oleh: "+NameUbah+" " + DTubah;
+    document.getElementById('msgUpdate').innerHTML = msg;
+
+    document.getElementById('Efective_Date').value = moment('@Model.Efective_Date').format('YYYY-MM-DD');
+        </script>
+
+    }
+}

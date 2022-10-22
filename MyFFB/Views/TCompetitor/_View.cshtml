@@ -1,0 +1,51 @@
+﻿@model MyAttd.Models.T_Competitor
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="dx-field center col-md-12 center">
+                @Html.HiddenFor(m => m.CompetitorID)
+
+                @Html.LabelFor(m => m.CompetitorName)
+                @Html.TextBoxFor(m => m.CompetitorName, new { @readonly = "readonly", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CompetitorName)
+
+                @Html.LabelFor(m => m.CompetitorLocation)
+                @Html.TextBoxFor(m => m.CompetitorLocation, new { @readonly = "readonly", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CompetitorLocation)
+
+                @Html.LabelFor(m => m.Capacity)
+                @Html.TextBoxFor(m => m.Capacity, new { @readonly = "readonly", @type = "number", @step = "1", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Capacity)
+
+                @Html.LabelFor(m => m.CompetitorGroup)
+                @Html.TextBoxFor(m => m.CompetitorGroup, new { @readonly = "readonly", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CompetitorGroup)
+
+                @Html.LabelFor(m => m.PMKSID)
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.PMKSID, new { @readonly = "readonly", @id = "grdPMKSID", @class = "form-control" })
+                    @*<span class="btn btn-primary center" onclick="GridPMKS()" />*@
+                    @Html.ValidationMessageFor(m => m.PMKSID)
+                </div>
+            </div>
+
+        </div>
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+        <script>
+
+        </script>
+
+    
+}

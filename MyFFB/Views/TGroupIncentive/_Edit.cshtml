@@ -1,0 +1,112 @@
+﻿@model MyAttd.Models.T_GroupIncentive
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    <style>
+
+        #tbl01 th {
+            text-align: center;
+            padding: 1px;
+        }
+
+        #tbl01 td {
+            text-align: center;
+            padding: 1px;
+        }
+    </style>
+    @using (Html.BeginForm("Edit", "TGroupIncentive", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="dx-field center col-md-12 center">
+                @Html.HiddenFor(m => m.NoId)
+                @Html.HiddenFor(m => m.GroupSuppID, new { @id = "grdGroupSuppID" })
+
+                @Html.LabelFor(m => m.GroupSuppName)
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.GroupSuppName, new { @readonly = "readonly", @id = "grdGroupSuppName", @class = "form-control" })
+                    <span class="btn btn-primary center" onclick="GridGroup()" />
+                    @Html.ValidationMessageFor(m => m.GroupSuppName)
+                </div>
+
+                @Html.LabelFor(m => m.Regional)
+                @Html.TextBoxFor(m => m.Regional, new { @readonly = "readonly", @id = "grdRegional", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Regional)
+
+
+                @Html.LabelFor(m => m.Incentive)
+                @Html.CheckBoxFor(m => m.Incentive)
+
+                @Html.LabelFor(m => m.Approval)
+                @Html.CheckBoxFor(m => m.Approval, new { @onclick = "return false" })
+            </div>
+            <div class="dx-field center col-md-12 center">
+                <table id="tbl01">
+                    <thead>
+                        <tr>
+                            <th>NO</th>
+                            <th>KG QTY >=</th>
+                            <th>Price / KG</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>@Html.TextBoxFor(m => m.IncentiveQty1, new { @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.IncentivePrice1, new { @type = "number", @step = "0.01", @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>@Html.TextBoxFor(m => m.IncentiveQty2, new { @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.IncentivePrice2, new { @type = "number", @step = "0.01", @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>@Html.TextBoxFor(m => m.IncentiveQty3, new { @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.IncentivePrice3, new { @type = "number", @step = "0.01", @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>@Html.TextBoxFor(m => m.IncentiveQty4, new { @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.IncentivePrice4, new { @type = "number", @step = "0.01", @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>@Html.TextBoxFor(m => m.IncentiveQty5, new { @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.IncentivePrice5, new { @type = "number", @step = "0.01", @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>@Html.TextBoxFor(m => m.IncentiveQty6, new { @type = "number", @step = "1", @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.IncentivePrice6, new { @type = "number", @step = "0.01", @class = "form-control" })</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="dx-field center col-md-12">
+                <button id="button"
+                        text="EDIT"
+                        class="btn btn-success"
+                        @*onclick="UpdateEdit()"*@>
+                    <h4>Edit</h4>
+                </button>
+            </div>
+
+        </div>
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+        <script>
+
+        </script>
+
+    }
+}

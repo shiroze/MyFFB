@@ -1,0 +1,13 @@
+﻿/**
+    This stylesheet override all css be careful when you add or edit style
+*/
+body {
+    font-size: 1rem;
+}
+a {
+    text-decoration: none;
+}
+.btn span {
+    font-size: 15px;
+    font-weight: 400;
+}

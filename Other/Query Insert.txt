@@ -1,0 +1,189 @@
+set IDENTITY_INSERT t_user ON;
+INSERT INTO t_user
+	([FCUserID],[FCUserName],[FCUserPass],[FCName]
+	,[FCRoleID],[FCPassExpDT],[FCLoginAttempt]
+	,[FCBlocked],[FCCreatedBy],[FCCreatedDT]
+	,[FCUpdatedBy],[FCUpdatedDT],[FCDefunctInd]
+	,[SetPMKSID],[FCFirstLogin],[LastTimeAccess])
+SELECT 
+	[FCUserID],[FCUserName],[FCUserPass],[FCName]
+	,[FCRoleID],[FCPassExpDT],[FCLoginAttempt]
+	,[FCBlocked],[FCCreatedBy],[FCCreatedDT]
+	,[FCUpdatedBy],[FCUpdatedDT],[FCDefunctInd]
+	,[SetPMKSID],[FCFirstLogin],[LastTimeAccess]
+From 
+	OPENDATASOURCE('SQLNCLI',  
+	'Data Source=172.21.8.12;Initial Catalog=FFB_Dbase1;User ID=sa;Password=mentimoen')  
+	.FFB_Dbase1.dbo.t_user
+set IDENTITY_INSERT t_user OFF;
+
+
+set IDENTITY_INSERT t_Role ON;
+INSERT INTO dbo.t_Role
+	([FCRoleID],[FCRoleDesc],[FCCreatedBy],[FCCreatedDT],[FCUpdatedBy],[FCUpdatedDT],
+	[FCDefunctInd],[Age])
+SELECT 
+	[FCRoleID],[FCRoleDesc],[FCCreatedBy],[FCCreatedDT],[FCUpdatedBy],[FCUpdatedDT],
+	[FCDefunctInd],[Age]
+From 
+	OPENDATASOURCE('SQLNCLI',  
+	'Data Source=172.21.8.12;Initial Catalog=FFB_Dbase1;User ID=sa;Password=mentimoen')  
+	.FFB_Dbase1.dbo.t_Role
+set IDENTITY_INSERT t_Role OFF;
+
+INSERT INTO dbo.t_RoleDet
+	(FCRoleID,FCMenuID,FCAdd,FCEdit,FCDelete,FCUndelete,FCCreatedBy,FCCreatedDT,
+	FCUpdatedBy,FCUpdatedDT,FCDefunctInd,FCApprove)
+SELECT 
+	FCRoleID,FCMenuID,FCAdd,FCEdit,FCDelete,FCUndelete,FCCreatedBy,FCCreatedDT,
+	FCUpdatedBy,FCUpdatedDT,FCDefunctInd,FCApprove
+From 
+	OPENDATASOURCE('SQLNCLI',  
+	'Data Source=172.21.8.12;Initial Catalog=FFB_Dbase1;User ID=sa;Password=mentimoen')  
+	.FFB_Dbase1.dbo.t_RoleDet
+
+set IDENTITY_INSERT t_Menu ON;
+INSERT INTO dbo.t_Menu
+	([FCMenuID],[FCMenuCode],[FCMenuDesc],[FCMenuPID],[FCMenuLink],[FCOrderNo]
+	,[FCIcon],[FCHidden],[FCCreatedBy],[FCCreatedDT],[FCDefunctInd],[FCUpdatedBy],[FCUpdatedDT]
+	)
+SELECT 
+	[FCMenuID],[FCMenuCode],[FCMenuDesc],[FCMenuPID],[FCMenuLink],[FCOrderNo]
+	,[FCIcon],[FCHidden],[FCCreatedBy],[FCCreatedDT],[FCDefunctInd],[FCUpdatedBy],[FCUpdatedDT]
+From 
+	OPENDATASOURCE('SQLNCLI',  
+	'Data Source=172.21.8.12;Initial Catalog=FFB_Dbase1;User ID=sa;Password=mentimoen')  
+	.FFB_Dbase1.dbo.t_Menu
+set IDENTITY_INSERT t_Menu OFF;
+
+set identity_insert tblCompetitor ON;
+INSERT INTO tblCompetitor
+([CompetitorID],[CompetitorName],[CompetitorLocation]
+,[Capacity],[CompetitorGroup],[PMKSID]
+,[UserID],[LastAccess])
+SELECT ROW_NUMBER() OVER (ORDER BY competitorName) as CompetitorID,* 
+FROM tblCompetitor1
+set identity_insert tblCompetitor OFF;
+
+
+--1. insert dulu t_GroupSupp (main master supplier group)
+SELECT DISTINCT
+	[GroupSupp],[Regional]
+	INTO #Temp1
+FROM [dbo].[TblGroupSupp]
+ORDER BY GroupSupp
+
+set identity_insert t_GroupSupp ON;
+INSERT INTO t_GroupSupp
+ ([GroupSuppID],[GroupSuppName],[Regional],[FCCreatedBy],[FCCreatedDT])
+SELECT ROW_NUMBER() OVER (
+		ORDER BY GroupSupp) as Nomor,*,1,GETDATE() FROM #Temp1
+set identity_insert t_GroupSupp OFF;
+DROP TABLE #Temp1
+
+--2. isi Detail t_GroupSuppDet (Detail supplier group)
+set identity_insert t_GroupSuppDet ON;
+INSERT INTO t_GroupSuppDet
+ (noid,GroupSuppID,PMKSID,SupplierID,FCCreatedBy,FCCreatedDT)
+SELECT 
+	ROW_NUMBER() OVER (ORDER BY b.GroupSuppID) as Nomor,
+	b.GroupSuppID,a.PMKSID,a.SupplierID,1,GETDATE() from TblGroupSupp a
+INNER JOIN t_GroupSupp b
+	ON a.GroupSupp=b.GroupSuppName
+set identity_insert t_GroupSuppDet OFF;
+
+--insert data t_incentive
+set identity_insert t_Incentive ON;
+INSERT INTO t_Incentive
+	(IncentiveID,Periode,GroupSuppID,PMKSID,SupplierID,
+	Netto,Incentive,pph22,Remarks,UploadToSAP,FCApproveBy,FCApproveDT,
+	FCCreatedBy,FCCreatedDT,Approval)
+SELECT 
+	ROW_NUMBER() OVER (ORDER BY a.Period,b.GroupSuppID) as IncentiveID,
+	a.Period,b.GroupSuppID,a.PMKSID,a.SupplierID,a.Netto,
+	a.Incentive,a.PPH22,a.Remarks,a.upload_to_sap,
+	iif(ApprovalBy='TONY',4,null) as FCApproveBy,
+	iif(year(ApprovalDT)>'1990',ApprovalDT,null) as FCApproveDT,
+	1,GETDATE(),a.Approval
+FROM tblIncentive a
+	LEFT JOIN t_GroupSupp b
+		ON a.GroupSupp=b.GroupSuppName
+WHERE b.GroupSuppID is not null
+ORDER BY a.Period,b.GroupSuppID
+set identity_insert t_Incentive OFF;
+
+
+--insert data t_GroupIncentive 
+set identity_insert t_GroupIncentive ON;
+INSERT INTO t_GroupIncentive
+	(NoId,GroupSuppID,Approval
+	,Incentive,IncentiveQty1,IncentivePrice1
+	,IncentiveQty2,IncentivePrice2
+	,IncentiveQty3,IncentivePrice3
+	,IncentiveQty4,IncentivePrice4
+	,IncentiveQty5,IncentivePrice5
+	,IncentiveQty6,IncentivePrice6
+	,FCCreatedBy, FCCreatedDT
+	,FCApproveBy,FCApproveDT)
+SELECT 
+	ROW_NUMBER() OVER (ORDER BY b.GroupSuppID) as NoId
+	,b.GroupSuppID,a.Approval
+	,IIF(a.Incentive='Y','1','0') as Incentive
+	,ISNULL(a.IncentiveQty1,0),ISNULL(a.IncentivePrice1,0)
+	,ISNULL(a.IncentiveQty2,0),ISNULL(a.IncentivePrice2,0)
+	,ISNULL(a.IncentiveQty3,0),ISNULL(a.IncentivePrice3,0)
+	,ISNULL(a.IncentiveQty4,0),ISNULL(a.IncentivePrice4,0)
+	,ISNULL(a.IncentiveQty5,0),ISNULL(a.IncentivePrice5,0)
+	,ISNULL(a.IncentiveQty6,0),ISNULL(a.IncentivePrice6,0)
+	,1 as FCCreatedBy, GETDATE()
+	,iif(RTRIM(LTRIM(a.ApprovalBy))='TONY',4,null) as ApprovalBy
+	,iif(year(ApprovalDT)>'1990',ApprovalDT,null) as ApprovalDT
+FROM tblGroupIncentive a
+  LEFT JOIN t_GroupSupp b
+	ON a.GroupSupp=b.GroupSuppName
+WHERE b.GroupSuppID is NOT NULL
+set identity_insert t_GroupIncentive OFF;
+
+set IDENTITY_INSERT t_AreaRegional ON;
+INSERT INTO t_AreaRegional
+([AreaID],[AreaOperational],[Regional],[FCCreatedBy]
+,[FCCreatedDT],[FCUpdatedBy],[FCUpdatedDT],[FCDefunctInd])
+SELECT *
+From 
+	OPENDATASOURCE('SQLNCLI',  
+	'Data Source=172.21.8.12;Initial Catalog=FFB_Dbase1;User ID=sa;Password=mentimoen')  
+	.FFB_Dbase1.dbo.t_AreaRegional
+set IDENTITY_INSERT t_AreaRegional OFF;
+
+
+INSERT INTO [t_ListWeek]
+SELECT distinct [Week]
+	  FROM [FFB_Dbase].[dbo].[tblCashAdvance]
+	where ISNULL([week],'')<>''
+
+
+insert into t_listVAT
+(VAT) VALUES (0),(1.1),(11)
+
+
+INSERT INTO t_AreaRegional
+(AreaOperational,Regional,FCCreatedBy,FCCreatedDT)
+select distinct AreaOperational,Regional,1,GETDATE() from tblPMKS
+
+
+UPDATE tblCashAdvance 
+SET Tanggal=LEFT([period],4)+'-'+RIGHT([period],2)+'-01'
+
+
+UPDATE tblSupplier SET FCApproveBy=4,FCApproveDT=ApprovalDT
+WHERE ISNULL(Approval,0)=1 and ApprovalBy='TONY'
+
+
+INSERT INTO t_Email
+	(AddressEmail,ListSend,FCCreatedBy,FCCreatedDT,FCUpdatedBy,FCUpdatedDT)
+SELECT 
+	AddressEmail,ListSend,FCCreatedBy,FCCreatedDT,FCUpdatedBy,FCUpdatedDT
+From 
+	OPENDATASOURCE('SQLNCLI',  
+	'Data Source=172.21.8.59;Initial Catalog=FFB_Dbase;User ID=sa;Password=0wnership@asian')  
+	.FFB_Dbase.dbo.t_email

@@ -1,0 +1,74 @@
+﻿@model MyAttd.Models.T_SetReport
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "TSetReport", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="editors">
+    @*Row 1------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.ReportID)
+        @Html.TextBoxFor(m => m.ReportID, new { @class = "form-control", @id = "ReportID" })
+        @Html.ValidationMessageFor(m => m.ReportID)
+    </div>
+    <div class="col-md-12"></div>
+    @*Row 2------------------------------------------------------------------------------------*@
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.Name1)
+        @Html.TextBoxFor(m => m.Name1, new { @class = "form-control", @id = "Name1" })
+        @Html.ValidationMessageFor(m => m.Name1)
+    </div>
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.Name4)
+        @Html.TextBoxFor(m => m.Name4, new { @class = "form-control", @id = "Name4" })
+        @Html.ValidationMessageFor(m => m.Name4)
+    </div>
+    @*Row 3------------------------------------------------------------------------------------*@
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.Name2)
+        @Html.TextBoxFor(m => m.Name2, new { @class = "form-control", @id = "Name2" })
+        @Html.ValidationMessageFor(m => m.Name2)
+    </div>
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.Name5)
+        @Html.TextBoxFor(m => m.Name5, new { @class = "form-control", @id = "Name5" })
+        @Html.ValidationMessageFor(m => m.Name5)
+    </div>
+    @*Row 4------------------------------------------------------------------------------------*@
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.Name3)
+        @Html.TextBoxFor(m => m.Name3, new { @class = "form-control", @id = "Name3" })
+        @Html.ValidationMessageFor(m => m.Name3)
+    </div>
+    <div class="col-md-12">
+        <br />
+    </div>
+
+    <div class="card-footer col-md-12">
+        <button id="button"
+                text="ADD"
+                class="btn btn-primary"
+                onclick="validatenumber()">
+            <h4>ADD</h4>
+        </button>
+    </div>
+</div>
+
+        
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+<script>
+
+</script>
+
+    }
+}

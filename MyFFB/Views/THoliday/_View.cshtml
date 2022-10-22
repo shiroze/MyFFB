@@ -1,0 +1,40 @@
+﻿@model MyAttd.Models.T_Holiday
+@*<div class="title">
+        VIEW Incentive
+        <hr />
+    </div>*@
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+
+    @Html.AntiForgeryToken()
+<div class="editors">
+    @*Row 1------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.Date)
+        @Html.TextBoxFor(m => m.Date, new { @readonly = "readonly", @class = "form-control", @id="date" })
+        @Html.ValidationMessageFor(m => m.Date)
+    </div>
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.Remarks)
+        @Html.TextBoxFor(m => m.Remarks, new { @readonly = "readonly", @class = "form-control", @id = "Remarks" })
+        @Html.ValidationMessageFor(m => m.Remarks)
+    </div>
+</div>
+
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+<script>
+    document.getElementById('date').value = moment('@Model.Date').format('YYYY-MM-DD');
+</script>
+
+}

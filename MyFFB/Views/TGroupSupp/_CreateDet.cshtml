@@ -1,0 +1,70 @@
+﻿@model MyAttd.Models.T_GroupSuppDet
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("CreateDet", "TGroupSupp", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="dx-field center col-md-12 center">
+                @Html.HiddenFor(m => m.NoId)
+
+                @Html.LabelFor(m => m.GroupSuppID)
+                @Html.TextBoxFor(m => m.GroupSuppID, new { @readonly = "readonly", @id = "GroupSuppID", @class = "form-control"})
+
+                @Html.LabelFor(m => m.GroupSuppName)
+                @Html.TextBoxFor(m => m.GroupSuppName, new { @readonly = "readonly", @id= "GroupSuppName", @class = "form-control"})
+                @Html.ValidationMessageFor(m => m.GroupSuppName)
+
+                @Html.LabelFor(m => m.PMKSID)
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.PMKSID, new { @readonly = "readonly", @id = "grdPMKSID", @class = "form-control" })
+                    <span class="btn btn-primary center" onclick="GridSupplier()" />
+                    @Html.ValidationMessageFor(m => m.PMKSID)
+                </div>
+
+                @Html.LabelFor(m => m.PMKSName)
+                @Html.TextBoxFor(m => m.PMKSName, new { @readonly = "readonly", @id = "grdPMKSName", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PMKSName)
+
+                @Html.LabelFor(m => m.SupplierID)
+                @Html.TextBoxFor(m => m.SupplierID, new { @readonly = "readonly", @id = "grdSupplierID", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SupplierID)
+
+                @Html.LabelFor(m => m.SupplierName)
+                @Html.TextBoxFor(m => m.SupplierName, new { @readonly = "readonly", @id = "grdSupplierName", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SupplierName)
+
+                @Html.LabelFor(m => m.Regional)
+                @Html.TextBoxFor(m => m.Regional, new { @readonly = "readonly", @id = "grdRegional", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Regional)
+            </div>
+
+            <div class="dx-field center col-md-12">
+                <button id="button"
+                        text="Save"
+                        class="btn btn-primary"
+                        usesubmitbehavior="true">
+                    <h4>Save</h4>
+                </button>
+            </div>
+
+        </div>
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+<script>
+
+    $("#GroupSuppID").val("@ViewBag.Header[0]");
+    $("#GroupSuppName").val("@ViewBag.Header[1]");
+</script>
+
+    }
+}

@@ -1,0 +1,139 @@
+﻿@model MyAttd.Models.T_PPN
+
+<div class="title">
+    VIEW VAT Advance
+    <hr />
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+
+    @using (Html.BeginForm("View", "TPPN", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.no_faktur_pajak)
+                @Html.TextBoxFor(m => m.no_faktur_pajak, new { @readonly = "readonly", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.no_faktur_pajak)
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.tgl_faktur_pajak)
+                @Html.EditorFor(m => m.tgl_faktur_pajak, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control", @id = "tgl_faktur_pajak" } })
+                @Html.ValidationMessageFor(m => m.tgl_faktur_pajak)
+            </div>
+
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.Periode)
+                @Html.EditorFor(m => m.Periode, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control", @id = "Periode" } })
+                @Html.ValidationMessageFor(m => m.Periode)
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.sap_company_code)
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.sap_company_code, new { @readonly = "readonly", @class = "form-control", @id = "grdCompanyCode" })
+                    @*<span class="btn btn-primary center" onclick="GridPMKS()" />*@
+                    @Html.ValidationMessageFor(m => m.sap_company_code)
+                </div>
+
+                @Html.LabelFor(m => m.sap_company_name)
+
+                @Html.TextBoxFor(m => m.sap_company_name, new { @readonly = "readonly", @class = "form-control", @id = "grdCompanyName" })
+                @Html.ValidationMessageFor(m => m.sap_company_name)
+
+                @Html.LabelFor(m => m.sap_vendor_code)
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.sap_vendor_code, new { @readonly = "readonly", @class = "form-control", @id = "grdVendorCode" })
+                    @*<span class="btn btn-primary center" onclick="GridSAPVENDOR()" />*@
+                    @Html.ValidationMessageFor(m => m.sap_vendor_code)
+                </div>
+
+                @Html.LabelFor(m => m.sap_vendor_name)
+                @Html.TextBoxFor(m => m.sap_vendor_name, new { @readonly = "readonly", @class = "form-control", @id = "grdVendorName" })
+                @Html.ValidationMessageFor(m => m.sap_vendor_name)
+            </div>
+            <div class="col-md-6">
+
+                @Html.LabelFor(m => m.CashNo)
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.CashNo, new { @readonly = "readonly", @class = "form-control", @id = "no_faktur_pajak_advance" })
+                    @*<span id="btnCashNo" class="btn btn-primary center" onclick="GridPajakAdvance()" />*@
+                    @Html.ValidationMessageFor(m => m.CashNo)
+                </div>
+
+                @Html.LabelFor(m => m.amount_cash_advance)
+                @Html.TextBoxFor(m => m.amount_cash_advance, new { @readonly = "readonly", @class = "form-control", @id = "amount_cash_advance" })
+                @Html.ValidationMessageFor(m => m.amount_cash_advance)
+
+
+                @Html.LabelFor(m => m.ppn)
+                @Html.TextBoxFor(m => m.ppn, new { @readonly = "readonly", @class = "form-control", @id = "ppn" })
+                @Html.ValidationMessageFor(m => m.ppn)
+
+                @Html.LabelFor(m => m.disetorke)
+                <div class="input-group">
+                    @Html.DropDownListFor(m => m.disetorke, new SelectList(Enum.GetValues(typeof(setor)), "Select Gender"), new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.disetorke)
+                    <div class="center" style="margin:auto;">
+                        &nbsp;Nb : V = Vendor, K = KPPTN
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-12">
+                <br />
+            </div>
+            @*<div class="col-md-12 card-footer">
+                    <button id="button"
+                            text="View"
+                            class="btn btn-primary"
+                            onclick="validatenumber()">
+                        <h4>Save</h4>
+                    </button>
+                </div>*@
+        </div>
+
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+
+        <script>
+            //untuk ppn--------------------------------------------------------------------------------------------------
+            var ppn = numeral(document.getElementById('ppn').value);
+            $("#ppn").val(ppn.format('0,0'));
+
+            $("#ppn").on('blur', function () {
+                ppn = numeral(document.getElementById('ppn').value);
+                $(this).val(ppn.format('0,0'));
+            })
+            //--------------------------------------------------------------------------------------------------------------------
+            //untuk amount_cash_advance--------------------------------------------------------------------------------------------------
+            var amount_cash_advance = numeral(document.getElementById('amount_cash_advance').value);
+            $("#amount_cash_advance").val(amount_cash_advance.format('0,0'));
+
+            $("#amount_cash_advance").on('blur', function () {
+                amount_cash_advance = numeral(document.getElementById('amount_cash_advance').value);
+                $(this).val(amount_cash_advance.format('0,0'));
+            })
+
+            //untuk periode-------------------------------------------------------------------------------------------------------
+            var getperiode = '@Model.Periode'.substring(0, 4) + '-' + '@Model.Periode'.substring(4, 6);
+            var periodemoment = moment(getperiode).format("YYYY-MM");
+            document.getElementById('periode').value = periodemoment;
+            //--------------------------------------------------------------------------------------------------------------------
+
+        </script>
+    }
+}

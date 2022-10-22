@@ -1,0 +1,135 @@
+﻿@model MyAttd.Models.T_Incentive
+
+@*<div class="title">
+    Create
+    <hr />
+</div>*@
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+
+    @using (Html.BeginForm("Create", "TIncentive", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors" id="formLoadingChild" align="center">
+            <img src="~/loadinggif1.gif" style="width:100px;height:70px" />
+            <p><h1>Loading Data.....</h1></p>
+        </div>
+        <div class="editors" id="ChildCreate">
+            @*Row 1------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-3" hidden>
+                @Html.LabelFor(m => m.GroupSuppID)
+                @Html.TextBoxFor(m => m.GroupSuppID, new { @readonly = "readonly", @class = "form-control", @id = "GroupSuppID" })
+                @Html.ValidationMessageFor(m => m.GroupSuppID)
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.GroupSuppName)
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.GroupSuppName, new { @readonly = "readonly", @class = "form-control", @id = "GroupSuppName" })
+                    <span class="btn btn-primary center" onclick="GridIncentive()" />
+                    @Html.ValidationMessageFor(m => m.GroupSuppName)
+                </div>
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.Periode)
+                @Html.EditorFor(m => m.Periode, new { htmlAttributes = new { @type = "month", @class = "form-control", @id = "Periode" } })
+                @Html.ValidationMessageFor(m => m.Periode)
+            </div>
+            @*Row 2------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.PMKSID)
+                @Html.TextBoxFor(m => m.PMKSID, new { @readonly = "readonly", @class = "form-control", @id = "PMKSID" })
+                @Html.ValidationMessageFor(m => m.PMKSID)
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.CompanyCode)
+                @Html.TextBoxFor(m => m.CompanyCode, new { @readonly = "readonly", @class = "form-control", @id = "CompanyCode" })
+                @Html.ValidationMessageFor(m => m.CompanyCode)
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.Regional)
+                @Html.TextBoxFor(m => m.Regional, new { @readonly = "readonly", @class = "form-control", @id = "Regional" })
+                @Html.ValidationMessageFor(m => m.Regional)
+            </div>
+            @*Row 3------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-12">
+            </div>
+
+            @*Row 4------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.SupplierID)
+                @Html.TextBoxFor(m => m.SupplierID, new { @readonly = "readonly", @class = "form-control", @id = "SupplierID" })
+                @Html.ValidationMessageFor(m => m.SupplierID)
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.VendorCode)
+                @Html.TextBoxFor(m => m.VendorCode, new { @readonly = "readonly", @class = "form-control", @id = "VendorCode" })
+                @Html.ValidationMessageFor(m => m.VendorCode)
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.SupplierName)
+                @Html.TextBoxFor(m => m.SupplierName, new { @readonly = "readonly", @class = "form-control", @id = "SupplierName" })
+                @Html.ValidationMessageFor(m => m.SupplierName)
+            </div>
+            @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+            @*<div class="col-md-12">
+                @Html.LabelFor(m => m.Remarks)
+                @Html.TextBoxFor(m => m.Remarks, new { @readonly = "readonly", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Remarks)
+            </div>*@
+
+            <div class="col-md-12">
+                <br />
+            </div>
+            <div class="col-md-12 card-footer">
+                <button id="button"
+                        text="Save"
+                        class="btn btn-primary"
+                        onclick="ValidateFormat()">
+                    <h4>Save</h4>
+                </button>
+            </div>
+        </div>
+
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+
+        <script>
+            $('#formLoadingChild').hide()
+            ////untuk total_amount--------------------------------------------------------------------------------------------------
+            //var total_amount = numeral(document.getElementById('total_amount').value);
+            //$("#total_amount").val(total_amount.format('0,0'));
+
+            //$("#total_amount").on('blur', function () {
+            //    total_amount = numeral(document.getElementById('total_amount').value);
+            //    $(this).val(total_amount.format('0,0'));
+            //})
+            ////--------------------------------------------------------------------------------------------------------------------
+            var periodemoment = moment().format("YYYY-MM");
+            if (localStorage.getItem("PeriodeIncentive") !== null) {
+                periodemoment = localStorage.getItem("PeriodeIncentive");
+            }
+            document.getElementById("Periode").value = periodemoment;
+
+            //untuk periode dan default value-------------------------------------------------------------------------------------------------------
+            //var periodemoment = moment().format("YYYY-MM");
+            //document.getElementById('periode').value = periodemoment;
+            //document.getElementById('tgl_faktur_pajak').value = moment().format("YYYY-MM-DD");
+            //document.getElementById('periode_awal').value = moment().startOf('month').format("YYYY-MM-DD");
+            //document.getElementById('periode_akhir').value = moment().endOf('month').format("YYYY-MM-DD");
+            //--------------------------------------------------------------------------------------------------------------------
+
+            
+            
+            
+        </script>
+    }
+}

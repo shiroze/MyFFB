@@ -1,0 +1,93 @@
+﻿@model IEnumerable<MyAttd.Models.T_Price>
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+
+    <table class="table table-bordered table-responsive table-hover" style="white-space:nowrap" id="cssTableUtama">
+        <thead class="table-primary" style="position:sticky; top:0;">
+            <tr>
+                <th>Actions</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SupplierID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SupplierName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DatePrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PMKSID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PPH22)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VAT)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.KomidelCalculate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedBy.FCName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCCreatedDT)
+                </th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <button class="btn btn-success" onclick="editIconClick('@item.SupplierID','@item.SupplierName','@item.PMKSID','@item.DatePrice')"><i class="fa fa-edit"></i></button>
+                        <button class="btn btn-danger" onclick="deleteIconClick('@item.SupplierID','@item.SupplierName','@item.PMKSID','@item.DatePrice')" )><i class="fa fa-trash"></i></button>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SupplierID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SupplierName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DatePrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PMKSID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PPH22)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VAT)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.KomidelCalculate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy.FCName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FCCreatedDT)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<script>
+
+</script>

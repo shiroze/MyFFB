@@ -1,0 +1,100 @@
+﻿@model MyAttd.Models.T_Tender
+@*<div class="title">
+        VIEW Incentive
+        <hr />
+    </div>*@
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+
+    @Html.AntiForgeryToken()
+<div class="editors">
+    @*Row 1------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.DateTender)
+        @Html.TextBoxFor(m => m.DateTender, new { @readonly = "readonly", @class = "form-control", @id = "DateTender" })
+        @Html.ValidationMessageFor(m => m.DateTender)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.ProductID)
+        @Html.TextBoxFor(m => m.ProductID, new { @required = "required", @readonly = "readonly", @class = "form-control", @id = "ProductID" })
+        @Html.ValidationMessageFor(m => m.ProductID)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.Region)
+        @Html.TextBoxFor(m => m.Region, new { @readonly = "readonly", @class = "form-control", @id = "Region" })
+        @Html.ValidationMessageFor(m => m.Region)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.Price)
+        @Html.TextBoxFor(m => m.Price, new { @readonly = "readonly", @class = "form-control", @id = "Price" })
+        @Html.ValidationMessageFor(m => m.Price)
+    </div>
+    @*Row 2------------------------------------------------------------------------------------------------------------------------*@
+
+    <div class="col-md-12">
+        @Html.LabelFor(m => m.Remarks)
+        @Html.TextBoxFor(m => m.Remarks, new { @readonly = "readonly", @class = "form-control", @id = "Remarks" })
+        @Html.ValidationMessageFor(m => m.Remarks)
+    </div>
+
+    @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-6">
+        <br />
+        <p id="msgBuat" style="background-color:dodgerblue; color:white;"></p>
+    </div>
+    <div class="col-md-6">
+        <br />
+        <p id="msgUpdate" style="background-color: darkseagreen; color: white;"></p>
+    </div>
+</div>
+
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+<script>
+    var NamaBuat = '@Model.CreatedBy.FCName';
+    var DTbuat = moment('@Model.FCCreatedDT').format("YYYY-MM-DD");
+        if ('@Model.FCCreatedDT' == '1/1/0001 12:00:00 AM') {
+            DTbuat = '';
+    }
+    if (NamaBuat == '') {
+        NamaBuat = 'N/A';
+    }
+
+    var msg = "Dibuat Oleh: " + NamaBuat+" " + DTbuat;
+    document.getElementById('msgBuat').innerHTML = msg;
+
+    var NameUbah = "N/A";
+    var DTubah = "";
+    if ('@Model.UpdateBy.FCName' !== "") {
+        NameUbah = '@Model.UpdateBy.FCName';
+        DTubah = moment('@Model.FCUpdatedDT').format("YYYY-MM-DD");
+    }
+    msg = "Diubah Oleh: "+NameUbah+" " + DTubah;
+    document.getElementById('msgUpdate').innerHTML = msg;
+
+    @*var NameApprove = "N/A";
+    var DTApprove = "";
+    if ('@Model.ApproveBy.FCName' !== "") {
+        NameUbah = '@Model.ApproveBy.FCName';
+        DTApprove = moment('@Model.FCApproveDT').format("YYYY-MM-DD");
+    }
+    msg = "Diapprove Oleh: " + NameApprove + " " + DTApprove;
+    document.getElementById('msgApprove').innerHTML = msg;*@
+
+
+    var Price = numeral(document.getElementById('Price').value);
+    $("#Price").val(Price.format('0,0'));
+    document.getElementById('DateTender').value = moment('@Model.DateTender').format('YYYY-MM-DD');
+</script>
+
+}

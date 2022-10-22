@@ -1,0 +1,465 @@
+﻿@model IEnumerable<MyAttd.Models.T_Price>
+
+@{
+    ViewData["Title"] = "Master Price";
+}
+
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+</section>
+<style>
+    th {
+        position: sticky;
+        top: 0;
+    }
+</style>
+
+@if (ViewData["Message"] != null)
+{
+    <section class="content" style="min-height:0px !important;padding-top:0px !important; padding-bottom:0px !important;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-warning box-solid" style="margin-top:15px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Perhatian!</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        @ViewData["Message"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<div align=center id="formLoading">
+    <img src="~/loadinggif1.gif" style="width:100px;height:70px" />
+    <p><h1>Loading Data.....</h1></p>
+</div>
+<section class="content container-fluid" id="formUtama">
+    <div class="box">
+        <div class="box-header with-border">
+            <button class="btn btn-primary" onclick="newItemMenuClick()"><h4><i class="fa fa-plus-circle"></i> New Item</h4></button>
+            <button class="btn-outline-dark" style="border: none" onclick="nextbackTanggal('BACK')">
+                <i class="fa fa-angle-double-left"></i>
+            </button>
+            <input type="date" id="currentDate" name="Date Price">
+            <button class="btn-outline-dark" style="border: none" onclick="nextbackTanggal('NEXT')">
+                <i class="fa fa-angle-double-right"></i>
+            </button>
+
+            <b>PMKS : </b>
+            @Html.DropDownList("PMKS", new SelectList(ViewBag.DListPMKS, "PMKSID", "PMKSID"), new { @id = "fil_pmks" })
+            <button class="btn btn-primary" style="border: none" onclick="LoadMainTable()">
+                <h4>Filter</h4>
+            </button>
+
+            @if (ViewBag.can_edit_data == 1)
+            {
+                <b>+/- Harga : </b><input type="text" id="UpHarga" size="2" />
+                <button class="btn btn-success" style="border: none" onclick="getCheck()">
+                    <h4>Set Price</h4>
+                </button>
+            }
+            @*<b>PMKS : </b><input type="text" id="fil_pmks" size="2" placeholder="PMKS" />*@
+
+
+            @*<div class="right-side">
+            <h4>FILTER</h4>
+        </div>*@
+            @*<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">*@
+
+        </div>
+        <div class="box-body">
+            <div id="AreaMainTable">
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="popup">
+</div>
+<div id="popupChild">
+</div>
+<div id="popupUpHarga">
+</div>
+<script>
+
+    //date_input.addEventListener("keydown", function (event) {
+    //    if (event.key === "Enter") {
+    //        LoadMainTable();
+    //        localStorage.setItem("m_tglPrice", date_input.value);
+    //    }
+    //});
+    document.getElementById('fil_pmks').value = "";
+    var fil_pmks = document.getElementById('fil_pmks')
+    fil_pmks.addEventListener("keydown", function (event) {
+        if (event.key === 'Enter' || event.keyCode === 13) {
+            //LoadMainTable();
+        }
+    });
+
+
+    function LoadProcess() {
+        $('#formLoading').show();
+        $('#formUtama').hide();
+    }
+    function LoadFinish() {
+        $('#formLoading').hide();
+        $('#formUtama').show();
+    }
+
+    if (localStorage.getItem("m_tglPrice") == null) {
+        document.getElementById('currentDate').value = moment().format("YYYY-MM-DD");
+    }
+    else {
+        document.getElementById("currentDate").value = localStorage.getItem("m_tglPrice");
+    }
+
+    var date_input = document.getElementById('currentDate');
+    LoadMainTable();
+    function LoadMainTable() {
+        LoadProcess();
+        localStorage.setItem("m_tglPrice", date_input.value);
+        date_input = document.getElementById('currentDate');
+        var pmks = document.getElementById('fil_pmks').value.trim();
+        $.ajax
+            ({
+                //url: '/TPrice/GridMainTable/',
+                url: '@Url.Action("GridMainTable", "TPrice")',
+                traditional: true,
+                data: { p_datepick: date_input.value, fil_pmks: pmks },
+                success: function (data) {
+                    if (data) {
+                        $("#AreaMainTable").html(data);
+                        LoadFinish();
+                    }
+                }
+            });
+    }
+
+    date_input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            LoadMainTable();
+            //localStorage.setItem("m_tglPrice", date_input.value);
+        }
+    });
+
+
+    function nextbackTanggal(a) {
+        datenow = document.getElementById('currentDate').value;
+        var tglmoment;
+        if (a == "NEXT") {
+            tglmoment = moment(datenow).add(1, 'days').format("YYYY-MM-DD");
+        }
+        else {
+            tglmoment = moment(datenow).subtract(1, 'days').format("YYYY-MM-DD");
+        }
+        document.getElementById('currentDate').value = moment(tglmoment).format("YYYY-MM-DD");
+        LoadMainTable();
+        //localStorage.setItem("m_tglPrice", tglmoment);
+    }
+
+
+    $(function () {
+        $("#popup").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width: 300,
+            height: 550,
+            resizeEnabled: false
+        });
+        $("#popupChild").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width: 750,
+            height: 400,
+            resizeEnabled: false
+        });
+        $("#popupUpHarga").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width: 550,
+            height: 450,
+            resizeEnabled: false
+        });
+    });
+    function newItemMenuClick(e) {
+        $.ajax({
+                url: '@Url.Action("Create", "TPrice")',
+                traditional: true,
+                data: {  }
+        }).done (function (response) {
+            $("#popup").dxPopup({
+                title: "ADD",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+
+        }).fail(function (data) {
+                alert("Failed: " + data.response);
+        });
+    }
+
+
+    function editIconClick(a, b, c, d) {
+        $.ajax({
+            url: '/TPrice/Edit?p_SupplierID=' + a + '&p_SupplierName=' + b + '&p_PMKSID=' + c + '&p_DatePrice=' + d,
+            url: '@Url.Action("Edit", "TPrice")',
+            traditional: true,
+            data: { p_SupplierID: a, p_SupplierName: b, p_PMKSID: c, p_DatePrice:d}
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "EDIT",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function deleteIconClick(a,b,c,d) {
+        $.ajax({
+            //url: '/TPrice/Delete?p_SupplierID=' + a + '&p_SupplierName=' + b + '&p_PMKSID=' + c + '&p_DatePrice=' + d,
+            url: '@Url.Action("Delete", "TPrice")',
+            traditional: true,
+            data: { p_SupplierID: a, p_SupplierName: b, p_PMKSID: c, p_DatePrice:d},
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "Hapus",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function GridSupplierPrice() {
+        var dateprice = moment(document.getElementById("DatePrice").value).format("YYYY-MM-DD");
+        $.ajax({
+            //url: '/TSAPVendor/GridSupplierPrice?dateprice='+dateprice,
+            url: '@Url.Action("GridSupplierPrice", "TSAPVendor")',
+            traditional: true,
+            data: { dateprice: dateprice},
+        }).done(function (response) {
+            $("#popupChild").dxPopup({
+                title: "List Supplier Price",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    //contentElement.append(response)
+                    var response_new = response.replace("<hr />", "").replace("<hr />", "");
+                    contentElement.append(response_new)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+    function selectSupplierPrice(a, b, c,d,VAT,PPH) {
+        let text =
+            "Data" +
+            "\nSupplier ID : " + a +
+            "\nSupplier Name : " + b +
+            "\nPMKS ID : " + c +
+            "\nPMKS Name : " + d;
+
+        if (true) {
+            $("#grdSupplierID").val(a);
+            $("#grdSupplierName").val(b);
+            $("#grdPMKSID").val(c);
+            $("#VAT").val(VAT);
+            $("#PPH22").val(PPH);
+            $("#popupChild").dxPopup('instance').hide();
+        }
+    }
+    var UpHarga = numeral(document.getElementById('UpHarga').value);
+    $("#UpHarga").val(UpHarga.format('0,0'));
+
+    $("#UpHarga").on('blur', function () {
+        UpHarga = numeral(document.getElementById('UpHarga').value);
+        $(this).val(UpHarga.format('0,0'));
+    })
+
+
+
+    var arr = [];
+    var CheckHeader = false;
+    function getCheck() {
+        CheckHeader = false;
+        arr = [];
+        var grid = document.getElementById("cssTableUtama");
+        var checkBoxes = grid.getElementsByTagName("INPUT");
+        var j = 0;
+        var arrInfo = [];
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].checked) {
+                if (checkBoxes[i].id == "CheckHeader") {
+                    CheckHeader=true
+                }
+                var row = checkBoxes[i].parentNode.parentNode;
+                var supplierid = row.cells[3].innerHTML.trim();
+                var suppliername = row.cells[4].innerHTML.trim();
+                var dateprice = row.cells[5].innerHTML.trim();
+                var pmksid = row.cells[6].innerHTML.trim();
+                var harga = row.cells[7].innerHTML.trim();
+                var hargafinal = parseFloat(harga) + UpHarga._value;
+                //arr untuk function func_UpHarga
+                arr[j] = { "SupplierID": supplierid, "PMKSID": pmksid, "DatePrice": dateprice, "UpPrice": UpHarga._value }
+                arrInfo[j] = { "SupplierID": suppliername, "PMKSID": pmksid, "DatePrice": dateprice, "Harga": harga, "HargaUp": hargafinal }
+                j += 1;
+            }
+        }
+        var coba = arrInfo;
+        if (CheckHeader == true) {
+            coba = arrInfo.slice(1);
+        }
+        var p_json = JSON.stringify(coba);
+        //console.log(p_json)
+
+        //var col = [];
+        //for (var i = 0; i < p_json.length; i++) {
+        //    for (var key in p_json[i]) {
+        //        if (col.indexOf(key) === -1) {
+        //            col.push(key);
+        //        }
+        //    }
+        //}
+
+        //// CREATE DYNAMIC TABLE.
+        //var table = document.createElement("table");
+        //table.setAttribute('class', "table table-bordered table-responsive table-hover");
+        //table.setAttribute('style', "white-space:nowrap");
+        //table.setAttribute('id', "cssTableUtama");
+
+        //// CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+        //var header = table.createTHead();
+        //header.setAttribute('class', "table-primary");
+        //header.setAttribute('style', "position:sticky; top:0");
+        ////var row = header.insertRow(0);
+        //var tr = header.insertRow(-1);                   // TABLE ROW.
+
+
+        //for (var i = 0; i < col.length; i++) {
+        //    var th = document.createElement("th");      // TABLE HEADER.
+        //    th.innerHTML = col[i];
+        //    tr.appendChild(th);
+        //}
+        //var body = table.createTBody();
+        //// ADD JSON DATA TO THE TABLE AS ROWS.
+        //for (var i = 0; i < p_json.length; i++) {
+
+        //    tr = body.insertRow(-1);
+
+        //    for (var j = 0; j < col.length; j++) {
+        //        var tabCell = tr.insertCell(-1);
+        //        tabCell.innerHTML = p_json[i][col[j]];
+        //    }
+        //}
+
+        ////console.log(table)
+        //$("#popupUpHarga").dxPopup({
+        //    title: "List Up Harga",
+        //    visible: true,
+        //    contentTemplate: function (contentElement) {
+        //        //contentElement.append(response)
+        //        //var tablenew = table.replace("<table>", "<table class=table table-bordered table-responsive table-hover style='white-space:nowrap' id='cssTableUtama'>");
+        //        console.log(table)
+        //        contentElement.append(table)
+        //    }
+        //});
+
+
+        if (arr.length == 0) {
+            alert("maaf, Silahkan Pilih data yang mau up harga terlebih dahulu.");
+            return;
+        }
+
+        if (UpHarga._value == 0 || UpHarga._value == null) {
+            alert("Maaf, Nilai Up Harga Harus diatas 0.");
+            return;
+        }
+
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            type: 'POST',
+            //url: '/TPrice/UpHargaInfo',
+            url: '@Url.Action("UpHargaInfo", "TPrice")',
+            traditional: true,
+            data:  p_json,
+        }).done(function (response) {
+            $("#popupUpHarga").dxPopup({
+                title: "List Info Up Harga",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    //contentElement.append(response)
+                    var response_new = response.replace("<hr />", "").replace("<hr />", "");
+                    contentElement.append(response_new)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+
+    }
+
+
+
+    function func_UpHarga() {
+        //var grid = document.getElementById("cssTableUtama");
+        //var checkBoxes = grid.getElementsByTagName("INPUT");
+        //var j = 0;
+        //var arr = [];
+        //for (var i = 0; i < checkBoxes.length; i++) {
+        //    if (checkBoxes[i].checked) {
+        //        var row = checkBoxes[i].parentNode.parentNode;
+        //        var supplier = row.cells[2].innerHTML.trim();
+        //        var dateprice = row.cells[4].innerHTML.trim();
+        //        var pmksid = row.cells[5].innerHTML.trim();
+        //        var harga = row.cells[6].innerHTML.trim();
+        //        //var hargafinal = parseFloat(harga) + UpHarga._value;
+        //        arr[j] = { "SupplierID": supplier, "PMKSID": pmksid, "DatePrice": dateprice, "UpPrice": UpHarga._value }
+        //        j += 1;
+        //    }
+        //}
+
+        var coba = arr;
+        //console.log(coba)
+        if (CheckHeader == true) {
+            coba = arr.slice(1);
+        }
+        var p_json = JSON.stringify(coba);
+        //console.log(p_json)
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                type: 'POST',
+                //url: '/TPrice/UpHarga',
+                url: '@Url.Action("UpHarga", "TPrice")',
+                traditional: true,
+                data: p_json,
+            }).done(function (data) {
+                $("#popupUpHarga").dxPopup('instance').hide();
+                LoadMainTable();
+                alert(data);
+
+            }).fail(function (data) {
+                alert("Failed: " + data.response);
+            });
+        }
+
+</script>

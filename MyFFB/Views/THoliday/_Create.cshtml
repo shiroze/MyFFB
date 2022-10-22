@@ -1,0 +1,49 @@
+﻿@model MyAttd.Models.T_Holiday
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "THoliday", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="editors">
+    <div class="col-md-5">
+        @Html.LabelFor(m => m.Date)
+        @Html.TextBoxFor(m => m.Date, new { @type = "date", @class = "form-control", @id = "date" })
+        @Html.ValidationMessageFor(m => m.Date)
+    </div>
+    <div class="col-md-12">
+        @Html.LabelFor(m => m.Remarks)
+        @Html.TextBoxFor(m => m.Remarks, new { @class = "form-control", @id = "Remarks" })
+        @Html.ValidationMessageFor(m => m.Remarks)
+    </div>
+    <div class="col-md-12">
+        <br />
+    </div>
+
+    <div class="card-footer col-md-12">
+        <button id="button"
+                text="ADD"
+                class="btn btn-success"
+                @*onclick="UpdateEdit()"*@>
+            <h4>ADD</h4>
+        </button>
+    </div>
+</div>
+
+        
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+<script>
+    document.getElementById('date').value = moment().format('YYYY-MM-DD');
+</script>
+
+    }
+}

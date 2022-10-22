@@ -1,0 +1,47 @@
+﻿@model MyAttd.Models.T_GroupSupp
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Delete", "TGroupSupp", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="dx-field center col-md-12 center">
+                @Html.LabelFor(m => m.GroupSuppID)
+                @Html.TextBoxFor(m => m.GroupSuppID, new { @readonly = "readonly", @class = "form-control" })
+
+                @Html.LabelFor(m => m.GroupSuppName)
+                @Html.TextBoxFor(m => m.GroupSuppName, new { @readonly = "readonly", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.GroupSuppName)
+
+                @Html.LabelFor(m => m.Regional)
+                @Html.TextBoxFor(m => m.Regional, new { @readonly = "readonly", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Regional)
+            </div>
+
+            <div class="dx-field center col-md-12">
+                <button id="button"
+                        text="Delete"
+                        class="btn btn-danger"
+                        usesubmitbehavior="true">
+                    <h4>Delete</h4>
+                </button>
+            </div>
+
+        </div>
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+        <script>
+
+        </script>
+
+    }
+}

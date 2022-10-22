@@ -1,0 +1,179 @@
+﻿@model IEnumerable<MyAttd.Models.T_Incentive>
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+
+    <table class="table table-bordered table-responsive table-hover" style="white-space:nowrap" id="cssTableUtama">
+        <thead class="table-primary" style="position:sticky; top:0;">
+            <tr>
+                <th>Actions</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Approval)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GroupSuppName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Periode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompanyCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PMKSID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Regional)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VendorCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SupplierID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SupplierName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Netto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Incentive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.pph22)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remarks)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UploadToSAP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCCreatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCCreatedDT)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCUpdatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCUpdatedDT)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCApproveBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FCApproveDT)
+                </th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    <button class="btn btn-info" title="View" onclick="viewIconClick('@item.IncentiveID')"><i class="fa fa-book"></i></button>
+                    <button class="btn btn-danger" title="Delete" onclick="deleteIconClick('@item.IncentiveID')"><i class="fa fa-trash"></i></button>
+                    <button class="btn btn-info" title="Print" onclick="printIconClick('@item.IncentiveID')"><i class="fa fa-print"></i></button>
+                    @if (item.Approval == false)
+                    {
+                        <button class="btn btn-success" onclick="approveIconClick('@item.IncentiveID')"><i class="fa fa-check"></i></button>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Approval)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GroupSuppName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Periode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PMKSID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Regional)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VendorCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Netto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Incentive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pph22)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remarks)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UploadToSAP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy.FCName)
+                </td>
+                <td>
+                    @if (item.FCCreatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                    {
+                        @Html.DisplayFor(modelItem => item.FCCreatedDT)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdateBy.FCName)
+                </td>
+                <td>
+                    @if (item.FCUpdatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                    {
+                        @Html.DisplayFor(modelItem => item.FCUpdatedDT)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApproveBy.FCName)
+                </td>
+                <td>
+                    @if (item.FCApproveDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                    {
+                        @Html.DisplayFor(modelItem => item.FCApproveDT)
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+<script>
+    $(document).ready(function () {
+        $('#cssTableUtama').DataTable({
+            columnDefs: [{
+                targets: [0],
+                orderData: [0, 1]
+            }, {
+                targets: [1],
+                orderData: [1, 0]
+            }, {
+                targets: [4],
+                orderData: [4, 0]
+            }]
+        });
+    });
+</script>

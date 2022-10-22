@@ -1,0 +1,58 @@
+﻿@model MyAttd.Models.T_AreaRegional
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Delete", "TAreaRegional", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+
+        //using (Html.DevExtreme().ValidationGroup())
+        //{
+        @Html.AntiForgeryToken()
+<div class="editors">
+    <table class="table table-responsive">
+        <tr>
+            <td>@Html.LabelFor(m => m.AreaID)</td>
+            <td>@Html.TextBoxFor(m => m.AreaID, new { @readonly = true })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.AreaOperational)</td>
+            <td>@Html.TextBoxFor(m => m.AreaOperational, new { @readonly = true })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Regional)</td>
+            <td>@Html.TextBoxFor(m => m.Regional, new { @readonly = "false" })</td>
+        </tr>
+        @*<tr>
+            <td>@Html.LabelFor(m => m.FCDefunctInd)</td>
+            <td>@Html.CheckBoxFor(m => m.FCDefunctInd, new { @onclick = "return false" })</td>
+        </tr>*@
+    </table>
+
+    <button id="button"
+            text="DELETE"
+            class="btn btn-danger"
+            usesubmitbehavior="true">
+        <h4>Delete</h4>
+    </button>
+</div>
+
+    }
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+    @*<script>
+            DevExpress.config({
+                editorStylingMode: "outlined"
+            });
+
+        </script>*@
+
+
+}

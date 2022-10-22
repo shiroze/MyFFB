@@ -1,0 +1,233 @@
+﻿@model IEnumerable<MyAttd.Models.T_RoleDet>
+
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header with-border">
+            <p>
+                @*@Html.DevExtreme().Button().ID("buttonBack").Text("Kembali").ElementAttr("style", "margin-right:5px").Icon("fa fa-chevron-left").OnClick("backClick")
+                @(Html.DevExtreme().Button()
+                                                                            .Text("Role Detail")
+                                                                            .Type(ButtonType.Normal)
+                                                                            .StylingMode(ButtonStylingMode.Contained)
+                                                                            .Icon("fa fa-plus-circle")
+                                                                            .OnClick("newClick")
+                )*@
+            </p>
+        </div>
+        <div class="box-body">
+            <table id="menu-table" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Deskripsi</th>
+                        <th>Add</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th>Undelete</th>
+                        <th>Approval</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex justify-content-between">
+                                    <a href="javascript:void(0);" onclick="editIconClick(@item.FCRoleID);"><i class="fa fa-pencil text-green"></i></a>
+                                    <a href="javascript:void(0);" onclick="deleteIconClick(@item.FCRoleID);"><i class="fa fa-trash text-danger"></i></a>
+                                </div>
+                            </td>
+                            <td>@item.FCMenuID</td>
+                            <td>@item.Menu.FCMenuDesc</td>
+                            <td>
+                                @if (item.FCAdd)
+                                {
+                                    <input type="checkbox" value="1" checked disabled />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" value="0" disabled />
+                                }
+                            </td>
+                            <td>
+                                @if (item.FCEdit)
+                                {
+                                    <input type="checkbox" value="1" checked disabled />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" value="0" disabled />
+                                }
+                            </td>
+                            <td>
+                                @if (item.FCDelete)
+                                {
+                                    <input type="checkbox" value="1" checked disabled />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" value="0" disabled />
+                                }
+                            </td>
+                            <td>
+                                @if (item.FCUndelete)
+                                {
+                                    <input type="checkbox" value="1" checked disabled />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" value="0" disabled />
+                                }
+                            </td>
+                            <td>
+                                @if (item.FCApprove)
+                                {
+                                    <input type="checkbox" value="1" checked disabled />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" value="0" disabled />
+                                }
+                            </td>
+                            @*<td>@item.CreatedBy.FCName</td>
+                            <td>@item.FCCreatedDT</td>
+                            <td>@item.UpdatedBy.FCName</td>
+                            <td>@item.FCUpdatedDT</td>*@
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @*@(Html.DevExtreme().DataGrid<T_RoleDet>()
+                                                                .ID("gridContainer")
+                                                                .DataSource(Model)
+                                                                .FilterRow(r => r.Visible(true))
+                                                                .ShowBorders(true)
+                                                                .ShowColumnLines(true)
+                                                                .RowAlternationEnabled(true)
+                                                                .ColumnChooser(c => c.Enabled(true))
+                                                                .LoadPanel(p => p.Enabled(true))
+                                                                .Columns(columns =>
+                                                                {
+                                                                    columns.Add()
+                                                                    .Type(GridCommandColumnType.Buttons)
+                                                                    .Width(110)
+                                                                    .Buttons(b =>
+                                                                    {
+                                                                        b.Add().Hint("Edit").Icon("edit").OnClick("editIconClick");
+                                                                        b.Add().Hint("Delete").Icon("trash").CssClass("text-red").OnClick("deleteIconClick");
+                                                                    });
+                                                                    columns.AddFor(m => m.FCRoleID)
+                                                                        .Width(130).Visible(false);
+                                                                    columns.AddFor(m => m.FCMenuID)
+                                                                        .Width(130).Visible(false);
+                                                                    columns.AddFor(m => m.Menu.FCMenuDesc);
+
+                                                                    columns.AddFor(m => m.FCAdd)
+                                                                        .Width(130)
+                                                                        .Alignment(HorizontalAlignment.Center);
+
+                                                                    columns.AddFor(m => m.FCEdit)
+                                                                        .Width(130)
+                                                                        .Alignment(HorizontalAlignment.Center);
+
+                                                                    columns.AddFor(m => m.FCDelete)
+                                                                        .Width(130)
+                                                                        .Alignment(HorizontalAlignment.Center);
+
+                                                                    columns.AddFor(m => m.FCUndelete)
+                                                                        .Width(130)
+                                                                        .Alignment(HorizontalAlignment.Center);
+                                                                    columns.AddFor(m => m.FCApprove)
+                                                                        .Width(130)
+                                                                        .Alignment(HorizontalAlignment.Center);
+
+                                                                    columns.AddFor(m => m.Menu.RootMenu.FCMenuDesc).Caption("Root Menu")
+                                                                                .GroupIndex(0);
+                                                                })
+        )*@
+
+        </div>
+    </div>
+</section>
+
+<div id="popup">
+</div>
+
+<script>
+$(function () {
+    $("#popup").dxPopup({
+        title: "Popup Title",
+        visible: false,
+        closeOnOutsideClick: true,
+        width:400,
+        height: 300,
+        resizeEnabled: true
+    });
+});
+
+function backClick(e) {
+    @*var sref = '@Model.FCSampleRef' *@
+    //window.location.href = '/TRole/Index';
+    window.location.href='@Url.Action("Index", "TRole")'
+}
+
+function newClick(e) {
+    var id = @ViewBag.FCRoleID;
+    $.ajax({
+            //url: '/TRoleDet/Create/?id=' + id,
+        url: '@Url.Action("Create", "TRoleDet")',
+        traditional: true,
+        data: { id:id },
+    }).done (function (response) {
+        $("#popup").dxPopup({
+            title: "Tambah Baru",
+            visible: true,
+            contentTemplate: function (contentElement) {
+                contentElement.append(response)
+            }
+        });
+    }).fail(function (data) {
+            alert("Failed: " + data.response);
+    });
+}
+
+function editIconClick(rid,mid) {
+    $.ajax({
+        //url: '/TRoleDet/Edit?rid=' + e.row.data.FCRoleID + '&mid=' + e.row.data.FCMenuID,
+        url: '@Url.Action("Edit", "TRoleDet")',
+        traditional: true,
+        data: { rid, mid },
+    }).done(function (response) {
+        $("#popup").dxPopup({
+            title: "Ubah",
+            visible: true,
+            contentTemplate: function (contentElement) {
+                contentElement.append(response)
+            }
+        });
+    }).fail(function (data) {
+        alert("Failed: " + data.response);
+    });
+}
+
+function deleteIconClick(e) {
+    $.ajax({
+        //url: '/TRoleDet/Delete?rid=' + e.row.data.FCRoleID + '&mid=' + e.row.data.FCMenuID,
+        url: '@Url.Action("Delete", "TRoleDet")',
+        traditional: true,
+        data: { rid, mid },
+    }).done(function (response) {
+        $("#popup").dxPopup({
+            title: "Hapus",
+            visible: true,
+            contentTemplate: function (contentElement) {
+                contentElement.append(response)
+            }
+        });
+    }).fail(function (data) {
+        alert("Failed: " + data.response);
+    });
+}
+
+</script>

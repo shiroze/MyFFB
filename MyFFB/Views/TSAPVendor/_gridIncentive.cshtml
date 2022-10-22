@@ -1,0 +1,109 @@
+﻿@model IEnumerable<MyAttd.Models.T_Incentive>
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @Html.AntiForgeryToken()
+<div>
+    <hr />
+    <input type="text" id="myInputPop" onkeyup="myFunctionPop()" placeholder="Search for names.." title="Type in a name">
+    <hr />
+    <table class="table table-bordered table-responsive table-hover" style="white-space:nowrap" id="cssTableGrid">
+        <thead class="table-primary" style="position:sticky; top:0;">
+            <tr>
+                <th hidden>
+                    @Html.DisplayNameFor(model => model.GroupSuppID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GroupSuppName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Regional)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PMKSID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompanyCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SupplierID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SupplierName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VendorCode)
+                </th>
+            </tr>
+        </thead>
+        <tbody id="myTablePop">
+            @foreach (var item in Model)
+            {
+            <tr ondblclick="selectIncentive('@item.GroupSuppID','@item.GroupSuppName','@item.Regional','@item.PMKSID','@item.CompanyCode','@item.SupplierID','@item.SupplierName','@item.VendorCode')">
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.GroupSuppID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GroupSuppName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Regional)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PMKSID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VendorCode)
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <div></div>
+</div>
+
+
+    <script>        
+        function myFunctionPop() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInputPop");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTablePop");
+            var rows = table.getElementsByTagName("tr");
+            for (i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var j;
+                var rowContainsFilter = false;
+                for (j = 0; j < cells.length; j++) {
+                    if (cells[j]) {
+                        if (cells[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                            rowContainsFilter = true;
+                            continue;
+                        }
+                    }
+                }
+
+                if (!rowContainsFilter) {
+                    rows[i].style.display = "none";
+                } else {
+                    rows[i].style.display = "";
+                }
+            }
+        }
+    </script>
+}
+

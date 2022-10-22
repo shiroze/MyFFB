@@ -1,0 +1,210 @@
+﻿@model MyAttd.Models.T_Supplier
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Edit", "TSupplier", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            <div class="dx-fieldset col-md-12">
+                @*Baris 1-------------------------------------------*@
+                <div class="dx-field center col-md-3">
+                    @Html.LabelFor(m => m.SupplierID)
+                    @Html.TextBoxFor(m => m.SupplierID, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SupplierID)
+                </div>
+                <div class="dx-field center col-md-2">
+                    @Html.LabelFor(m => m.Code)
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.Code, new { @readonly = "readonly", @class = "form-control", @id = "grdCode" })
+                        <span class="btn btn-primary center" onclick="GridSAPVENDOR()" />
+                        @Html.ValidationMessageFor(m => m.Code)
+                    </div>
+                </div>
+                <div class="dx-field center col-md-5">
+                    @Html.Label("Code Name")
+                    @Html.TextBoxFor(m => m.CodeName, new { @readonly = "readonly", @class = "form-control", @id = "CodeName" })
+
+                </div>
+                <div class="dx-field center col-md-2">
+                    @Html.LabelFor(m => m.PaymentTerm)
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.PaymentTerm, new { @readonly = "readonly", @class = "form-control", @id = "PaymentTerm" })
+                        <span class="btn btn-primary center" onclick="GridGroupPayment()" />
+                        @Html.ValidationMessageFor(m => m.PaymentTerm)
+                    </div>
+                </div>
+                @*Baris 2-------------------------------------------*@
+
+                <div class="dx-field center col-md-5 center">
+                    @Html.LabelFor(m => m.SupplierName)
+                    @Html.TextBoxFor(m => m.SupplierName, new { @required = "true", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SupplierName)
+                </div>
+                <div class="dx-field center col-md-2 center">
+                    @Html.LabelFor(m => m.PMKSID)
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.PMKSID, new { @readonly = "readonly", @class = "form-control", @id = "grdPMKSID" })
+                        @*<span class="btn btn-primary center" onclick="GridPMKS()" />*@
+                        @Html.ValidationMessageFor(m => m.PMKSID)
+                    </div>
+                </div>
+                <div class="dx-field center col-md-5 center">
+                    @Html.LabelFor(m => m.PMKSName)
+                    @Html.TextBoxFor(m => m.PMKSName, new { @required = "true", @readonly = "true", @class = "form-control", @id = "grdPMKSName" })
+                    @Html.ValidationMessageFor(m => m.PMKSName)
+                </div>
+                @*Baris 3-------------------------------------------*@
+
+                <div class="dx-field center col-md-2">
+                    @Html.LabelFor(m => m.Initial)
+                    @Html.TextBoxFor(m => m.Initial, new { @required = "true", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Initial)
+                </div>
+                <div class="dx-field center col-md-4">
+                    @Html.LabelFor(m => m.NPWP)
+                    @Html.TextBoxFor(m => m.NPWP, new { @class = "form-control" ,@id="npwp"})
+                    @Html.ValidationMessageFor(m => m.NPWP)
+                </div>
+                <div class="dx-field center col-md-3">
+                    @Html.LabelFor(m => m.GroupSupplier)
+                    @Html.TextBoxFor(m => m.GroupSupplier, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.GroupSupplier)
+                </div>
+                <div class="dx-field center col-md-3">
+                    @Html.LabelFor(m => m.Category)
+                    @Html.DropDownListFor(m => m.Category, new SelectList(ViewBag.DListCategory, "Category", "Category"), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Category)
+                </div>
+
+                <div class="dx-field center col-md-12">
+                    <div class="dx-field center col-md-2">
+                        @Html.LabelFor(m => m.Approval)
+                        @Html.CheckBoxFor(m => m.Approval, new { @onclick = "return false" })
+                    </div>
+
+                    <div class="dx-field center col-md-2">
+                        @Html.LabelFor(m => m.CashAdvance)
+                        @Html.CheckBoxFor(m => m.CashAdvance)
+                    </div>
+
+                    <div class="dx-field center col-md-3">
+                        @Html.LabelFor(m => m.KomidelCalculate)
+                        @Html.CheckBoxFor(m => m.KomidelCalculate)
+                    </div>
+                    <div class="dx-field center col-md-2">
+                        @Html.LabelFor(m => m.BibitTopaz)
+                        @Html.CheckBoxFor(m => m.BibitTopaz)
+                    </div>
+                    <div class="dx-field center col-md-2">
+                        @Html.LabelFor(m => m.StatusActive)
+                        @Html.CheckBoxFor(m => m.StatusActive)
+                    </div>
+                </div>
+
+
+                <div class="dx-field center col-md-8">
+                    @Html.LabelFor(m => m.Remarks)
+                    @Html.TextBoxFor(m => m.Remarks, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Remarks)
+
+                    @Html.LabelFor(m => m.Remarks1)
+                    @Html.TextBoxFor(m => m.Remarks1, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Remarks1)
+
+                    @Html.LabelFor(m => m.Remarks2)
+                    @Html.TextBoxFor(m => m.Remarks2, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Remarks2)
+                </div>
+                <div class="dx-field center col-md-3">
+                    @Html.LabelFor(m => m.VAT)
+                    @Html.DropDownListFor(m => m.VAT, new SelectList(ViewBag.DListVAT, "VAT", "VAT"), new { @class = "form-control", @id = "VAT" })
+                    @Html.ValidationMessageFor(m => m.VAT)
+
+                    @Html.LabelFor(m => m.VATCondition)
+                    @Html.CheckBoxFor(m => m.VATCondition, new { @id = "chkVATCondition" })
+                </div>
+
+                <div class="dx-field center col-md-3">
+                    @Html.LabelFor(m => m.PPH22)
+                    @Html.TextBoxFor(m => m.PPH22, new { @readonly = "readonly", @type = "number", @class = "form-control", @step = "0.01", @id = "PPH22" })
+                    @Html.ValidationMessageFor(m => m.PPH22)
+
+                    @Html.LabelFor(m => m.PPH22Condition)
+                    @Html.CheckBoxFor(m => m.PPH22Condition, new { @id = "chkPPH22Condition" })
+                </div>
+                <div class="dx-field center col-md-12">
+                    <button id="button"
+                            text="EDIT"
+                            class="btn btn-success"
+                            usesubmitbehavior="true">
+                        <h4>Edit</h4>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+    }
+    <script>
+        
+        var nilaiVAT = document.getElementById('VAT').value;
+        if (nilaiVAT == 0) {
+            $('#VAT').attr("disabled", true);
+            document.getElementById('chkVATCondition').checked = false;
+        }
+        $("#VAT").change(
+            function () {
+                nilaiVAT = document.getElementById('VAT').value;
+                if (nilaiVAT == 0) {
+                    $('#VAT').attr("disabled", true);
+                    document.getElementById('chkVATCondition').checked = false;
+                }
+            }
+        );
+        $("#chkVATCondition").change(
+            function () {
+                var checked = document.getElementById('chkVATCondition').checked;
+                if (checked) {
+                    $('#VAT').attr("disabled", false);
+                    document.getElementById("VAT").value = 11;
+                    //document.getElementById("VAT").dis = readonly;
+                }
+                else {
+                    $('#VAT').attr("disabled", true);
+                    document.getElementById("VAT").value = 0;
+                    //document.getElementById("mySelect").remove(0)
+                }
+            }
+        );
+        $("#chkPPH22Condition").change(
+            function () {
+                var checked = document.getElementById('chkPPH22Condition').checked;
+                if (checked) {
+                    //$('#PPH22').attr("disabled", true);
+                    document.getElementById("PPH22").value = 0.25;
+                    //document.getElementById("VAT").dis = readonly;
+                }
+                else {
+                    $('#PPH22').attr("disabled", false);
+                    //document.getElementById("VAT").value = 1;
+                    document.getElementById("PPH22").value = 0.5;
+                }
+            }
+        );
+
+        jQuery(function ($) {
+            //$("#tgl").mask("99/99/9999", { placeholder: "mm/dd/yyyy" });
+            $("#npwp").mask("99.999.999.9-999.999");
+        });
+
+    </script>
+}

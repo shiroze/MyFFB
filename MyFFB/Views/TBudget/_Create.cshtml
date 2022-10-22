@@ -1,0 +1,271 @@
+﻿@model MyAttd.Models.T_Budget
+@*<div class="title">
+        VIEW Incentive
+        <hr />
+    </div>*@
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "TBudget", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editors">
+            @*Row 1------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.PMKSID)
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.PMKSID, new { @required = "required", @readonly = "readonly", @class = "form-control", @id = "PMKSID" })
+                    <span class="btn btn-primary center" onclick="GridPMKS()" />
+                    @Html.ValidationMessageFor(m => m.PMKSID)
+                </div>
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.Periode)
+                @Html.EditorFor(m => m.Periode, new { htmlAttributes = new { @required = "required", @type = "month", @class = "form-control", @id = "Periode" } })
+                @Html.ValidationMessageFor(m => m.Periode)
+            </div>
+            <div class="col-md-5">
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.Price_BunchAsh)
+                @Html.TextBoxFor(m => m.Price_BunchAsh, new {@class = "form-control", @id= "Price_BunchAsh" })
+                @Html.ValidationMessageFor(m => m.Price_BunchAsh)
+            </div>
+            @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-12">
+                <hr color=red>
+            </div>
+            @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.VolumeFFB_KG)
+                @Html.TextBoxFor(m => m.VolumeFFB_KG, new { @class = "form-control", @id = "VolumeFFB_KG" })
+                @Html.ValidationMessageFor(m => m.VolumeFFB_KG)
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.VolumeCPO_KG)
+                @Html.TextBoxFor(m => m.VolumeCPO_KG, new { @class = "form-control", @id = "VolumeCPO_KG" })
+                @Html.ValidationMessageFor(m => m.VolumeCPO_KG)
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.VolumePK_KG)
+                @Html.TextBoxFor(m => m.VolumePK_KG, new { @class = "form-control", @id = "VolumePK_KG" })
+                @Html.ValidationMessageFor(m => m.VolumePK_KG)
+            </div>
+            @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-12">
+                <hr color=red>
+            </div>
+            @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.OER)
+                @Html.TextBoxFor(m => m.OER, new { @class = "form-control", @id = "OER" })
+                @Html.ValidationMessageFor(m => m.OER)
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.KER)
+                @Html.TextBoxFor(m => m.KER, new { @class = "form-control", @id = "KER" })
+                @Html.ValidationMessageFor(m => m.KER)
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.HK)
+                @Html.TextBoxFor(m => m.HK, new { @class = "form-control", @id = "HK" })
+                @Html.ValidationMessageFor(m => m.HK)
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.NetMargin_USD_MT_CPO)
+                @Html.TextBoxFor(m => m.NetMargin_USD_MT_CPO, new { @class = "form-control", @id = "NetMargin" })
+                @Html.ValidationMessageFor(m => m.NetMargin_USD_MT_CPO)
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.ExchangeRate)
+                @Html.TextBoxFor(m => m.ExchangeRate, new { @class = "form-control", @id = "ExchangeRate" })
+                @Html.ValidationMessageFor(m => m.ExchangeRate)
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.Capacity)
+                @Html.TextBoxFor(m => m.Capacity, new { @class = "form-control", @id = "Capacity" })
+                @Html.ValidationMessageFor(m => m.Capacity)
+            </div>
+            @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-12">
+                <hr color=red>
+            </div>
+            @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.ProduksiCangkang_KG)
+                @Html.TextBoxFor(m => m.ProduksiCangkang_KG, new { @class = "form-control", @id = "ProduksiCangkang_KG" })
+                @Html.ValidationMessageFor(m => m.ProduksiCangkang_KG)
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.BakarCangkang_KG)
+                @Html.TextBoxFor(m => m.BakarCangkang_KG, new { @class = "form-control", @id = "BakarCangkang_KG" })
+                @Html.ValidationMessageFor(m => m.BakarCangkang_KG)
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.EBITDA_Cangkang)
+                @Html.TextBoxFor(m => m.EBITDA_Cangkang, new { @class = "form-control", @id = "EBITDA_Cangkang" })
+                @Html.ValidationMessageFor(m => m.EBITDA_Cangkang)
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.ProduksiBA_KG)
+                @Html.TextBoxFor(m => m.ProduksiBA_KG, new { @class = "form-control", @id = "ProduksiBA_KG" })
+                @Html.ValidationMessageFor(m => m.ProduksiBA_KG)
+            </div>
+            @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-12">
+                <hr color=red>
+            </div>
+            @*Row 5------------------------------------------------------------------------------------------------------------------------*@
+
+            <div class="col-md-12 card-footer">
+                <button id="button"
+                        text="ADD"
+                        class="btn btn-primary"
+                        onclick="validatenumber()">
+                    <h4>ADD</h4>
+                </button>
+            </div>
+        </div>
+
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+
+        <script>
+            var Periode = moment().format("YYYY-MM")
+            if (localStorage.getItem("Periode_Budget") != null) {
+                Periode = localStorage.getItem("Periode_Budget")
+            }
+            document.getElementById("Periode").value = Periode;
+
+            //--------------------------------------------------------------------------------------------------
+            var VolumeFFB_KG = numeral(document.getElementById('VolumeFFB_KG').value);
+            $("#VolumeFFB_KG").val(VolumeFFB_KG.format('0,0'));
+
+            $("#VolumeFFB_KG").on('blur', function () {
+                VolumeFFB_KG = numeral(document.getElementById('VolumeFFB_KG').value);
+                $(this).val(VolumeFFB_KG.format('0,0'));
+            })
+            //--------------------------------------------------------------------------------------------------
+            var VolumeCPO_KG = numeral(document.getElementById('VolumeCPO_KG').value);
+            $("#VolumeCPO_KG").val(VolumeCPO_KG.format('0,0'));
+
+            $("#VolumeCPO_KG").on('blur', function () {
+                VolumeCPO_KG = numeral(document.getElementById('VolumeCPO_KG').value);
+                $(this).val(VolumeCPO_KG.format('0,0'));
+            })
+            //--------------------------------------------------------------------------------------------------
+            var VolumePK_KG = numeral(document.getElementById('VolumePK_KG').value);
+            $("#VolumePK_KG").val(VolumePK_KG.format('0,0'));
+
+            $("#VolumePK_KG").on('blur', function () {
+                VolumePK_KG = numeral(document.getElementById('VolumePK_KG').value);
+                $(this).val(VolumePK_KG.format('0,0'));
+            })
+
+
+
+            //--------------------------------------------------------------------------------------------------
+            var OER = numeral(document.getElementById('OER').value);
+            $("#OER").val(OER.format('0,0'));
+
+            $("#OER").on('blur', function () {
+                OER = numeral(document.getElementById('OER').value);
+                $(this).val(OER.format('0,0'));
+            })
+            //--------------------------------------------------------------------------------------------------
+            var KER = numeral(document.getElementById('KER').value);
+            $("#KER").val(KER.format('0,0'));
+
+            $("#KER").on('blur', function () {
+                KER = numeral(document.getElementById('KER').value);
+                $(this).val(KER.format('0,0'));
+            })
+            //--------------------------------------------------------------------------------------------------
+            var HK = numeral(document.getElementById('HK').value);
+            $("#HK").val(HK.format('0,0'));
+
+            $("#HK").on('blur', function () {
+                HK = numeral(document.getElementById('HK').value);
+                $(this).val(HK.format('0,0'));
+            })
+            //--------------------------------------------------------------------------------------------------
+            var NetMargin = numeral(document.getElementById('NetMargin').value);
+            $("#NetMargin").val(NetMargin.format('0,0'));
+
+            $("#NetMargin").on('blur', function () {
+                NetMargin = numeral(document.getElementById('NetMargin').value);
+                $(this).val(NetMargin.format('0,0'));
+            })
+            //--------------------------------------------------------------------------------------------------
+            var ExchangeRate = numeral(document.getElementById('ExchangeRate').value);
+            $("#ExchangeRate").val(ExchangeRate.format('0,0'));
+
+            $("#ExchangeRate").on('blur', function () {
+                ExchangeRate = numeral(document.getElementById('ExchangeRate').value);
+                $(this).val(ExchangeRate.format('0,0'));
+            })
+            //--------------------------------------------------------------------------------------------------
+            var Capacity = numeral(document.getElementById('Capacity').value);
+            $("#Capacity").val(Capacity.format('0,0'));
+
+            $("#Capacity").on('blur', function () {
+                Capacity = numeral(document.getElementById('Capacity').value);
+                $(this).val(Capacity.format('0,0'));
+            })
+
+
+
+            //--------------------------------------------------------------------------------------------------
+            var ProduksiCangkang_KG = numeral(document.getElementById('ProduksiCangkang_KG').value);
+            $("#ProduksiCangkang_KG").val(ProduksiCangkang_KG.format('0,0'));
+
+            $("#ProduksiCangkang_KG").on('blur', function () {
+                ProduksiCangkang_KG = numeral(document.getElementById('ProduksiCangkang_KG').value);
+                $(this).val(ProduksiCangkang_KG.format('0,0'));
+            })
+            //--------------------------------------------------------------------------------------------------
+            var BakarCangkang_KG = numeral(document.getElementById('BakarCangkang_KG').value);
+            $("#BakarCangkang_KG").val(BakarCangkang_KG.format('0,0'));
+
+            $("#BakarCangkang_KG").on('blur', function () {
+                BakarCangkang_KG = numeral(document.getElementById('BakarCangkang_KG').value);
+                $(this).val(BakarCangkang_KG.format('0,0'));
+            })
+            //--------------------------------------------------------------------------------------------------
+            var EBITDA_Cangkang = numeral(document.getElementById('EBITDA_Cangkang').value);
+            $("#EBITDA_Cangkang").val(EBITDA_Cangkang.format('0,0'));
+
+            $("#EBITDA_Cangkang").on('blur', function () {
+                EBITDA_Cangkang = numeral(document.getElementById('EBITDA_Cangkang').value);
+                $(this).val(EBITDA_Cangkang.format('0,0'));
+            })
+            //--------------------------------------------------------------------------------------------------
+            var ProduksiBA_KG = numeral(document.getElementById('ProduksiBA_KG').value);
+            $("#ProduksiBA_KG").val(ProduksiBA_KG.format('0,0'));
+
+            $("#ProduksiBA_KG").on('blur', function () {
+                ProduksiBA_KG = numeral(document.getElementById('ProduksiBA_KG').value);
+                $(this).val(ProduksiBA_KG.format('0,0'));
+            })
+
+            //--------------------------------------------------------------------------------------------------
+            var Price_BunchAsh = numeral(document.getElementById('Price_BunchAsh').value);
+            $("#Price_BunchAsh").val(Price_BunchAsh.format('0,0'));
+
+            $("#Price_BunchAsh").on('blur', function () {
+                Price_BunchAsh = numeral(document.getElementById('Price_BunchAsh').value);
+                $(this).val(Price_BunchAsh.format('0,0'));
+            })
+
+        </script>
+
+    }
+}

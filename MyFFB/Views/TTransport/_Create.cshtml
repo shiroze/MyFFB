@@ -1,0 +1,77 @@
+﻿@model MyAttd.Models.T_Transport
+
+@if (ViewBag.Message != null)
+{
+    <h1 class="@ViewBag.MessageCSS">@ViewBag.MessageType</h1>
+    <p class="@ViewBag.MessageCSS">@ViewBag.Message</p>
+}
+else
+{
+    @using (Html.BeginForm("Create", "TTransport", FormMethod.Post, new { id = "frmId", @class = "frmStyle" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="editors">
+    @*Row 1------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-5">
+        @Html.LabelFor(m => m.TransportDate)
+        @Html.TextBoxFor(m => m.TransportDate, new { @type = "date", @class = "form-control", @id = "TransportDate" })
+        @Html.ValidationMessageFor(m => m.TransportDate)
+    </div>
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.ProductID)
+        @Html.DropDownListFor(m => m.ProductID, new SelectList(Enum.GetValues(typeof(product)), "Select ProductID"), new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ProductID)
+    </div>
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.PMKSID)
+        <div class="input-group">
+            @Html.TextBoxFor(m => m.PMKSID, new { @required = "required", @readonly = "readonly", @class = "form-control", @id = "PMKSID" })
+            <span class="btn btn-primary center" onclick="GridPMKS()" />
+            @Html.ValidationMessageFor(m => m.PMKSID)
+        </div>
+    </div>
+    @*Row 2------------------------------------------------------------------------------------------------------------------------*@
+    <div class="col-md-3">
+        @Html.LabelFor(m => m.Price)
+        @Html.TextBoxFor(m => m.Price, new { @class = "form-control", @id = "Price" })
+        @Html.ValidationMessageFor(m => m.Price)
+    </div>
+    <div class="col-md-9">
+        @Html.LabelFor(m => m.Destination)
+        @Html.TextBoxFor(m => m.Destination, new { @class = "form-control", @id = "Destination" })
+        @Html.ValidationMessageFor(m => m.Destination)
+    </div>
+    <div class="col-md-12">
+        <br />
+    </div>
+
+    <div class="card-footer col-md-12">
+        <button id="button"
+                text="ADD"
+                class="btn btn-primary"
+                onclick="validatenumber()">
+            <h4>ADD</h4>
+        </button>
+    </div>
+</div>
+
+        
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+<script>
+    document.getElementById('TransportDate').value = moment().format('YYYY-MM-DD');
+    //untuk price--------------------------------------------------------------------------------------------------
+    var Price = numeral(document.getElementById('Price').value);
+    $("#Price").val(Price.format('0,0'));
+
+    $("#Price").on('blur', function () {
+        Price = numeral(document.getElementById('Price').value);
+        $(this).val(Price.format('0,0'));
+    })
+</script>
+
+    }
+}

@@ -1,0 +1,260 @@
+﻿@model IEnumerable<MyAttd.Models.T_Role>
+
+@{
+    ViewData["Title"] = "Setting - Role";
+}
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+</section>
+
+@if (ViewData["Message"] != null)
+{
+    <section class="content" style="min-height:0px !important;padding-top:0px !important; padding-bottom:0px !important;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-warning box-solid" style="margin-top:15px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Perhatian!</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        @ViewData["Message"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header with-border">
+            <button class="btn btn-primary" onclick="newClick()"><h4><i class="fa fa-plus-circle"></i> New Item</h4></button>            
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered table-responsive table-hover" style="white-space:nowrap" id="cssTableUtama">
+                <thead class="table-primary" style="position:sticky; top:0;">
+                    <tr>
+                        <th>Actions</th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FCRoleID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FCRoleDesc)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FCCreatedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FCCreatedDT)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FCUpdatedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FCUpdatedDT)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="myTable">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <button class="btn btn-info" title="Detail" onclick="detailIconClick('@item.FCRoleID')"><i class="fa fa-file-text"></i></button>
+                                <button class="btn btn-success" title="Edit" onclick="editIconClick('@item.FCRoleID')"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-danger" title="Delete" onclick="deleteIconClick('@item.FCRoleID')"><i class="fa fa-trash"></i></button>
+                                <button class="btn btn-warning" title="Undelete" onclick="undeleteIconClick('@item.FCRoleID')"><i class="fa fa-mail-reply"></i></button>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FCRoleID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FCRoleDesc)
+                            </td>                            
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedBy.FCName)
+                            </td>
+                            <td>
+                                @if (item.FCCreatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                                {
+                                    @Html.DisplayFor(modelItem => item.FCCreatedDT)
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdatedBy.FCName)
+                            </td>
+                            <td>
+                                @if (item.FCUpdatedDT.ToString() != ("1/1/0001 12:00:00 AM"))
+                                {
+                                    @Html.DisplayFor(modelItem => item.FCUpdatedDT)
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+</section>
+
+<div id="popup">
+</div>
+
+<script>
+    $(function () {
+        $("#popup").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: true,
+            width:400,
+            height: 300,
+            resizeEnabled: true
+        });
+    });
+
+    var isDeleteIconVisible = function (e) {
+        if (e.row.data.FCDefunctInd == false) {
+            return true;
+        }
+        else
+        {
+            return false
+        }
+    }
+
+    var isUndeleteIconVisible = function (e) {
+        if (e.row.data.FCDefunctInd == true) {
+            return true;
+        }
+        else
+        {
+            return false
+        }
+    }
+
+    function newClick(e) {
+        $.ajax({
+                url: '@Url.Action("Create", "TRole")',
+                traditional: true,
+                data: {  }
+        }).done (function (response) {
+            $("#popup").dxPopup({
+                title: "Tambah Baru",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+                alert("Failed: " + data.response);
+        });
+    }
+
+    function editIconClick(e) {
+        $.ajax({
+            //url: '/TRole/Edit/?id=' + e.row.data.FCRoleID,
+            url: '@Url.Action("Edit", "TRole")',
+            traditional: true,
+            data: { id: e},
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "Ubah",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function detailIconClick(e) {
+        //window.location.href = '/TRole/Details/?id=' + e.row.data.FCRoleID
+        window.location.href = "@Url.Action("Details", "TRole")" + "/?id=" + e;
+    }
+
+    function deleteIconClick(e) {
+        $.ajax({
+            //url: '/TRole/Delete/?id=' + e.row.data.FCRoleID,
+            url: '@Url.Action("Delete", "TRole")',
+            traditional: true,
+            data: { id: e},
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "Hapus",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function undeleteIconClick(e) {
+        $.ajax({
+            //url: '/TRole/Undelete/?id=' + e.row.data.FCRoleID,
+            url: '@Url.Action("Undelete", "TRole")',
+            traditional: true,
+            data: { id: e},
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "Batal Hapus",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function printIconClick(e) {
+        var url = '@Url.Action("Print", "TMenu")';
+        var request = new XMLHttpRequest();
+        const car = { FCRoleID: e.row.data.FCRoleID };
+        //alert(e.row.data.FCRoleID);
+        request.responseType = "blob";
+        request.open('POST', url);
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.send(JSON.stringify(car));
+        request.onload = function () {
+            //if (par == "PDF") {
+            var url = window.URL.createObjectURL(this.response);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.href = url;
+            a.setAttribute('target', '_blank');
+            a.click();
+        }
+    }
+
+    function print1IconClick(e) {
+        var url = '@Url.Action("Print", "TUser")';
+        var request = new XMLHttpRequest();
+        const car = { FCRoleID: e.row.data.FCRoleID };
+        //alert(e.row.data.FCRoleID);
+        request.responseType = "blob";
+        request.open('POST', url);
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.send(JSON.stringify(car));
+        request.onload = function () {
+            //if (par == "PDF") {
+            var url = window.URL.createObjectURL(this.response);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.href = url;
+            a.setAttribute('target', '_blank');
+            a.click();
+        }
+    }
+
+
+</script>

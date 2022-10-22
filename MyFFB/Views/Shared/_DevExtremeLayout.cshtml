@@ -1,0 +1,233 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Routing
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>FFB SYSTEM</title>
+    <link href="~/FFBicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="~/js/w3js.css" />
+
+    <!-- Bootstrap 3.4.1 -->
+    <link rel="stylesheet" href="~/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="~/dist/css/skins/skin-green-light.css">
+
+    <link href="~/css/devextreme/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/devextreme/dx.common.css" rel="stylesheet" />
+    <link href="~/css/devextreme/dx.material.teal.light.compact.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/js/jquery.dataTables.min.css">
+
+    <!-- Custom 3rd CSS Libraries Here -->
+    <link href="~/lib/animate/animate.min.css" rel="stylesheet" />
+    <link href="~/lib/Datatables/datatables.min.css" rel="stylesheet" />
+    <link href="~/lib/Datatables/DataTables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/lib/Datatables/Responsive/css/responsive.dataTables.min.css" rel="stylesheet" />
+    <link href="~/lib/Datatables/Buttons/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/plugins/monthSelect/style.css" rel="stylesheet" />
+
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <!-- End Custom 3rd CSS Libraries -->
+
+
+    <script src="~/lib/jquery-3.6.1/jquery-3.6.1.min.js"></script>
+    <script src="~/lib/bootstrap-4.6.2/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/devextreme/cldr.js"></script>
+    <script src="~/js/devextreme/cldr/event.js"></script>
+    <script src="~/js/devextreme/cldr/supplemental.js"></script>
+    <script src="~/js/devextreme/cldr/unresolved.js"></script>
+
+    <script src="~/js/devextreme/globalize.js"></script>
+    <script src="~/js/devextreme/globalize/message.js"></script>
+    <script src="~/js/devextreme/globalize/number.js"></script>
+    <script src="~/js/devextreme/globalize/currency.js"></script>
+    <script src="~/js/devextreme/globalize/date.js"></script>
+
+    @* JSZip for client side export *@
+    <script src="~/js/devextreme/jszip.js"></script>
+
+    <script src="~/js/devextreme/dx.all.js"></script>
+    <script src="~/js/devextreme/vectormap-data/world.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
+
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.min.js"></script>
+
+    <script src="~/js/moment-with-locales.min.js"></script>
+    <script src="~/js/jquery.dataTables.min.js"></script>
+
+    <script src="~/js/numeral.js"></script>
+    <script src="~/js/jquery.maskedinput.min.js"></script>
+
+    <!-- Custom 3rd JS Libraries Here -->
+    <script src="~/lib/Datatables/DataTables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/Datatables/DataTables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/Datatables/Buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/lib/Datatables/Responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/Datatables/Buttons/js/buttons.html5.min.js"></script>
+    <script src="~/lib/Datatables/Buttons/js/buttons.print.min.js"></script>
+    <script src="~/lib/Datatables/Buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/lib/Datatables/pdfmake/pdfmake.min.js"></script>
+    <script src="~/lib/Datatables/pdfmake/vfs_fonts.js"></script>
+    <script src="~/lib/Datatables/JSZip/jszip.min.js"></script>
+
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+    <script src="~/lib/flatpickr/plugins/monthSelect/index.js"></script>
+
+    <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- End Custom 3rd JS Libraries -->
+
+    <script type="text/javascript" src="~/js/custom.js"></script>
+
+    <style>
+        #cssTableUtama {
+            height: 450px;
+        }
+
+        #cssTableGrid {
+            height: 300px;
+        }
+    </style>
+
+</head>
+
+<body class="hold-transition skin-green-light sidebar-mini @Context.Session.GetString("_ToggleStyle_ATTD") " style="padding-top:0 !important">
+
+    <div class="wrapper">
+        <!-- Main Header -->
+        <header class="main-header">
+            <!-- Logo -->
+            <div class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><a style="text-decoration:none;color:#ffffff" href="@Url.Action("Index","Home",new RouteValueDictionary(new { controller = "Home", action = "Index" }))"><b>FFB</b></a></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><a style="text-decoration:none;color:#ffffff" href="@Url.Action("Index","Home",new RouteValueDictionary(new { controller = "Home", action = "Index" }))">FFB SYSTEM</a></span>
+            </div>
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" id="sidebar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account Menu -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="~/dist/img/default.jpg" class="user-image" alt="User Image">
+                                <span class="hidden-xs">Pengguna : @Context.Session.GetString("_Name_ATTD")</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- The user image in the menu -->
+                                <li class="user-header">
+                                    <img src="~/dist/img/default.jpg" class="img-circle" alt="User Image">
+                                    <p>
+                                        @Context.Session.GetString("_Name_ATTD")
+                                        <small>Role : @Context.Session.GetString("_RoleDesc_ATTD")</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-right">
+                                        @Html.ActionLink("Ganti Kata Sandi", "EditPassword", new RouteValueDictionary(new { controller = "TUser", action = "EditPassword" }), new Dictionary<string, object> { { "class", "btn btn-default btn-flat" } })
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li>
+                            @*<a href="@Url.Action("Logout","Home",new RouteValueDictionary(new { controller = "Home", action = "Logout" }))">
+                                    <i class="fa fa-sign-out"></i>
+                                    <span class="hidden-xs">Keluar</span>
+                                </a>*@
+                            <a href="@Url.Action("KeycloakLogout", "Home")">
+                                <i class="fa fa-sign-out"></i>
+                                <span class="hidden-xs">Keluar</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="~/dist/img/default.jpg" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p>@Context.Session.GetString("_Name_ATTD")</p>
+                        <!-- Status -->
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                @await Component.InvokeAsync("Navigation", new { id = Context.Session.GetInt32("_RoleID_ATTD") })
+                <!-- /.sidebar-menu -->
+                <!-- search form (Optional) -->
+
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            @RenderBody()
+            <!-- /.content -->
+        </div>
+
+        <!-- /.content-wrapper -->
+        <!-- Main Footer -->
+        <!--<footer class="main-footer">-->
+        <!-- Default to the left -->
+        <!--<strong>Copyright &copy; 2022 - IT Asian Agri.</strong>
+        </footer>-->
+    </div>
+
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#sidebar-toggle").click(function (e) {
+            if (document.getElementsByTagName('body')[0].clientWidth > 767) {
+                $.ajax({
+                    url: '@Url.Action("SetToggleStyle", "Home")',
+                    cache: false,
+                    type: "POST",
+                    success: function (data) {
+                        //location.reload();
+                    },
+                    error: function (reponse) {
+                        alert("error : " + reponse);
+                    }
+                });
+            }
+        });
+    });
+    </script>
+
+</body>
+
+
+</html>

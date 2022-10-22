@@ -1,0 +1,236 @@
+﻿@model IEnumerable<MyAttd.Models.T_SetReport>
+
+@{
+    ViewData["Title"] = "Set Report";
+}
+
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+
+</section>
+<style>
+    th {
+        position: sticky;
+        top: 0;
+    }
+</style>
+
+@if (ViewData["Message"] != null)
+{
+    <section class="content" style="min-height:0px !important;padding-top:0px !important; padding-bottom:0px !important;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-warning box-solid" style="margin-top:15px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Perhatian!</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        @ViewData["Message"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<section class="container p-3 my-3" align=center id="formLoading">
+    <img src="~/loadinggif1.gif" width="550" height="400" style="text-align: center;" />
+    <p><h1>Loading Data.....</h1></p>
+</section>
+<section class="content container-fluid" id="formUtama">
+    <div class="box">
+        <div class="box-header with-border">
+            <button class="btn btn-primary" onclick="newItemMenuClick()"><h4><i class="fa fa-plus-circle"></i> New Item</h4></button>
+            @*<button class="btn-outline-dark" style="border: none" onclick="nextbackTanggal('BACK')">
+                <i class="fa fa-angle-double-left"></i>
+            </button>
+            <input type="month" id="currentDate" name="Date Price">
+            <button class="btn-outline-dark" style="border: none" onclick="nextbackTanggal('NEXT')">
+                <i class="fa fa-angle-double-right"></i>
+            </button>*@
+        </div>
+        <div class="box-body">
+            <div id="AreaMainTable">
+
+            </div>
+        </div>
+    </div>
+    <div id="popup">
+    </div>
+    <div id="popupChild">
+    </div>
+</section>
+
+<script>
+    LoadFinish()
+    function LoadProcess() {
+        $('#formLoading').show();
+        $('#formUtama').hide();
+    }
+    function LoadFinish() {
+        $('#formLoading').hide();
+        $('#formUtama').show();
+    }
+
+    //if (localStorage.getItem("periodeTender") == null) {
+    //    document.getElementById('currentDate').value = moment().format("YYYY-MM");
+    //}
+    //else {
+    //    document.getElementById("currentDate").value = localStorage.getItem("periodeTender");
+    //}
+
+    //var date_input = document.getElementById('currentDate');
+
+    function LoadMainTable() {
+        LoadProcess();
+        $.ajax
+            ({
+
+                //url: '/TSetReport/GridMainTable/',
+                url: '@Url.Action("GridMainTable", "TSetReport")',
+                traditional: true,
+                success: function (data) {
+                    if (data) {
+                        $("#AreaMainTable").html(data);
+                        LoadFinish();
+                    }
+
+                }
+            });
+
+    }
+    LoadMainTable();
+
+    //date_input.addEventListener("keydown", function (event) {
+    //    if (event.key === "Enter") {
+    //        date_input = document.getElementById('currentDate');
+    //        LoadMainTable();
+    //        localStorage.setItem("periodeTender", date_input.value);
+    //    }
+    //});
+
+    //function nextbackTanggal(a) {
+    //    //var tglNow = document.getElementById('currentDate').value;
+    //    var tglmoment;
+    //    if (a == "NEXT") {
+    //        tglmoment = moment(date_input.value).add(1, 'months').format("YYYY-MM");
+    //    }
+    //    else {
+    //        tglmoment = moment(date_input.value).subtract(1, 'months').format("YYYY-MM");
+    //    }
+    //    document.getElementById('currentDate').value = moment(tglmoment).format("YYYY-MM");
+    //    date_input = document.getElementById('currentDate');
+    //    LoadMainTable();
+    //    localStorage.setItem("periodeTender", tglmoment);
+    //}
+
+    $(function () {
+        $("#popup").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width: 550,
+            height: 400,
+            resizeEnabled: false
+        });
+        $("#popupChild").dxPopup({
+            title: "Popup Title",
+            visible: false,
+            closeOnOutsideClick: false,
+            width: 750,
+            height: 400,
+            resizeEnabled: false
+        });
+    });
+
+    function viewIconClick(a) {
+            $.ajax({
+                //type: "POST",
+                //url: '/TSetReport/View1/',
+                url: '@Url.Action("View1", "TSetReport")',
+                traditional: true,
+                data: { ReportID:a}
+            }).done(function (response) {
+                $("#popup").dxPopup({
+                    title: "VIEW",
+                    visible: true,
+                    contentTemplate: function (contentElement) {
+                        var response_new = response.replace("<hr />", "").replace("<hr />", "");
+                        contentElement.append(response_new)
+
+                    }
+                });
+            }).fail(function (data) {
+                alert("Failed: " + data.response);
+            });
+    }
+
+    function newItemMenuClick() {
+        $.ajax({
+                url: '@Url.Action("Create", "TSetReport")',
+                traditional: true,
+                data: {  }
+        }).done (function (response) {
+            $("#popup").dxPopup({
+                title: "ADD",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    contentElement.append(response)
+                }
+            });
+
+        }).fail(function (data) {
+                alert("Failed: " + data.response);
+        });
+    }
+    function deleteIconClick(a) {
+        $.ajax({
+            //type: "POST",
+            //url: '/TSetReport/Delete/',
+            url: '@Url.Action("GridMaDeleteinTable", "TSetReport")',
+            traditional: true,
+            data: { ReportID:a }
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "DELETE",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    var response_new = response.replace("<hr />", "").replace("<hr />", "");
+                    contentElement.append(response_new)
+
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    function editIconClick(a) {
+        $.ajax({
+            //type: "POST",
+            //url: '/TSetReport/Edit/',
+            url: '@Url.Action("Edit", "TSetReport")',
+            traditional: true,
+            data: { ReportID:a }
+        }).done(function (response) {
+            $("#popup").dxPopup({
+                title: "EDIT",
+                visible: true,
+                contentTemplate: function (contentElement) {
+                    var response_new = response.replace("<hr />", "").replace("<hr />", "");
+                    contentElement.append(response_new)
+
+                }
+            });
+        }).fail(function (data) {
+            alert("Failed: " + data.response);
+        });
+    }
+
+    //function validatenumber() {
+    //    $("#price").val(numeral(document.getElementById('price').value).value());
+    //}
+
+</script>

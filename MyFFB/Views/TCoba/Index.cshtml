@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "coba";
+}
+
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+
+</section>
+
+@if (ViewData["Message"] != null)
+{
+    <section class="content" style="min-height:0px !important;padding-top:0px !important; padding-bottom:0px !important;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-warning box-solid" style="margin-top:15px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Perhatian!</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        @ViewData["Message"]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<div align=center id="formLoading">
+    <img src="~/loadinggif1.gif" style="width:100px;height:70px" />
+    <p><h1>Loading Data.....</h1></p>
+</div>
+<section class="content container-fluid" id="formUtama">
+    <div class="box">
+        <div class="box-header with-border">
+            NPWP <input name="npwp" id="npwp" />
+            <div>
+                Date: <input type="text" id="tbDate" />
+            </div>
+        </div>
+        <div class="box-body">
+            <div id="AreaMainTable">
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="popup">
+    </div>
+    <div id="popupChild">
+    </div>
+
+
+</section>
+
+<script>
+    LoadFinish()
+    function LoadProcess() {
+        $('#formLoading').show();
+        $('#formUtama').hide();
+    }
+    function LoadFinish() {
+        $('#formLoading').hide();
+        $('#formUtama').show();
+    }
+    LoadFinish();
+    $("#npwp").mask("99.999.999.9-999.999");
+</script>
